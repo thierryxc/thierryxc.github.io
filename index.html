@@ -324,13 +324,12 @@
       
         
           
-            <p>#指针</p>
-<p>##什么是指针<br>  指针是一个值为<strong>内存地址</strong>的变量（或数据对象），也就是说，指针变量的值是<strong>地址</strong>。<br>  假设一个指针变量名是ptr，可以编写如下语句：</p>
+            <h1 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h1><h2 id="什么是指针"><a href="#什么是指针" class="headerlink" title="什么是指针"></a>什么是指针</h2><p>  指针是一个值为<strong>内存地址</strong>的变量（或数据对象），也就是说，指针变量的值是<strong>地址</strong>。<br>  假设一个指针变量名是ptr，可以编写如下语句：</p>
 <pre><code>ptr = &amp;pooh; //把pooh的地址赋给ptr
 </code></pre><p>  对于这条语句，我们说ptr <strong>“指向”</strong>pooh。ptr是变量（指针），&amp;pooh是常量（地址），所以还可以把ptr指向别处：   </p>
 <pre><code>ptr = &amp;bah; //把ptr指向bah，而不是pooh  
 </code></pre><p>  现在ptr的值是bah的地址。<br>  要创建指针变量（例如ptr），先要声明指针变量的类型。需要用到间接运算符：*。</p>
-<p>###间接运算符：*<br>  假设已知ptr指向bah，即:  </p>
+<h3 id="间接运算符："><a href="#间接运算符：" class="headerlink" title="间接运算符：*"></a>间接运算符：*</h3><p>  假设已知ptr指向bah，即:  </p>
 <pre><code>ptr = &amp;bah;
 </code></pre><p>  使用<strong>间接运算符 *</strong> 找出储存在bah中的值，该运算符有时也称作<strong>解引用运算符</strong>。  </p>
 <pre><code>val = *ptr; //找出ptr指向的值  
