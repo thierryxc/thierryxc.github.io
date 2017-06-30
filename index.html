@@ -256,129 +256,6 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/06/29/C语言中的指针/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu Chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Thierryxc 的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/29/C语言中的指针/" itemprop="url">C语言中的指针</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-29T12:07:46+08:00">
-                2017-06-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>#指针</p>
-<p>##什么是指针<br>  指针是一个值为<strong>内存地址</strong>的变量（或数据对象），也就是说，指针变量的值是<strong>地址</strong>。<br>  假设一个指针变量名是ptr，可以编写如下语句：</p>
-<pre><code>ptr = &amp;pooh; //把pooh的地址赋给ptr
-</code></pre><p>  对于这条语句，我们说ptr <strong>“指向”</strong>pooh。ptr是变量（指针），&amp;pooh是常量（地址），所以还可以把ptr指向别处：   </p>
-<pre><code>ptr = &amp;bah; //把ptr指向bah，而不是pooh  
-</code></pre><p>  现在ptr的值是bah的地址。<br>  要创建指针变量（例如ptr），先要声明指针变量的类型。需要用到间接运算符：*。</p>
-<p>###间接运算符：*<br>  假设已知ptr指向bah，即:  </p>
-<pre><code>ptr = &amp;bah;
-</code></pre><p>  使用<strong>间接运算符 *</strong> 找出储存在bah中的值，该运算符有时也称作<strong>解引用运算符</strong>。  </p>
-<pre><code>val = *ptr; //找出ptr指向的值  
-</code></pre><p>  语句ptr = &bah;和val = *ptr;放在一起相当于：  </p>
-<pre><code>val = bah;
-</code></pre>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/06/28/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -535,7 +412,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">1</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -543,15 +420,6 @@
 
           
 
-          
-            
-            
-            <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
-                <span class="site-state-item-count">2</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
           
 
         </nav>
