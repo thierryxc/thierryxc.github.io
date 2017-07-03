@@ -100,10 +100,13 @@
 <meta property="og:url" content="http://thierryxc.github.io/2017/06/30/C语言中的指针/index.html">
 <meta property="og:site_name" content="Thierryxc 的博客">
 <meta property="og:description" content="指针什么是指针  指针是一个值为内存地址的变量（或数据对象），也就是说，指针变量的值是地址。  假设一个指针变量名是ptr，可以编写如下语句： ptr = &amp;amp;pooh; //把pooh的地址赋给ptr   对于这条语句，我们说ptr “指向”pooh。ptr是变量（指针），&amp;amp;pooh是常量（地址），所以还可以把ptr指向别处：    ptr = &amp;amp;bah; //把ptr指向">
-<meta property="og:updated_time" content="2017-06-30T05:57:53.204Z">
+<meta property="og:image" content="http://osakbqq1v.bkt.clouddn.com/IMG_0499.JPG">
+<meta property="og:image" content="http://osakbqq1v.bkt.clouddn.com/IMG_0500.JPG">
+<meta property="og:updated_time" content="2017-07-03T12:13:45.931Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C语言中的指针">
 <meta name="twitter:description" content="指针什么是指针  指针是一个值为内存地址的变量（或数据对象），也就是说，指针变量的值是地址。  假设一个指针变量名是ptr，可以编写如下语句： ptr = &amp;amp;pooh; //把pooh的地址赋给ptr   对于这条语句，我们说ptr “指向”pooh。ptr是变量（指针），&amp;amp;pooh是常量（地址），所以还可以把ptr指向别处：    ptr = &amp;amp;bah; //把ptr指向">
+<meta name="twitter:image" content="http://osakbqq1v.bkt.clouddn.com/IMG_0499.JPG">
 
 
 
@@ -330,8 +333,63 @@
 </code></pre><p>  使用<strong>间接运算符 *</strong> 找出储存在bah中的值，该运算符有时也称作<strong>解引用运算符</strong>。  </p>
 <pre><code>val = *ptr; //找出ptr指向的值  
 </code></pre><p>  语句ptr = &bah;和val = *ptr;放在一起相当于：  </p>
-<pre><code>val = bah;
-</code></pre>
+<pre><code>val = bah;  
+</code></pre><hr>
+<ul>
+<li>小结：与指针相关的运算符<br><strong>地址运算符：&amp;</strong><br>后跟一个变量名时，&amp;给出该变量的地址。<br><strong>地址运算符：*</strong><br>后跟一个指针名或地址是，*给出储存在指针指向地址上的值。  </li>
+</ul>
+<h2 id="声明指针"><a href="#声明指针" class="headerlink" title="声明指针"></a>声明指针</h2><p>  声明指针变量时必须指定指针<strong>所指向变量</strong>的类型：</p>
+<pre><code>int * pi; //pi是指向int类型的变量的指针  
+int * pc; //pc是指向char类型的指针
+</code></pre><p>  类型说明符表明了指针所指向对象的类型，星号（*）表明声明的变量是一个指针。int * pi;声明的意思是pi是一个指针，* pi是int类型。  </p>
+<p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_0499.JPG" alt="声明并使用指针">  </p>
+<p>指针的类型：<br>  pc指向的值（*pc）是char类型，我们描述pc的类型是<strong>指向char类型的指针</strong>。pc的只是一个地址。  </p>
+<h1 id="数组中的指针"><a href="#数组中的指针" class="headerlink" title="数组中的指针"></a>数组中的指针</h1><p>  数组名是数组首元素的地址。也就是说，如果flizny是一个数组，下面的语句成立：  </p>
+<pre><code>flizny == &amp;flizny[0]; //数组名是该数组首元素的地址  
+</code></pre><p>  <strong>注意：</strong>flizny 和 &amp;flizny[0]都表示数组首元素的内存地址，它们都是<em>常量</em> ，在程序的运行过程中不会改变。但是，可以把他们赋值给指针<em>变量</em>，然后可以修改指针变量的值。 </p>
+<p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_0500.JPG" alt="数组和指针加法">  </p>
+<ul>
+<li>指针的值是它所指向对象的地址。许多计算机一般都是<strong>按字节编址</strong>。这里，一个较大对象（如short类型）的地址一般是该对象<strong>第一个字节</strong>的地址。  </li>
+<li>在指针前面使用*运算符可以得到该指针所指向对象的值。</li>
+<li><p>指针加1，指针的值递增<strong>它所指向类型</strong>的大小。  </p>
+<pre><code>dates + 2 == &amp;dates[2]  //相同的地址
+*(dates + 2) == dates[2]  //相同的值  
+</code></pre></li>
+</ul>
+<p>&#160; &#160; &#160; &#160;以上关系表明了数组和指针的关系十分密切，可以使用指针标识数组的元素和获得元素的值。从本质上看，同一个对象有两种表示法。实际上，C语言标准在描述数组表示法时确实借助了指针。也就是说，定义ar[n]的意思是*(ar + n)。可以认为*(ar + n)的意思是“到内存的ar位置，然后移动n个单元，检索储存在那里的值”。  </p>
+<h1 id="函数、数组和指针"><a href="#函数、数组和指针" class="headerlink" title="函数、数组和指针"></a>函数、数组和指针</h1><p>&#160; &#160; &#160; &#160;假设要编写一个处理数组的函数，该函数返回数组中所有元素之和，待处理的是名为marbles的int类型数组。应该如何调用函数？也许是下面这样：  </p>
+<pre><code>total = sum(marbles); //可能的函数调用  
+</code></pre><p>&#160; &#160; &#160; &#160;那么，该函数的原型是什么？数组名是该数组<strong>首元素</strong>的地址，所以实际参数marbles是一个<strong>储存int类型值</strong>的地址，应该把它赋给一个指针形式参数，即该形参是一个指向int的指针：  </p>
+<pre><code>int sum(int * ar); //对应的函数原型  
+</code></pre><p>&#160; &#160; &#160; &#160;sum（）从该参数中获得了什么信息？它获得了该数组首元素的地址，知道要在该位置上找出一个整数。  </p>
+<h2 id="使用指针形参"><a href="#使用指针形参" class="headerlink" title="使用指针形参"></a>使用指针形参</h2><p>  指针形参是变量，这意味着可以用索引表明访问数组中的拿一个元素。  </p>
+<pre><code>#include &lt;stdio.h&gt;
+#define SIZE 10
+int sump(int * start, int * end);
+int main(void)
+{
+    int marbles[SIZE] = {20,10,5,39,4,16,19,26,31,20};
+    long answer;
+
+    answer = sump(marbles, marbles + SIZE);
+    printf(&quot;The total number of marbles is %ld.\n&quot;, answer);
+
+    return 0;
+}  
+int sump(int * start, int * end)  
+{
+    int total = 0;
+
+    while (start &lt; end)
+    {
+        total += *start; // add value to total
+        start++;         // advance pointer to next element
+    }
+
+    return total;
+}  
+</code></pre><h3 id="形参、实参："><a href="#形参、实参：" class="headerlink" title="形参、实参："></a>形参、实参：</h3><p>&#160; &#160; &#160; &#160; int sump(int <em> start, int </em> end);告诉编译器sump（）使用两个参数start和end都是指向int类型的指针。这两个变量属于函数私有，是局部变量。<strong>每次调用函数，就会给这些变量赋值</strong>，也就是说当main（）函数中的nswer = sump(marbles, marbles + SIZE);执行时，同时执行了start = marbles;和 end = (marbles + SIZE);<strong>实际参数提供了start和end的值</strong>。<br>&#160; &#160; &#160; &#160;简而言之，形式参数是被调函数中的变量，实际参数是主调函数赋给被调函数的具体值，有一个赋值的过程而不是单纯的替换。</p>
+
       
     </div>
 
@@ -385,8 +443,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/06/30/123/" rel="prev" title="123">
-                123 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/06/30/存储类别/" rel="prev" title="存储类别">
+                存储类别 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -507,7 +565,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#指针"><span class="nav-number">1.</span> <span class="nav-text">指针</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是指针"><span class="nav-number">1.1.</span> <span class="nav-text">什么是指针</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#间接运算符："><span class="nav-number">1.1.1.</span> <span class="nav-text">间接运算符：*</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#指针"><span class="nav-number">1.</span> <span class="nav-text">指针</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是指针"><span class="nav-number">1.1.</span> <span class="nav-text">什么是指针</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#间接运算符："><span class="nav-number">1.1.1.</span> <span class="nav-text">间接运算符：*</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#声明指针"><span class="nav-number">1.2.</span> <span class="nav-text">声明指针</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数组中的指针"><span class="nav-number">2.</span> <span class="nav-text">数组中的指针</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数、数组和指针"><span class="nav-number">3.</span> <span class="nav-text">函数、数组和指针</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用指针形参"><span class="nav-number">3.1.</span> <span class="nav-text">使用指针形参</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#形参、实参："><span class="nav-number">3.1.1.</span> <span class="nav-text">形参、实参：</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
