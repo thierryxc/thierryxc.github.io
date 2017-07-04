@@ -500,7 +500,20 @@ int sump(int * start, int * end)
 
     return total;
 }  
-</code></pre><h3 id="形参、实参："><a href="#形参、实参：" class="headerlink" title="形参、实参："></a>形参、实参：</h3><p>&#160; &#160; &#160; &#160; int sump(int <em> start, int </em> end);告诉编译器sump（）使用两个参数start和end都是指向int类型的指针。这两个变量属于函数私有，是局部变量。<strong>每次调用函数，就会给这些变量赋值</strong>，也就是说当main（）函数中的nswer = sump(marbles, marbles + SIZE);执行时，同时执行了start = marbles;和 end = (marbles + SIZE);<strong>实际参数提供了start和end的值</strong>。<br>&#160; &#160; &#160; &#160;简而言之，形式参数是被调函数中的变量，实际参数是主调函数赋给被调函数的具体值，有一个赋值的过程而不是单纯的替换。</p>
+</code></pre><h3 id="形参、实参："><a href="#形参、实参：" class="headerlink" title="形参、实参："></a>形参、实参：</h3><p>&#160; &#160; &#160; &#160; int sump(int <em> start, int </em> end);告诉编译器sump（）使用两个参数start和end都是指向int类型的指针。这两个变量属于函数私有，是局部变量。<strong>每次调用函数，就会给这些变量赋值</strong>，也就是说当main（）函数中的nswer = sump(marbles, marbles + SIZE);执行时，同时执行了start = marbles;和 end = (marbles + SIZE);<strong>实际参数提供了start和end的值</strong>。<br>&#160; &#160; &#160; &#160;简而言之，形式参数是被调函数中的变量，实际参数是主调函数赋给被调函数的具体值，有一个赋值的过程而不是单纯的替换。  </p>
+<h3 id="指针表示法和数组表示法"><a href="#指针表示法和数组表示法" class="headerlink" title="指针表示法和数组表示法"></a>指针表示法和数组表示法</h3><p>&#160; &#160; &#160; &#160;对于C语言，ar[i]和*(ar + i)这两个表达式都是等价的。无论ar是数组名还是指针变量，这两个表达式都没问题。但是，只有当ar是<strong>指针变量</strong>时，才能使用ar++这样的表达式。  </p>
+<h1 id="指针和多维数组"><a href="#指针和多维数组" class="headerlink" title="指针和多维数组"></a>指针和多维数组</h1><p>假设有下面的声明：  </p>
+<pre><code>int zippo[4][2]; //内含int数组的数组  
+</code></pre><p>数组名zippo是该数组首元素的地址。zippo的首元素是一个内含<strong>两个</strong>int值的数组，所以zippo是这个内含两个int值的数组的地址。  </p>
+<ul>
+<li>因为zippo是数组首元素的地址，所以zippo的值和&amp;zippo[0]的值相同。而zippo[0]本身是一个内含两个整数的数组，所以zippo[0]的值和它首元素（一个整数）的地址（即&amp;zippo[0][0]的值)相同。简而言之，zippo[0]是一个占用一个int大小对象的地址，而zippo是一个占用两个int大小对象的地址。由于这个整数和内含内含两个整数的数组都开始于同一个地址，所以zippo和zippo[0]的值相同。</li>
+<li>给指针或地址加1，其值会增加对应类型大小的数值。在这方面，zippo和zippo[0]不同，因为zippo指向的对象占用了两个int大小，而zippo[0]指向的对象只占用了一个int大小。因此zippo + 1和zippo[0] + 1的值不同。</li>
+<li>解引用一个指针（在指针前使用*运算符）或在数组名后使用带下标的[]运算符，得到解引用对象代表的值。因为zippo[0]是该数组的首元素（zippo[0][0]）的地址，所以*(zippo[0])表示储存在zippo[0][0]上的值（即一个int类型的值）。与此类似，*zippo代表首元素（zippo[0]）的值，但是zippo[0]本身是一个int类型值的地址。该值地址是&amp;zippo[0][0]，所以*zippo就是&amp;zippo[0][0]，对两个表达式应用解引用运算符表明，**zippo与*&amp;zippo[0][0]等价，这相当于zippo[0][0]，即一个int类型的值。简而言之zippo是地址的地址，必须解引用两次才能获得原始值。地址的地址或指针的指针就是<strong>双重间接</strong>的例子。  </li>
+</ul>
+<p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_0503.JPG" alt="数组的数组">  </p>
+<h2 id="指向多维数组的指针"><a href="#指向多维数组的指针" class="headerlink" title="指向多维数组的指针"></a>指向多维数组的指针</h2><p>&#160; &#160; &#160; &#160;如何声明一个指针变量pz指向一个二维数组（如zippo）？把指针声明为int类型还不够。因为指向int只能与zippo[0]的类型匹配，说明该指针指向一个int类型的值。但是zippo是它首元素的地址，该元素是一个内含两个int类型值的一维数组。因此，pz必须指向一个内含<strong>两个int类型值的数组</strong>,而不是指向一个int类型值，其声明如下：  </p>
+<pre><code>int (* pz)[2];  //pz指向一个内含两个int类型值的数组  
+</code></pre><p>以上代码把pz声明为指向一个数组的指针，该数组内含两个int类型值。<br>如前所述，虽然pz是一个指针，不是数组名，但是也可以使用pz[2][1]这样的写法。</p>
 
           
         
