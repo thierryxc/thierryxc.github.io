@@ -1,0 +1,742 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="C,C Primer Plus," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="字符串字符串是以空字符（\0）结尾的char类型数组。   在程序中定义字符串字符串字面量 用双引号括起来的内容称为字符串字面量，也叫做字符串常量。  char greeting[50] = &amp;quot;Hello!&amp;quot;;    字符串常量属于静态存储类别，这说明如果在函数中使用字符串常量，该字符串只会被储存一次，在整个生命周期存在。    数组和指针的区别char ar1[] = &amp;qu">
+<meta name="keywords" content="C,C Primer Plus">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字符串和字符串函数">
+<meta property="og:url" content="http://thierryxc.github.io/2017/07/08/字符串函数/index.html">
+<meta property="og:site_name" content="Thierryxc 的博客">
+<meta property="og:description" content="字符串字符串是以空字符（\0）结尾的char类型数组。   在程序中定义字符串字符串字面量 用双引号括起来的内容称为字符串字面量，也叫做字符串常量。  char greeting[50] = &amp;quot;Hello!&amp;quot;;    字符串常量属于静态存储类别，这说明如果在函数中使用字符串常量，该字符串只会被储存一次，在整个生命周期存在。    数组和指针的区别char ar1[] = &amp;qu">
+<meta property="og:updated_time" content="2017-07-08T06:10:49.293Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="字符串和字符串函数">
+<meta name="twitter:description" content="字符串字符串是以空字符（\0）结尾的char类型数组。   在程序中定义字符串字符串字面量 用双引号括起来的内容称为字符串字面量，也叫做字符串常量。  char greeting[50] = &amp;quot;Hello!&amp;quot;;    字符串常量属于静态存储类别，这说明如果在函数中使用字符串常量，该字符串只会被储存一次，在整个生命周期存在。    数组和指针的区别char ar1[] = &amp;qu">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://thierryxc.github.io/2017/07/08/字符串函数/"/>
+
+
+
+
+
+  <title>字符串和字符串函数 | Thierryxc 的博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Thierryxc 的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">每天进步一点点</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/07/08/字符串函数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thierryxc 的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">字符串和字符串函数</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-08T08:56:44+08:00">
+                2017-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h1><p>字符串是以空字符（\0）结尾的char类型数组。  </p>
+<h2 id="在程序中定义字符串"><a href="#在程序中定义字符串" class="headerlink" title="在程序中定义字符串"></a>在程序中定义字符串</h2><h3 id="字符串字面量"><a href="#字符串字面量" class="headerlink" title="字符串字面量"></a>字符串字面量</h3><ul>
+<li>用双引号括起来的内容称为<strong>字符串字面量</strong>，也叫做<strong>字符串常量</strong>。</li>
+</ul>
+<pre><code>char greeting[50] = &quot;Hello!&quot;;  
+</code></pre><ul>
+<li>字符串常量属于<strong>静态存储类别</strong>，这说明如果在函数中使用字符串常量，该字符串只会被储存一次，在整个生命周期存在。  </li>
+</ul>
+<h3 id="数组和指针的区别"><a href="#数组和指针的区别" class="headerlink" title="数组和指针的区别"></a>数组和指针的区别</h3><pre><code>char ar1[] = &quot;Something is point at me.&quot;;
+char * pt1 = &quot;Something is point at me.&quot;;
+</code></pre><ul>
+<li>在数组形式中，ar1是<strong>地址常量</strong>。不能更改ar1，如果改变了ar1，则意味着改变了数组的存储位置（即地址）。可以进行类似ar1+1这样的操作，标识数组的下一个元素。但是不允许进行++ar1这样的操作。</li>
+<li>指针变量（pt1）最初指向该字符串的首字符，但是它的值可以改变。因此可以使用递增运算符，++pt1将指向第二个字符’o’。</li>
+</ul>
+<p>总之，初始化数组把静态存储区的字符串拷贝到数组中，而初始化指针只把字符串的地址拷贝给指针。</p>
+<h1 id="字符串函数"><a href="#字符串函数" class="headerlink" title="字符串函数"></a>字符串函数</h1><h2 id="输入、输出函数"><a href="#输入、输出函数" class="headerlink" title="输入、输出函数"></a>输入、输出函数</h2><h3 id="puts"><a href="#puts" class="headerlink" title="puts()"></a>puts()</h3><p>  接受一个字符串，输出到屏幕上，末尾自动加换行符。  </p>
+<h3 id="fgets-和fputs"><a href="#fgets-和fputs" class="headerlink" title="fgets()和fputs()"></a>fgets()和fputs()</h3><h4 id="fgets-char类型数组，int，文件指针"><a href="#fgets-char类型数组，int，文件指针" class="headerlink" title="fgets(char类型数组，int，文件指针)"></a>fgets(char类型数组，int，文件指针)</h4><ul>
+<li>fgets()函数的第二个参数指明了读入字符的最大数量。如果是n，那么fgets()将读入n-1个字符，或者读到遇到的<strong>第一个换行符</strong>为止。</li>
+<li>如果fgets()读到一个换行符，会把它<strong>存储在字符串中</strong>。</li>
+<li>fgets()函数的第三个参数指明要读入的文件。如果读入从键盘输入的数据，则以stdin（标准输入）作为参数。</li>
+<li>fgets()返回指向char的指针，如果一切进行顺利，返回的地址应与第一个参数地址相同；若读到文件结尾，返回空指针（NULL）。  </li>
+</ul>
+<h4 id="fputs-char类型数组，文件指针"><a href="#fputs-char类型数组，文件指针" class="headerlink" title="fputs(char类型数组，文件指针)"></a>fputs(char类型数组，文件指针)</h4><ul>
+<li>fputs()函数的第二个参数指明要写入数据的文件，如要打印在显示器上，用stdout（标准输出）。</li>
+<li>fputs()<strong>不会在末尾加换行符</strong>。</li>
+</ul>
+<h2 id="字符串函数-1"><a href="#字符串函数-1" class="headerlink" title="字符串函数"></a>字符串函数</h2><h3 id="strlen"><a href="#strlen" class="headerlink" title="strlen()"></a>strlen()</h3><ul>
+<li>接受一个字符串作为参数，返回它的长度。</li>
+</ul>
+<h3 id="strcat-和strncat"><a href="#strcat-和strncat" class="headerlink" title="strcat()和strncat()"></a>strcat()和strncat()</h3><ul>
+<li>strcat()用于拼接字符串，接受两个字符串作为参数，把第二个字符串的<strong>备份</strong>附加在第一个字符串末尾，返回第一个参数（即拼接后第一个字符串的地址）。</li>
+<li>strncat()前两个参数与strcat()相同，第三个参数指定了<strong>最大添加字符数</strong>。例如,strncat(bugs，addon，13)将把addon字符串的内容附加给bugs，在加到第13个字符或遇到空字符时停止（无论哪种情况都要添加空字符）。</li>
+</ul>
+<h3 id="strcmp-和strncmp"><a href="#strcmp-和strncmp" class="headerlink" title="strcmp()和strncmp()"></a>strcmp()和strncmp()</h3><ul>
+<li>strcmp()接收两个字符串作为参数，若相同则返回0，strcmp()依次比较每个字符直到发现不同的字符为止，比较的依据是<strong>机器排序序列</strong>，即字符的数值，通常是ASCⅡ值（第一个参数的减去第二个参数的）。</li>
+<li>strncmp()函数在比较两个字符串时，可以比较到字符不同的地方，也可以只比较<strong>第3个参数指定的字符数</strong>。</li>
+</ul>
+<h3 id="strcpy-和strncpy"><a href="#strcpy-和strncpy" class="headerlink" title="strcpy()和strncpy()"></a>strcpy()和strncpy()</h3><ul>
+<li>strcyp()是字符串赋值函数，接受两个字符串指针作为参数，可以把指向源字符串的第2个指针声明为指针、数组或字符串常量；而指向源字符串副本的第一个指针应指向一个数据对象（如，数组），且该对象有足够的空间储存源字符串的副本。<strong>声明数组将分配存储数据的空间，声明指针只分配存储一个地址的空间</strong>。</li>
+<li>strcpy()返回类型是 char *，是第一个参数的值，即一个字符的地址。第一个参数不必指向数组的开始，这个属性可以用于拷贝数组的一部分。</li>
+<li>strncpy()第3个参数指明可拷贝的最大字符数。</li>
+</ul>
+<h3 id="sprintf"><a href="#sprintf" class="headerlink" title="sprintf()"></a>sprintf()</h3><ul>
+<li>第一个参数是一个char类型数组，把获取的输入格式化为表纯形式储存在其中。（类比printf）。</li>
+</ul>
+<h3 id="char-strchr-const-char-s-int-c"><a href="#char-strchr-const-char-s-int-c" class="headerlink" title="char *strchr(const char * s, int c);"></a>char *strchr(const char * s, int c);</h3><ul>
+<li>如果s字符串中包含c字符，返回指向s字符串中首次出现c字符的地址，没找到，返回NULL。</li>
+</ul>
+<h3 id="char-strrchr-const-char-s-int-c"><a href="#char-strrchr-const-char-s-int-c" class="headerlink" title="char *strrchr(const char * s, int c);"></a>char *strrchr(const char * s, int c);</h3><ul>
+<li>如果s字符串中包含c字符，返回指向s字符串中<strong>最后</strong>出现c字符的地址，没找到，返回NULL。</li>
+</ul>
+<h3 id="char-strpbrk-const-char-s1-const-char-s2"><a href="#char-strpbrk-const-char-s1-const-char-s2" class="headerlink" title="char *strpbrk(const char s1, const char s2);"></a>char *strpbrk(const char <em>s1, const char </em>s2);</h3><ul>
+<li>如果s1字符串中包含s2字符串中的任意字符，返回s1中首次出现s2中字符的地址，否则返回NULL。</li>
+</ul>
+<h3 id="char-strstr-const-char-s1-const-char-s2"><a href="#char-strstr-const-char-s1-const-char-s2" class="headerlink" title="char *strstr(const char s1, const char s2);"></a>char *strstr(const char <em>s1, const char </em>s2);</h3><ul>
+<li>该函数返回s1字符串中s2字符串出现的收位置，否则返回NULL。</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag"># C</a>
+          
+            <a href="/tags/C-Primer-Plus/" rel="tag"># C Primer Plus</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/30/存储类别/" rel="next" title="存储类别">
+                <i class="fa fa-chevron-left"></i> 存储类别
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Xu Chen" />
+          <p class="site-author-name" itemprop="name">Xu Chen</p>
+           
+              <p class="site-description motion-element" itemprop="description">programming self-learner</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#字符串"><span class="nav-number">1.</span> <span class="nav-text">字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#在程序中定义字符串"><span class="nav-number">1.1.</span> <span class="nav-text">在程序中定义字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串字面量"><span class="nav-number">1.1.1.</span> <span class="nav-text">字符串字面量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组和指针的区别"><span class="nav-number">1.1.2.</span> <span class="nav-text">数组和指针的区别</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符串函数"><span class="nav-number">2.</span> <span class="nav-text">字符串函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#输入、输出函数"><span class="nav-number">2.1.</span> <span class="nav-text">输入、输出函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#puts"><span class="nav-number">2.1.1.</span> <span class="nav-text">puts()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fgets-和fputs"><span class="nav-number">2.1.2.</span> <span class="nav-text">fgets()和fputs()</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#fgets-char类型数组，int，文件指针"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">fgets(char类型数组，int，文件指针)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fputs-char类型数组，文件指针"><span class="nav-number">2.1.2.2.</span> <span class="nav-text">fputs(char类型数组，文件指针)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串函数-1"><span class="nav-number">2.2.</span> <span class="nav-text">字符串函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#strlen"><span class="nav-number">2.2.1.</span> <span class="nav-text">strlen()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#strcat-和strncat"><span class="nav-number">2.2.2.</span> <span class="nav-text">strcat()和strncat()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#strcmp-和strncmp"><span class="nav-number">2.2.3.</span> <span class="nav-text">strcmp()和strncmp()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#strcpy-和strncpy"><span class="nav-number">2.2.4.</span> <span class="nav-text">strcpy()和strncpy()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sprintf"><span class="nav-number">2.2.5.</span> <span class="nav-text">sprintf()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#char-strchr-const-char-s-int-c"><span class="nav-number">2.2.6.</span> <span class="nav-text">char *strchr(const char * s, int c);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#char-strrchr-const-char-s-int-c"><span class="nav-number">2.2.7.</span> <span class="nav-text">char *strrchr(const char * s, int c);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#char-strpbrk-const-char-s1-const-char-s2"><span class="nav-number">2.2.8.</span> <span class="nav-text">char *strpbrk(const char s1, const char s2);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#char-strstr-const-char-s1-const-char-s2"><span class="nav-number">2.2.9.</span> <span class="nav-text">char *strstr(const char s1, const char s2);</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xu Chen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
