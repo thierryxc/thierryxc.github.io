@@ -1,0 +1,833 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="编写一个程序的流程程序概述棋盘类战舰游戏，猜测对方战舰的坐标，然后轮流开炮攻击，命中数发就可以打沉战舰。用网站名代替战舰：    游戏目标：以最少的猜测次数打掉计算机所安排的网站。 初始设置：计算机在虚拟的7*7方格上安排3个网站。安排完成后，游戏要求玩家开始猜坐标。 进行游戏：玩家输入坐标，计算机反馈”miss”（未命中）、”hit”（命中）或”kill”（击沉）等回应。当玩家打掉所有网站时，游">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java编写程序(1)">
+<meta property="og:url" content="http://thierryxc.github.io/2017/08/03/Java编写程序-1/index.html">
+<meta property="og:site_name" content="Thierryxc 的博客">
+<meta property="og:description" content="编写一个程序的流程程序概述棋盘类战舰游戏，猜测对方战舰的坐标，然后轮流开炮攻击，命中数发就可以打沉战舰。用网站名代替战舰：    游戏目标：以最少的猜测次数打掉计算机所安排的网站。 初始设置：计算机在虚拟的7*7方格上安排3个网站。安排完成后，游戏要求玩家开始猜坐标。 进行游戏：玩家输入坐标，计算机反馈”miss”（未命中）、”hit”（命中）或”kill”（击沉）等回应。当玩家打掉所有网站时，游">
+<meta property="og:image" content="http://osakbqq1v.bkt.clouddn.com/IMG_0540.JPG">
+<meta property="og:image" content="http://osakbqq1v.bkt.clouddn.com/IMG_0541.JPG">
+<meta property="og:image" content="http://osakbqq1v.bkt.clouddn.com/IMG_0542.JPG">
+<meta property="og:updated_time" content="2017-08-03T06:04:05.562Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java编写程序(1)">
+<meta name="twitter:description" content="编写一个程序的流程程序概述棋盘类战舰游戏，猜测对方战舰的坐标，然后轮流开炮攻击，命中数发就可以打沉战舰。用网站名代替战舰：    游戏目标：以最少的猜测次数打掉计算机所安排的网站。 初始设置：计算机在虚拟的7*7方格上安排3个网站。安排完成后，游戏要求玩家开始猜坐标。 进行游戏：玩家输入坐标，计算机反馈”miss”（未命中）、”hit”（命中）或”kill”（击沉）等回应。当玩家打掉所有网站时，游">
+<meta name="twitter:image" content="http://osakbqq1v.bkt.clouddn.com/IMG_0540.JPG">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://thierryxc.github.io/2017/08/03/Java编写程序-1/"/>
+
+
+
+
+
+  <title>Java编写程序(1) | Thierryxc 的博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Thierryxc 的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">每天进步一点点</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/08/03/Java编写程序-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thierryxc 的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java编写程序(1)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-03T11:47:18+08:00">
+                2017-08-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="编写一个程序的流程"><a href="#编写一个程序的流程" class="headerlink" title="编写一个程序的流程"></a>编写一个程序的流程</h1><h2 id="程序概述"><a href="#程序概述" class="headerlink" title="程序概述"></a>程序概述</h2><p>棋盘类战舰游戏，猜测对方战舰的坐标，然后轮流开炮攻击，命中数发就可以打沉战舰。<br>用网站名代替战舰：  </p>
+<ul>
+<li>游戏目标：以最少的猜测次数打掉计算机所安排的网站。</li>
+<li>初始设置：计算机在虚拟的7*7方格上安排3个网站。安排完成后，游戏要求玩家开始猜坐标。</li>
+<li>进行游戏：玩家输入坐标，计算机反馈”miss”（未命中）、”hit”（命中）或”kill”（击沉）等回应。当玩家打掉所有网站时，游戏计算分数并结束。  </li>
+</ul>
+<p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_0540.JPG" alt="游戏示意">  </p>
+<h2 id="设计流程"><a href="#设计流程" class="headerlink" title="设计流程"></a>设计流程</h2><h3 id="高层设计"><a href="#高层设计" class="headerlink" title="高层设计"></a>高层设计</h3><p>首先要了解游戏流程：  </p>
+<p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_0541.JPG" alt="游戏流程">    </p>
+<p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_0542.JPG" alt="流程图">  </p>
+<p>了解了游戏流程后，下面要设想需要哪些<strong>对象</strong>。要用面向对象的方式来思考；<strong>专注于程序中出现的事物而不是过程</strong>。  </p>
+<h3 id="简单的开始"><a href="#简单的开始" class="headerlink" title="简单的开始"></a>简单的开始</h3><p>至少需要两个类：Game类和DotCom类。<br>先从一个简单版本开始开发：只使用横列，只设置一个网站。<br>简单版也需要具有完全版的基本功能，是开发完全版的踏脚石。  </p>
+<h3 id="开发类"><a href="#开发类" class="headerlink" title="开发类"></a>开发类</h3><h4 id="方法："><a href="#方法：" class="headerlink" title="方法："></a>方法：</h4><ul>
+<li>找出类应该做的事；</li>
+<li>列出实例变量和方法；</li>
+<li>编写方法的伪码；</li>
+<li>编写方法的测试用程序；</li>
+<li>实现类；</li>
+<li>测试方法；</li>
+<li>除错或重新设计。  </li>
+</ul>
+<h4 id="编写伪码"><a href="#编写伪码" class="headerlink" title="编写伪码"></a>编写伪码</h4><p>伪码是用近似编程的语言对程序进行描述，Java伪码大致有三个部分：  </p>
+<ol>
+<li>实例变量的声明；</li>
+<li>方法的声明：</li>
+<li><strong>方法的逻辑</strong>（最重要）  </li>
+</ol>
+<h5 id="SimpleDotCom类的伪码"><a href="#SimpleDotCom类的伪码" class="headerlink" title="SimpleDotCom类的伪码"></a>SimpleDotCom类的伪码</h5><pre><code>声明 一个int数组loctionCells来存储位置信息。
+声明 一个int类型的数字变量numOfHits来记录打中的数目，初始化为0。
+
+声明 checkYourself()方法，接收一个String类型输入（玩家猜测），与网站坐标比对后返回&quot;hit&quot;,&quot;miss&quot;或&quot;kill&quot;。
+声明 setLocationCells()方法来获得网站的位置信息（接收一个i内含3个元素的int类型数组）
+
+String checkYourself(String userGuess)
+    接受玩家输入（字符串形式）
+    将字符串转换成int
+    遍历loctionCells存储的坐标
+        比较玩家的猜测和loctionCells存储的坐标
+        if 两者相同
+            numOfHits++
+            观察玩家的猜测是否是loctionCells中最后一个坐标元素
+            if numOfHits是3，返回&quot;kill&quot;，跳出循环。
+            else 返回&quot;hit&quot;
+        else
+            没猜中，返回&quot;miss&quot;
+
+void setLocationCells(int[] cellLocations)
+    接受一个int类型数组作为输入
+    将实例变量loctionCells设为输入的数组
+</code></pre><h4 id="编写测试方法用的程序代码"><a href="#编写测试方法用的程序代码" class="headerlink" title="编写测试方法用的程序代码"></a>编写测试方法用的程序代码</h4><p>目的：更容易更快的写出程序代码。  </p>
+<p>对于SimpleDotCom类来说，主要需要测试的就是checkYourself()这个方法，这就需要能创建并初始化一个SimpleDotCom类的对象，然后给它一个初始坐标（setLocationCells()），列出结果来观察是否正确。  </p>
+<h5 id="SimpleDotCom的测试码"><a href="#SimpleDotCom的测试码" class="headerlink" title="SimpleDotCom的测试码"></a>SimpleDotCom的测试码</h5><pre><code>public class SimpleDotComTestDrive {
+
+    public static void main(String[] args) {
+        SimpleDotCom dot = new SimpleDotCom();//初始化一个对象
+
+        int[] locations = {2,3,4};
+        dot.setLocationCells(locations);//调用setter
+
+        String userGuess = &quot;2&quot;;//假的猜测
+        String result = dot.checkYourself(userGuess);//调用被测方法并传入假的数据    
+    }    
+
+}  
+</code></pre><h4 id="实现类"><a href="#实现类" class="headerlink" title="实现类"></a>实现类</h4><pre><code>public class SimpleDotCom {
+    int[] locationCells;
+    int numOfHits = 0;
+
+    public void setLocationCells(int[] locs) {
+        locationCells = locs;
+    }
+
+    public String checkYourself(String stringGuess) {
+        int guess = Integer.parseInt(stringGuess);//字符串变为int
+        String result = &quot;miss&quot;;
+        for (int cell : locationCells) {
+            if (guess == cell) {
+                result = &quot;hit&quot;;
+                numOfHits++;
+                break;
+            }
+        }
+
+        if (numOfHits == locationCells.length) {
+            result = &quot;kill&quot;;
+        }
+        System.out.println(result);
+        return result;
+    }
+}
+</code></pre><h4 id="编写SimpleDotComGame类的伪码"><a href="#编写SimpleDotComGame类的伪码" class="headerlink" title="编写SimpleDotComGame类的伪码"></a>编写SimpleDotComGame类的伪码</h4><pre><code>public static void main (String[] args)
+    声明int类型变量numOfGuess来储存玩家猜测次数，初始化为0
+    初始化一个SimpleDotCom实例
+    获取0-4的一个随机数来作为网站的第一个位置坐标
+    声明一个3元素int数组来存放生成的随机位置（由上面获得的随机数递增）
+    将位置用setter赋给SimpleDotCom实例
+    声明一个boolean变量isAlive来控制游戏进程，初始化为true
+    while (isAlive == true):
+        获取用户输入
+        调用checkYourself()方法
+        numOfGuess++
+        if （result是&quot;kill&quot;）
+                isAlive设为false
+                打印numOfGuess
+</code></pre><h4 id="游戏的main-方法"><a href="#游戏的main-方法" class="headerlink" title="游戏的main()方法"></a>游戏的main()方法</h4><pre><code>public class SimpleDotComGame {
+
+    public static void main(String[] args) {
+        int numOfGuess = 0;
+
+        GameHelper helper = new GameHelper();
+
+        SimpleDotCom theDotCom = new SimpleDotCom();
+        int randomNum = (int) (Math.random() * 5);
+
+        int[] locations = {randomNum, randomNum+1, randomNum+2};
+        theDotCom.setLocationCells(locations);
+        boolean isAlive = true;
+
+        while (isAlive == true) {
+            String guess = helper.getUserInput(&quot;enter a number&quot;);
+            String result = theDotCom.checkYourself(guess);
+            numOfGuess++;
+            if (result.equals(&quot;kill&quot;)) {
+                isAlive = false;
+                System.out.println(&quot;You took &quot; + numOfGuess + &quot; guesses&quot;);
+            }
+        }
+
+    }
+
+}
+</code></pre><h4 id="GameHelper"><a href="#GameHelper" class="headerlink" title="GameHelper"></a>GameHelper</h4><pre><code>import java.io.*;
+public class GameHelper {
+    public String getUserInput(String prompt) {
+        String inputline = null;
+        System.out.print(prompt + &quot;  &quot;);
+        try {
+            BufferedReader is = new BufferedReader(new InputStreamReader(System.in));
+                inputline = is.readLine();
+            if (inputline.length() ==  0)  return null;
+        } catch (IOException e) {
+            System.out.println(&quot;IOException: &quot; + e);
+        }
+        return inputline;
+    }
+}
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/02/Java封装/" rel="next" title="Java封装">
+                <i class="fa fa-chevron-left"></i> Java封装
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Xu Chen" />
+          <p class="site-author-name" itemprop="name">Xu Chen</p>
+           
+              <p class="site-description motion-element" itemprop="description">programming self-learner</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#编写一个程序的流程"><span class="nav-number">1.</span> <span class="nav-text">编写一个程序的流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#程序概述"><span class="nav-number">1.1.</span> <span class="nav-text">程序概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设计流程"><span class="nav-number">1.2.</span> <span class="nav-text">设计流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#高层设计"><span class="nav-number">1.2.1.</span> <span class="nav-text">高层设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的开始"><span class="nav-number">1.2.2.</span> <span class="nav-text">简单的开始</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开发类"><span class="nav-number">1.2.3.</span> <span class="nav-text">开发类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方法："><span class="nav-number">1.2.3.1.</span> <span class="nav-text">方法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编写伪码"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">编写伪码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#SimpleDotCom类的伪码"><span class="nav-number">1.2.3.2.1.</span> <span class="nav-text">SimpleDotCom类的伪码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编写测试方法用的程序代码"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">编写测试方法用的程序代码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#SimpleDotCom的测试码"><span class="nav-number">1.2.3.3.1.</span> <span class="nav-text">SimpleDotCom的测试码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现类"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">实现类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编写SimpleDotComGame类的伪码"><span class="nav-number">1.2.3.5.</span> <span class="nav-text">编写SimpleDotComGame类的伪码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#游戏的main-方法"><span class="nav-number">1.2.3.6.</span> <span class="nav-text">游戏的main()方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GameHelper"><span class="nav-number">1.2.3.7.</span> <span class="nav-text">GameHelper</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xu Chen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
