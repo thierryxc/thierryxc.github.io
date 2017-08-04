@@ -103,7 +103,8 @@
 <meta property="og:image" content="http://osakbqq1v.bkt.clouddn.com/IMG_0540.JPG">
 <meta property="og:image" content="http://osakbqq1v.bkt.clouddn.com/IMG_0541.JPG">
 <meta property="og:image" content="http://osakbqq1v.bkt.clouddn.com/IMG_0542.JPG">
-<meta property="og:updated_time" content="2017-08-03T06:04:05.562Z">
+<meta property="og:image" content="http://osakbqq1v.bkt.clouddn.com/simpledc.png">
+<meta property="og:updated_time" content="2017-08-03T10:34:05.057Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java编写程序(1)">
 <meta name="twitter:description" content="编写一个程序的流程程序概述棋盘类战舰游戏，猜测对方战舰的坐标，然后轮流开炮攻击，命中数发就可以打沉战舰。用网站名代替战舰：    游戏目标：以最少的猜测次数打掉计算机所安排的网站。 初始设置：计算机在虚拟的7*7方格上安排3个网站。安排完成后，游戏要求玩家开始猜坐标。 进行游戏：玩家输入坐标，计算机反馈”miss”（未命中）、”hit”（命中）或”kill”（击沉）等回应。当玩家打掉所有网站时，游">
@@ -470,7 +471,12 @@ public class GameHelper {
         return inputline;
     }
 }
-</code></pre>
+</code></pre><h4 id="一个bug（下篇文章处理）"><a href="#一个bug（下篇文章处理）" class="headerlink" title="一个bug（下篇文章处理）"></a>一个bug（下篇文章处理）</h4><p><img src="http://osakbqq1v.bkt.clouddn.com/simpledc.png" alt="bug"></p>
+<h1 id="新知识点"><a href="#新知识点" class="headerlink" title="新知识点"></a>新知识点</h1><ul>
+<li>使用Interger.parseInt()来取得Ttring的整数值；</li>
+<li>str.equal(str2)来比较两个字符串； </li>
+</ul>
+
       
     </div>
 
@@ -521,6 +527,10 @@ public class GameHelper {
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/03/Java编写程序-2/" rel="prev" title="Java编写程序(2)">
+                Java编写程序(2) <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -592,7 +602,7 @@ public class GameHelper {
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -640,7 +650,7 @@ public class GameHelper {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#编写一个程序的流程"><span class="nav-number">1.</span> <span class="nav-text">编写一个程序的流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#程序概述"><span class="nav-number">1.1.</span> <span class="nav-text">程序概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设计流程"><span class="nav-number">1.2.</span> <span class="nav-text">设计流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#高层设计"><span class="nav-number">1.2.1.</span> <span class="nav-text">高层设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的开始"><span class="nav-number">1.2.2.</span> <span class="nav-text">简单的开始</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开发类"><span class="nav-number">1.2.3.</span> <span class="nav-text">开发类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方法："><span class="nav-number">1.2.3.1.</span> <span class="nav-text">方法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编写伪码"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">编写伪码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#SimpleDotCom类的伪码"><span class="nav-number">1.2.3.2.1.</span> <span class="nav-text">SimpleDotCom类的伪码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编写测试方法用的程序代码"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">编写测试方法用的程序代码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#SimpleDotCom的测试码"><span class="nav-number">1.2.3.3.1.</span> <span class="nav-text">SimpleDotCom的测试码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现类"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">实现类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编写SimpleDotComGame类的伪码"><span class="nav-number">1.2.3.5.</span> <span class="nav-text">编写SimpleDotComGame类的伪码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#游戏的main-方法"><span class="nav-number">1.2.3.6.</span> <span class="nav-text">游戏的main()方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GameHelper"><span class="nav-number">1.2.3.7.</span> <span class="nav-text">GameHelper</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#编写一个程序的流程"><span class="nav-number">1.</span> <span class="nav-text">编写一个程序的流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#程序概述"><span class="nav-number">1.1.</span> <span class="nav-text">程序概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设计流程"><span class="nav-number">1.2.</span> <span class="nav-text">设计流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#高层设计"><span class="nav-number">1.2.1.</span> <span class="nav-text">高层设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的开始"><span class="nav-number">1.2.2.</span> <span class="nav-text">简单的开始</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开发类"><span class="nav-number">1.2.3.</span> <span class="nav-text">开发类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方法："><span class="nav-number">1.2.3.1.</span> <span class="nav-text">方法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编写伪码"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">编写伪码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#SimpleDotCom类的伪码"><span class="nav-number">1.2.3.2.1.</span> <span class="nav-text">SimpleDotCom类的伪码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编写测试方法用的程序代码"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">编写测试方法用的程序代码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#SimpleDotCom的测试码"><span class="nav-number">1.2.3.3.1.</span> <span class="nav-text">SimpleDotCom的测试码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现类"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">实现类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编写SimpleDotComGame类的伪码"><span class="nav-number">1.2.3.5.</span> <span class="nav-text">编写SimpleDotComGame类的伪码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#游戏的main-方法"><span class="nav-number">1.2.3.6.</span> <span class="nav-text">游戏的main()方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GameHelper"><span class="nav-number">1.2.3.7.</span> <span class="nav-text">GameHelper</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一个bug（下篇文章处理）"><span class="nav-number">1.2.3.8.</span> <span class="nav-text">一个bug（下篇文章处理）</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#新知识点"><span class="nav-number">2.</span> <span class="nav-text">新知识点</span></a></li></ol></div>
             
 
           </div>
