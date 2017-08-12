@@ -256,6 +256,880 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/08/12/Java-Swing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thierryxc 的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/12/Java-Swing/" itemprop="url">Java.Swing</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T14:03:47+08:00">
+                2017-08-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="创建GUI四个步骤回顾"><a href="#创建GUI四个步骤回顾" class="headerlink" title="创建GUI四个步骤回顾"></a>创建GUI四个步骤回顾</h1><ol>
+<li><p>创建window（JFrame）。  </p>
+<pre><code>JFrame frame = new JFrame();
+</code></pre></li>
+<li><p>创建组件。</p>
+<pre><code>JButton button = new JButton();
+</code></pre></li>
+<li><p>把组件加到frame上。</p>
+<pre><code>frame.getContentPane().add(BorderLayout.EAST, button);
+</code></pre></li>
+<li><p>显示出来。</p>
+<pre><code>frame.setSize(300,300);
+frame.setVisible(true);
+</code></pre></li>
+</ol>
+<h1 id="布局管理器（Layout-Managers）"><a href="#布局管理器（Layout-Managers）" class="headerlink" title="布局管理器（Layout Managers）"></a>布局管理器（Layout Managers）</h1><p>布局管理器是个与特定组件相关联的Java对象，它大多数是背景组件。布局管理器用来<strong>控制所关联组件上携带的其他组件</strong>。也就是说，如果某个框架带有面板，而面板带有按钮，则面板的布局管理器控制着按钮的大小与位置，而框架的布局管理器则控制着面板的大小与位置。<br>携带就是加入到上面：  </p>
+<pre><code>myPanel.add(button);  
+</code></pre><h2 id="三个常用布局管理器"><a href="#三个常用布局管理器" class="headerlink" title="三个常用布局管理器"></a>三个常用布局管理器</h2><p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_20170812_145554.jpg" alt="BorderLayout"></p>
+<h2 id="BordLayout布局五个区域"><a href="#BordLayout布局五个区域" class="headerlink" title="BordLayout布局五个区域"></a>BordLayout布局五个区域</h2><pre><code>import javax.swing.*;
+import java.awt.*;
+
+public class Button1 {
+
+    public static void main(String[] args) {
+        Button1 gui = new Button1();
+        gui.go();
+    }
+
+    public void go() {
+        JFrame frame = new JFrame();
+        JButton button = new JButton(&quot;click me..............&quot;);
+        Font bigFont = new Font(&quot;serif&quot;, Font.BOLD,28);//改字体
+        button.setFont(bigFont);
+
+        frame.getContentPane().add(BorderLayout.NORTH, button);
+
+        frame.setSize(300,300);
+        frame.setVisible(true);
+    }
+
+}
+</code></pre><p>总的来说：南北可以控制高度，宽度一定；东西可以控制宽度，高度一定。中间只能捡剩下的。</p>
+<h2 id="FlowLayout布局组件的流向：依次从左至右，从上至下"><a href="#FlowLayout布局组件的流向：依次从左至右，从上至下" class="headerlink" title="FlowLayout布局组件的流向：依次从左至右，从上至下"></a>FlowLayout布局组件的流向：依次从左至右，从上至下</h2><p><strong>JPanel</strong>的默认布局管理器是FlowLayout。</p>
+<pre><code>import javax.swing.*;
+import java.awt.*;
+
+public class Panel1 {
+
+    public static void main(String[] args) {
+        Panel1 gui = new Panel1();
+        gui.go();
+    }
+
+    public void go() {
+        JFrame frame = new JFrame();
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.darkGray);
+
+        JButton button = new JButton(&quot;shock me&quot;);
+        JButton button2 = new JButton(&quot;sleep&quot;);
+        JButton button3 = new JButton(&quot;go home&quot;);
+
+        frame.getContentPane().add(BorderLayout.EAST, panel);
+        panel.add(button);
+        panel.add(button2);
+        panel.add(button3);
+
+        frame.setSize(300, 300);
+        frame.setVisible(true);
+    }
+
+}
+</code></pre><hr>
+<p><img src="http://osakbqq1v.bkt.clouddn.com/folw.png" alt="flow"></p>
+<h2 id="BoxLayout布局：可以指定组件排列方向"><a href="#BoxLayout布局：可以指定组件排列方向" class="headerlink" title="BoxLayout布局：可以指定组件排列方向"></a>BoxLayout布局：可以指定组件排列方向</h2><pre><code>import javax.swing.*;
+import java.awt.*;
+
+public class Panel1 {
+
+    public static void main(String[] args) {
+        Panel1 gui = new Panel1();
+        gui.go();
+    }
+
+    public void go() {
+        JFrame frame = new JFrame();
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.darkGray);
+
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));//构造函数要知道管理哪个组件，和用哪个轴
+
+        JButton button = new JButton(&quot;shock me&quot;);
+        JButton button2 = new JButton(&quot;sleep&quot;);
+        JButton button3 = new JButton(&quot;go home&quot;);
+
+        frame.getContentPane().add(BorderLayout.EAST, panel);
+        panel.add(button);
+        panel.add(button2);
+        panel.add(button3);
+
+        frame.setSize(300, 300);
+        frame.setVisible(true);
+    }
+
+}
+</code></pre><hr>
+<p><img src="http://osakbqq1v.bkt.clouddn.com/box.png" alt="box"></p>
+<h1 id="操作Swing组件"><a href="#操作Swing组件" class="headerlink" title="操作Swing组件"></a>操作Swing组件</h1><h2 id="JTextField"><a href="#JTextField" class="headerlink" title="JTextField"></a>JTextField</h2><pre><code>public class Panel1 {
+
+    public static void main(String[] args) {
+        Panel1 gui = new Panel1();
+        gui.go();
+    }
+
+    public void go() {
+        JFrame frame = new JFrame();
+        JPanel panel = new JPanel();
+        JPanel panel2 = new JPanel();
+        panel.setBackground(Color.darkGray);
+
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));//构造函数要知道管理哪个组件，和用哪个轴
+
+        JButton button = new JButton(&quot;shock me&quot;);
+        JButton button2 = new JButton(&quot;sleep&quot;);
+        JButton button3 = new JButton(&quot;go home&quot;);
+        JTextField field = new JTextField(40);//构造JTextField,参数是字款
+        JLabel label = new JLabel(&quot;your name:&quot;);
+
+        frame.getContentPane().add(BorderLayout.NORTH, panel2);
+        frame.getContentPane().add(BorderLayout.EAST, panel);
+        panel.add(button);
+        panel.add(button2);
+        panel.add(button3);
+
+        panel2.add(label);
+        panel2.add(field);
+
+        frame.setSize(300, 300);
+        frame.setVisible(true);
+    }
+
+}
+</code></pre><hr>
+<p><img src="http://osakbqq1v.bkt.clouddn.com/textf.png" alt="textf"></p>
+<p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_20170812_154924.jpg" alt="method"></p>
+<h2 id="JTextArea"><a href="#JTextArea" class="headerlink" title="JTextArea"></a>JTextArea</h2><p>JTextArea可以有超过一行以上的文字。如果要让JTextArea滚动，则要将它粘在ScrollPane上。</p>
+<pre><code>import javax.swing.*;
+import java.awt.*;
+
+public class Panel1 {
+
+    public static void main(String[] args) {
+        Panel1 gui = new Panel1();
+        gui.go();
+    }
+
+    public void go() {
+        JFrame frame = new JFrame();
+        JPanel panel = new JPanel();
+        JPanel panel2 = new JPanel();
+        panel.setBackground(Color.darkGray);
+
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));//构造函数要知道管理哪个组件，和用哪个轴
+
+        JButton button = new JButton(&quot;shock me&quot;);
+        JButton button2 = new JButton(&quot;sleep&quot;);
+        JButton button3 = new JButton(&quot;go home&quot;);
+        JLabel label = new JLabel(&quot;your name:&quot;);
+
+        JTextArea text = new JTextArea(10, 20);//10行高，20字宽
+
+        JScrollPane scroller = new JScrollPane(text);//把text赋给JScrollpane
+        text.setLineWrap(true);//自动换行
+
+        scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);//只垂直滚动
+        scroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        panel2.add(label);
+        panel2.add(scroller);
+
+        frame.getContentPane().add(BorderLayout.CENTER, panel2);
+        frame.getContentPane().add(BorderLayout.EAST, panel);
+        panel.add(button);
+        panel.add(button2);
+        panel.add(button3);
+
+
+
+
+        frame.setSize(300, 300);
+        frame.setVisible(true);
+    }
+
+}
+</code></pre><h3 id="一些常用方法"><a href="#一些常用方法" class="headerlink" title="一些常用方法"></a>一些常用方法</h3><ol>
+<li><p>替换文字内容</p>
+<pre><code>text.setText(&quot;remove&quot;);
+</code></pre></li>
+<li><p>加入文字</p>
+<pre><code>text.append(&quot;append&quot;);
+</code></pre></li>
+<li><p>选取内容</p>
+<pre><code>text.selectAll();
+</code></pre></li>
+<li><p>把GUI目前焦点拉回到文本字段以便让用户输入操作</p>
+<pre><code>text.requestFocus();
+</code></pre></li>
+</ol>
+<h3 id="JTextArea范例"><a href="#JTextArea范例" class="headerlink" title="JTextArea范例"></a>JTextArea范例</h3><pre><code>import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class TextArea1  implements ActionListener {
+
+    JFrame frame;
+    JTextArea text;
+    public static void main(String[] args) {
+        TextArea1 gui = new TextArea1();
+        gui.go();
+    }
+
+    public void go() {
+        frame = new JFrame();
+        JPanel panel = new JPanel();
+        text = new JTextArea(10,20);
+        JScrollPane scroller = new JScrollPane(text);
+
+        text.setLineWrap(true);//自动换行
+
+        scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);//只垂直滚动
+        scroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        panel.add(scroller);
+        JButton button = new JButton(&quot;append sth.&quot;);
+        button.addActionListener(this);
+
+        frame.getContentPane().add(BorderLayout.CENTER,panel);
+        frame.getContentPane().add(BorderLayout.SOUTH, button);
+
+        frame.setSize(400,400);
+        frame.setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent ev) {
+        text.append(&quot;button clicked.\n&quot;);
+    }
+
+}
+</code></pre><h2 id="JCheckBox"><a href="#JCheckBox" class="headerlink" title="JCheckBox"></a>JCheckBox</h2><pre><code>import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class CheckBox1 implements ItemListener {//监听item的事件（是否选取）
+    JCheckBox box;
+    JTextArea text;
+
+    public static void main(String[] args) {
+        CheckBox1 gui = new CheckBox1();
+        gui.go();
+    }
+
+    public void go () {
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JPanel panel = new JPanel();
+        text = new JTextArea(10,20);
+        box = new JCheckBox(&quot;go home&quot;);//创建JCheckBox
+
+        box.addItemListener(this);
+
+        JScrollPane scroller = new JScrollPane(text);
+
+        text.setLineWrap(true);//自动换行
+
+        scroller.setVerticalScrollBarPolicy    、(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);//只垂直滚动
+        scroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        panel.add(scroller);
+
+        panel.add(box);
+        frame.getContentPane().add(BorderLayout.CENTER, panel);
+
+        frame.setSize(400,400);
+        frame.setVisible(true);
+    }
+
+    public void itemStateChanged(ItemEvent ev) {
+        if (box.isSelected()) {//是否勾选
+            text.append(&quot;we go home!\n&quot;);
+        } else {
+            text.append(&quot;no no no.\n&quot;);
+        }
+    }
+}
+</code></pre><hr>
+<p><img src="http://osakbqq1v.bkt.clouddn.com/checkbox.png" alt="checkbox"></p>
+<h2 id="JList"><a href="#JList" class="headerlink" title="JList"></a>JList</h2><pre><code>import javax.swing.*;
+import javax.swing.event.*;//ListSelectionListener在这里！
+import java.awt.*;
+
+public class List1 implements ListSelectionListener {
+    JTextField text;
+    JList list;
+    public static void main(String[] args) {
+        List1 gui = new List1();
+        gui.go();
+    }
+
+    public void go() {
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JPanel panel = new JPanel();
+        text = new JTextField(20);
+
+        String [] listEntries = { &quot;actor&quot;, &quot;fireman&quot;, &quot;police&quot;, &quot;doctor&quot;, &quot;lawer&quot;,
+            &quot;nurse&quot;, &quot;player&quot;, &quot;dog&quot; };
+        list = new JList(listEntries);
+        list.setVisibleRowCount(4);//设定显示的行数
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);//只能选一个
+        list.addListSelectionListener(this);//对选择事件注册
+
+        JScrollPane scroller = new JScrollPane(list);
+        scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);//只垂直滚动
+        scroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        panel.add(scroller);
+        panel.add(text);
+
+        frame.getContentPane().add(BorderLayout.CENTER, panel);
+        frame.setSize(400, 400);
+        frame.setVisible(true);
+        }
+
+    public void valueChanged(ListSelectionEvent lse) {
+        if (!lse.getValueIsAdjusting()) {//没有这个会得到两次事件
+            String selection = (String) list.getSelectedValue();//获得选择是个Object不一定是String
+            text.setText(selection);
+        }
+    }
+
+}
+</code></pre><hr>
+<p><img src="http://osakbqq1v.bkt.clouddn.com/list.png" alt="list"></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/08/11/Java音乐小程序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thierryxc 的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/11/Java音乐小程序/" itemprop="url">Java音乐小程序</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-11T13:13:44+08:00">
+                2017-08-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="创建MIDI音乐播放器"><a href="#创建MIDI音乐播放器" class="headerlink" title="创建MIDI音乐播放器"></a>创建MIDI音乐播放器</h1><p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_20170811_132439.jpg" alt="构思"></p>
+<p>要完成这个程序，我们需要用到：  </p>
+<ul>
+<li>JavaSound API</li>
+<li>创建Swing GUI</li>
+<li>通过网络链接到其他计算机</li>
+<li>输入\输出数据</li>
+</ul>
+<h1 id="JavaSound-API"><a href="#JavaSound-API" class="headerlink" title="JavaSound API"></a>JavaSound API</h1><h2 id="MIDI"><a href="#MIDI" class="headerlink" title="MIDI"></a>MIDI</h2><p>MIDI(Musical Instrument Digital Interface)乐器数字接口，也是不同电子发声装置沟通的标准协议。<br>MIDI数据表示执行的动作，但没有实际的声音，实际声音靠装置发出。</p>
+<h2 id="JavaSound的工作原理："><a href="#JavaSound的工作原理：" class="headerlink" title="JavaSound的工作原理："></a>JavaSound的工作原理：</h2><ol>
+<li>取得Sequencer并将它打开。  </li>
+<li>创建新的Sequence。</li>
+<li>从Sequence中创建新的Track。</li>
+<li>填入MidiEvent。</li>
+<li>让Sequencer播放。</li>
+</ol>
+<pre><code>import javax.sound.midi.*;
+
+public class MiniMiniMusicApp {
+
+public static void main(String[] args) {
+    MiniMiniMusicApp mini = new MiniMiniMusicApp();
+        mini.play();
+    }
+
+    public void play() {
+
+        try {
+            //取得Sequencer并将它打开
+            Sequencer player = MidiSystem.getSequencer();
+            player.open();
+
+            //创建新的Sequence
+            Sequence seq = new Sequence(Sequence.PPQ, 4);
+
+            //从Sequence中创建新的Track
+            Track track = seq.createTrack();
+
+            //填入MidiEvent
+            ShortMessage a = new ShortMessage();//创建Message
+            a.setMessage(144, 1, 44, 100);//置入指令（类型，频道，音符，音量）
+            MidiEvent noteOn = new MidiEvent(a, 1);//在第一拍启动a
+            track.add(noteOn);
+
+            ShortMessage b = new ShortMessage();
+            b.setMessage(128, 1, 44, 100);
+            MidiEvent noteOff = new MidiEvent(b, 16);//在16拍停止
+            track.add(noteOff);
+
+            //将Sequence送入Sequencer
+            player.setSequence(seq);
+
+            //让Sequencer播放
+            player.start();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+}
+</code></pre><h2 id="使用命令列表参数"><a href="#使用命令列表参数" class="headerlink" title="使用命令列表参数"></a>使用命令列表参数</h2><pre><code>import javax.sound.midi.*;
+
+public class MiniMusicCmdLine {
+
+    public static void main(String[] args) {
+        MiniMusicCmdLine mini = new MiniMusicCmdLine();
+        if (args.length &lt; 2) {
+            System.out.println(&quot;Don&apos;t forget the instrument and note args.&quot;);
+        } else {
+            int instrument = Integer.parseInt(args[0]);
+            int note = Integer.parseInt(args[1]);
+            mini.play(instrument, note);
+        }
+    }
+
+    public void play(int instrument, int note) {
+        try {
+            //取得Sequencer并将它打开
+            Sequencer player = MidiSystem.getSequencer();
+            player.open();
+
+            //创建新的Sequence
+            Sequence seq = new Sequence(Sequence.PPQ, 4);
+
+            //从Sequence中创建新的Track
+            Track track = seq.createTrack();
+
+            MidiEvent event =null;
+
+            ShortMessage first = new ShortMessage();
+            first.setMessage(192, 1, instrument, 0);
+            MidiEvent changrInstrument = new MidiEvent(first, 1);
+            track.add(changrInstrument);
+
+            //填入MidiEvent
+            ShortMessage a = new ShortMessage();
+            a.setMessage(144, 1, note, 100);
+            MidiEvent noteOn = new MidiEvent(a, 1);
+            track.add(noteOn);
+
+            ShortMessage b = new ShortMessage();
+            b.setMessage(128, 1, note, 100);
+            MidiEvent noteOff = new MidiEvent(b, 16);
+            track.add(noteOff);
+
+            //将Sequence送入Sequencer
+            player.setSequence(seq);
+
+            //让Sequencer播放
+            player.start();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+}
+</code></pre><h1 id="在播放音乐的同时输出图形"><a href="#在播放音乐的同时输出图形" class="headerlink" title="在播放音乐的同时输出图形"></a>在播放音乐的同时输出图形</h1><h2 id="需要实现的功能："><a href="#需要实现的功能：" class="headerlink" title="需要实现的功能："></a>需要实现的功能：</h2><ul>
+<li>制作一系列MIDI信息（事件）来播放任意钢琴音</li>
+<li>对事件注册一个监听者</li>
+<li>开始sequencer的播放操作</li>
+<li>每当监听者的事件处理程序被调用时，在面板上画出一个随机的方块并调用repaint</li>
+</ul>
+<h2 id="制作程序的三步："><a href="#制作程序的三步：" class="headerlink" title="制作程序的三步："></a>制作程序的三步：</h2><ol>
+<li>简单的制作MIDI事件</li>
+<li>注册并监听事件，但没有图形。从命令栏对应每一拍输出一个信息</li>
+<li>在第二版上加上输出图形</li>
+</ol>
+<h2 id="制作一系列MIDI信息"><a href="#制作一系列MIDI信息" class="headerlink" title="制作一系列MIDI信息"></a>制作一系列MIDI信息</h2><pre><code>import javax.sound.midi.*;
+
+public class MiniMusicPlayer1 {
+
+    public static void main(String[] args) {
+
+        try {
+            //创建并打开Sequencer
+            Sequencer sequencer = MidiSystem.getSequencer();
+            sequencer.open();
+
+            //创建Sequence并track
+            Sequence seq = new Sequence(Sequence.PPQ, 4);
+            Track track = seq.createTrack();
+
+            for (int i = 5; i &lt; 61; i++) {
+                track.add(makeEvent(144,1,i,100,i));
+                track.add(makeEvent(128,1,i,100,i+2));
+            }
+
+            //开始播放
+            sequencer.setSequence(seq);
+            sequencer.setTempoInBPM(220);
+            sequencer.start();
+            } catch (Exception ex) { ex.printStackTrace(); }
+    }
+
+    public static MidiEvent makeEvent(int comd, int chan, int one, int two, int tick) {
+        MidiEvent event = null;
+        try {
+            ShortMessage a = new ShortMessage();
+            a.setMessage(comd, chan, one, two);
+            event = new MidiEvent(a, tick);
+        } catch (Exception e) { e.printStackTrace(); }
+        return event;
+        }
+}
+</code></pre><h2 id="第二版：加入监听事件"><a href="#第二版：加入监听事件" class="headerlink" title="第二版：加入监听事件"></a>第二版：加入监听事件</h2><pre><code>import javax.sound.midi.*;
+
+public class MiniMusicPlayer2 implements ControllerEventListener {
+
+    public static void main(String[] args) {
+        MiniMusicPlayer2 mini = new MiniMusicPlayer2();
+        mini.go();
+    }
+
+    public void go() {
+        try {
+            //创建并打开Sequencer
+            Sequencer sequencer = MidiSystem.getSequencer();
+            sequencer.open();
+
+            int[] eventsIWant = {127};
+            sequencer.addControllerEventListener(this, eventsIWant);//注册事件，监听者和监听的事件数
+
+            //创建Sequence并track
+            Sequence seq = new Sequence(Sequence.PPQ, 4);
+            Track track = seq.createTrack();
+
+            for (int i = 5; i &lt; 61; i++) {
+                track.add(makeEvent(144,1,i,100,i));
+
+                track.add(makeEvent(176,1,127,0,i));//176是ControllerEvent的编号，用来监听
+
+                track.add(makeEvent(128,1,i,100,i+2));
+            }
+            sequencer.setSequence(seq);
+            sequencer.setTempoInBPM(220);
+            sequencer.start();
+            } catch (Exception ex) { ex.printStackTrace(); }
+    }
+
+    public void controlChange(ShortMessage event) {
+        System.out.println(&quot;la&quot;);
+    }
+
+    public static MidiEvent makeEvent(int comd, int chan, int one, int two, int tick) {
+        MidiEvent event = null;
+        try {
+            ShortMessage a = new ShortMessage();
+            a.setMessage(comd, chan, one, two);
+            event = new MidiEvent(a, tick);
+        } catch (Exception e) { e.printStackTrace(); }
+        return event;
+        }
+}
+</code></pre><h2 id="第三版：输出图形"><a href="#第三版：输出图形" class="headerlink" title="第三版：输出图形"></a>第三版：输出图形</h2><pre><code>import javax.sound.midi.*;
+import java.io.*;
+import javax.swing.*;
+import java.awt.*;
+
+public class MiniMusicPlayer3 {
+    static JFrame f = new JFrame(&quot;My frist music video&quot;);
+    static MyDrawPanel ml;
+
+    public static void main(String[] args) {
+        MiniMusicPlayer3 mini = new MiniMusicPlayer3();
+        mini.go();
+    }
+
+    public void setUpGui() {
+        ml = new MyDrawPanel();
+        f.setContentPane(ml);
+        f.setBounds(30, 30, 300, 300);
+        f.setVisible(true);
+    }
+
+    public void go() {
+        setUpGui();
+
+        try {
+            //创建并打开Sequencer
+            Sequencer sequencer = MidiSystem.getSequencer();
+            sequencer.open();
+
+            int[] eventsIWant = {127};
+            sequencer.addControllerEventListener(ml, eventsIWant);//注册事件，监听者和监    听的事件数
+
+            //创建Sequence并track
+            Sequence seq = new Sequence(Sequence.PPQ, 4);
+            Track track = seq.createTrack();
+
+            for (int i = 5; i &lt; 61; i++) {
+
+                int r = (int)((Math.random() * 50) + 1);
+                track.add(makeEvent(144,1,r,100,i));
+
+                track.add(makeEvent(176,1,127,0,i));//176是ControllerEvent的编号，用来监听
+
+                track.add(makeEvent(128,1,r,100,i+2));
+            }
+            sequencer.setSequence(seq);
+            sequencer.setTempoInBPM(220);
+            sequencer.start();
+            } catch (Exception ex) { ex.printStackTrace();}
+    }
+
+    public static MidiEvent makeEvent(int comd, int chan, int one, int two, int tick) {
+        MidiEvent event = null;
+        try {
+            ShortMessage a = new ShortMessage();
+            a.setMessage(comd, chan, one, two);
+            event = new MidiEvent(a, tick);
+        } catch (Exception e) { e.printStackTrace(); }
+        return event;
+    }
+
+    class MyDrawPanel extends JPanel implements ControllerEventListener {
+        boolean msg = false;
+
+        public void controlChange(ShortMessage event) {
+            msg = true;
+            repaint();
+        }
+
+
+        public void paintComponent(Graphics g) {//只能由系统调用
+            if (msg) {
+                Graphics2D g2d = (Graphics2D) g;
+
+                int red = (int) (Math.random() * 255);
+                int green = (int) (Math.random() * 255);
+                int blue = (int) (Math.random() * 255);
+
+                Color color = new Color(red, green ,blue);
+
+                g2d.setColor(color);
+                int ht = (int) ((Math.random() * 120) + 10);
+                int width = (int) ((Math.random() * 120) + 10);
+
+                int x = (int) ((Math.random() * 40) + 10);
+                int y = (int) ((Math.random() * 40) + 10);
+
+                g2d.fillRect(x, y, ht, width);
+
+                msg = false;
+
+            }
+        }
+    }
+}
+</code></pre>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/08/09/Java图形用户接口/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2201,326 +3075,11 @@ public class GameHelper {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/08/02/Java封装/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu Chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Thierryxc 的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/02/Java封装/" itemprop="url">Java封装</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-02T19:47:44+08:00">
-                2017-08-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Java封装"><a href="#Java封装" class="headerlink" title="Java封装"></a>Java封装</h1><h2 id="为什么要封装？"><a href="#为什么要封装？" class="headerlink" title="为什么要封装？"></a>为什么要封装？</h2><p>数据如果不封装会<strong>暴露实例变量</strong>，导致泄露资料，或被人恶意修改。<br>暴露的意思是可通过圆点运算符来存取，例如：  </p>
-<pre><code>dog.size = 80;  
-</code></pre><p>别人可以把值修改为任意值，不安全。</p>
-<h2 id="保护数据的方法：数据隐藏"><a href="#保护数据的方法：数据隐藏" class="headerlink" title="保护数据的方法：数据隐藏"></a>保护数据的方法：数据隐藏</h2><p>使用<strong>public</strong>和<strong>private</strong>这两个存取修饰符。<br>封装的基本原则：  </p>
-<ol>
-<li>将实例变量标记为私有（private）；</li>
-<li>提供公有（public）的方法来控制存取动作。  </li>
-</ol>
-<pre><code>//GoodDog.java  封装
-public class GoodDog {
-    private int size; //不能通过点运算符修改
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int s) {
-        size = s;
-    }
-
-    void bark() {
-        if (size &gt; 60) {
-            System.out.println(&quot;Woof!Woof!&quot;);
-        } else if (size &gt; 14) {
-            System.out.println(&quot;Ruff!Ruff!&quot;);
-        } else {
-            System.out.println(&quot;Yip!Yip!&quot;);
-        }
-    }
-
-}
-</code></pre><hr>
-<pre><code>public class GoodDogTest {
-
-    public static void main(String[] args) {
-        GoodDog one = new GoodDog();
-        one.setSize(70);
-
-        GoodDog two = new GoodDog();
-        two.setSize(8);
-
-        System.out.println(&quot;Dog one: &quot; + one.getSize());
-        System.out.println(&quot;Dog two: &quot; + two.getSize());
-
-        one.bark();
-        two.bark();
-    }
-
-}    
-</code></pre>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/08/02/Java对象引用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu Chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Thierryxc 的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/02/Java对象引用/" itemprop="url">Java对象引用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-02T19:33:25+08:00">
-                2017-08-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Java对象引用"><a href="#Java对象引用" class="headerlink" title="Java对象引用"></a>Java对象引用</h1><p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_0539.JPG" alt="对象引用">  </p>
-<pre><code>public class Dog {
-    String name;
-    public static void main(String[] args) {
-        // TODO Auto-generated method stub
-        Dog dog1 = new Dog();
-        dog1.bark();
-        dog1.name = &quot;Bart&quot;;
-
-        //创建Dog数组
-        Dog[] myDogs = new Dog[3];
-
-        myDogs[0] = new Dog();
-        myDogs[1] = new Dog();
-        myDogs[2] = dog1;
-
-        myDogs[0].name = &quot;Fred&quot;;
-        myDogs[1].name = &quot;Marge&quot;;
-
-        System.out.print(&quot;Last dog&apos;s name is &quot;);
-        System.out.println(myDogs[2].name);
-
-        int x = 0;
-        while (x &lt; myDogs.length) {
-            myDogs[x].bark();
-            x = x + 1;
-        }
-
-        dog1.name = &quot;Bob&quot;;
-        dog1.bark();
-        myDogs[2].bark();
-
-    }
-
-    public void bark() {
-        System.out.println(name + &quot; says ruff!&quot;);
-    }
-
-}    
-</code></pre><p>程序运行结果：<br><img src="http://osakbqq1v.bkt.clouddn.com/dog.png" alt="运行结果">  </p>
-<ul>
-<li>对象引用类似于指针，声明的类型不可改变；</li>
-<li>myDogs[2] = dog1；两个变量指向同一个Dog对象，<strong>改变其中一个，另一个的值也会变</strong>；</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2565,7 +3124,7 @@ public class GoodDog {
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

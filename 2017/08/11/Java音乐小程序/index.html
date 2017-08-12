@@ -1,0 +1,999 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="创建MIDI音乐播放器 要完成这个程序，我们需要用到：    JavaSound API 创建Swing GUI 通过网络链接到其他计算机 输入\输出数据  JavaSound APIMIDIMIDI(Musical Instrument Digital Interface)乐器数字接口，也是不同电子发声装置沟通的标准协议。MIDI数据表示执行的动作，但没有实际的声音，实际声音靠装置发出。 Jav">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java音乐小程序">
+<meta property="og:url" content="http://thierryxc.github.io/2017/08/11/Java音乐小程序/index.html">
+<meta property="og:site_name" content="Thierryxc 的博客">
+<meta property="og:description" content="创建MIDI音乐播放器 要完成这个程序，我们需要用到：    JavaSound API 创建Swing GUI 通过网络链接到其他计算机 输入\输出数据  JavaSound APIMIDIMIDI(Musical Instrument Digital Interface)乐器数字接口，也是不同电子发声装置沟通的标准协议。MIDI数据表示执行的动作，但没有实际的声音，实际声音靠装置发出。 Jav">
+<meta property="og:image" content="http://osakbqq1v.bkt.clouddn.com/IMG_20170811_132439.jpg">
+<meta property="og:updated_time" content="2017-08-12T06:02:48.641Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java音乐小程序">
+<meta name="twitter:description" content="创建MIDI音乐播放器 要完成这个程序，我们需要用到：    JavaSound API 创建Swing GUI 通过网络链接到其他计算机 输入\输出数据  JavaSound APIMIDIMIDI(Musical Instrument Digital Interface)乐器数字接口，也是不同电子发声装置沟通的标准协议。MIDI数据表示执行的动作，但没有实际的声音，实际声音靠装置发出。 Jav">
+<meta name="twitter:image" content="http://osakbqq1v.bkt.clouddn.com/IMG_20170811_132439.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://thierryxc.github.io/2017/08/11/Java音乐小程序/"/>
+
+
+
+
+
+  <title>Java音乐小程序 | Thierryxc 的博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Thierryxc 的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">每天进步一点点</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/08/11/Java音乐小程序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thierryxc 的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java音乐小程序</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-11T13:13:44+08:00">
+                2017-08-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="创建MIDI音乐播放器"><a href="#创建MIDI音乐播放器" class="headerlink" title="创建MIDI音乐播放器"></a>创建MIDI音乐播放器</h1><p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_20170811_132439.jpg" alt="构思"></p>
+<p>要完成这个程序，我们需要用到：  </p>
+<ul>
+<li>JavaSound API</li>
+<li>创建Swing GUI</li>
+<li>通过网络链接到其他计算机</li>
+<li>输入\输出数据</li>
+</ul>
+<h1 id="JavaSound-API"><a href="#JavaSound-API" class="headerlink" title="JavaSound API"></a>JavaSound API</h1><h2 id="MIDI"><a href="#MIDI" class="headerlink" title="MIDI"></a>MIDI</h2><p>MIDI(Musical Instrument Digital Interface)乐器数字接口，也是不同电子发声装置沟通的标准协议。<br>MIDI数据表示执行的动作，但没有实际的声音，实际声音靠装置发出。</p>
+<h2 id="JavaSound的工作原理："><a href="#JavaSound的工作原理：" class="headerlink" title="JavaSound的工作原理："></a>JavaSound的工作原理：</h2><ol>
+<li>取得Sequencer并将它打开。  </li>
+<li>创建新的Sequence。</li>
+<li>从Sequence中创建新的Track。</li>
+<li>填入MidiEvent。</li>
+<li>让Sequencer播放。</li>
+</ol>
+<pre><code>import javax.sound.midi.*;
+
+public class MiniMiniMusicApp {
+
+public static void main(String[] args) {
+    MiniMiniMusicApp mini = new MiniMiniMusicApp();
+        mini.play();
+    }
+
+    public void play() {
+
+        try {
+            //取得Sequencer并将它打开
+            Sequencer player = MidiSystem.getSequencer();
+            player.open();
+
+            //创建新的Sequence
+            Sequence seq = new Sequence(Sequence.PPQ, 4);
+
+            //从Sequence中创建新的Track
+            Track track = seq.createTrack();
+
+            //填入MidiEvent
+            ShortMessage a = new ShortMessage();//创建Message
+            a.setMessage(144, 1, 44, 100);//置入指令（类型，频道，音符，音量）
+            MidiEvent noteOn = new MidiEvent(a, 1);//在第一拍启动a
+            track.add(noteOn);
+
+            ShortMessage b = new ShortMessage();
+            b.setMessage(128, 1, 44, 100);
+            MidiEvent noteOff = new MidiEvent(b, 16);//在16拍停止
+            track.add(noteOff);
+
+            //将Sequence送入Sequencer
+            player.setSequence(seq);
+
+            //让Sequencer播放
+            player.start();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+}
+</code></pre><h2 id="使用命令列表参数"><a href="#使用命令列表参数" class="headerlink" title="使用命令列表参数"></a>使用命令列表参数</h2><pre><code>import javax.sound.midi.*;
+
+public class MiniMusicCmdLine {
+
+    public static void main(String[] args) {
+        MiniMusicCmdLine mini = new MiniMusicCmdLine();
+        if (args.length &lt; 2) {
+            System.out.println(&quot;Don&apos;t forget the instrument and note args.&quot;);
+        } else {
+            int instrument = Integer.parseInt(args[0]);
+            int note = Integer.parseInt(args[1]);
+            mini.play(instrument, note);
+        }
+    }
+
+    public void play(int instrument, int note) {
+        try {
+            //取得Sequencer并将它打开
+            Sequencer player = MidiSystem.getSequencer();
+            player.open();
+
+            //创建新的Sequence
+            Sequence seq = new Sequence(Sequence.PPQ, 4);
+
+            //从Sequence中创建新的Track
+            Track track = seq.createTrack();
+
+            MidiEvent event =null;
+
+            ShortMessage first = new ShortMessage();
+            first.setMessage(192, 1, instrument, 0);
+            MidiEvent changrInstrument = new MidiEvent(first, 1);
+            track.add(changrInstrument);
+
+            //填入MidiEvent
+            ShortMessage a = new ShortMessage();
+            a.setMessage(144, 1, note, 100);
+            MidiEvent noteOn = new MidiEvent(a, 1);
+            track.add(noteOn);
+
+            ShortMessage b = new ShortMessage();
+            b.setMessage(128, 1, note, 100);
+            MidiEvent noteOff = new MidiEvent(b, 16);
+            track.add(noteOff);
+
+            //将Sequence送入Sequencer
+            player.setSequence(seq);
+
+            //让Sequencer播放
+            player.start();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+}
+</code></pre><h1 id="在播放音乐的同时输出图形"><a href="#在播放音乐的同时输出图形" class="headerlink" title="在播放音乐的同时输出图形"></a>在播放音乐的同时输出图形</h1><h2 id="需要实现的功能："><a href="#需要实现的功能：" class="headerlink" title="需要实现的功能："></a>需要实现的功能：</h2><ul>
+<li>制作一系列MIDI信息（事件）来播放任意钢琴音</li>
+<li>对事件注册一个监听者</li>
+<li>开始sequencer的播放操作</li>
+<li>每当监听者的事件处理程序被调用时，在面板上画出一个随机的方块并调用repaint</li>
+</ul>
+<h2 id="制作程序的三步："><a href="#制作程序的三步：" class="headerlink" title="制作程序的三步："></a>制作程序的三步：</h2><ol>
+<li>简单的制作MIDI事件</li>
+<li>注册并监听事件，但没有图形。从命令栏对应每一拍输出一个信息</li>
+<li>在第二版上加上输出图形</li>
+</ol>
+<h2 id="制作一系列MIDI信息"><a href="#制作一系列MIDI信息" class="headerlink" title="制作一系列MIDI信息"></a>制作一系列MIDI信息</h2><pre><code>import javax.sound.midi.*;
+
+public class MiniMusicPlayer1 {
+
+    public static void main(String[] args) {
+
+        try {
+            //创建并打开Sequencer
+            Sequencer sequencer = MidiSystem.getSequencer();
+            sequencer.open();
+
+            //创建Sequence并track
+            Sequence seq = new Sequence(Sequence.PPQ, 4);
+            Track track = seq.createTrack();
+
+            for (int i = 5; i &lt; 61; i++) {
+                track.add(makeEvent(144,1,i,100,i));
+                track.add(makeEvent(128,1,i,100,i+2));
+            }
+
+            //开始播放
+            sequencer.setSequence(seq);
+            sequencer.setTempoInBPM(220);
+            sequencer.start();
+            } catch (Exception ex) { ex.printStackTrace(); }
+    }
+
+    public static MidiEvent makeEvent(int comd, int chan, int one, int two, int tick) {
+        MidiEvent event = null;
+        try {
+            ShortMessage a = new ShortMessage();
+            a.setMessage(comd, chan, one, two);
+            event = new MidiEvent(a, tick);
+        } catch (Exception e) { e.printStackTrace(); }
+        return event;
+        }
+}
+</code></pre><h2 id="第二版：加入监听事件"><a href="#第二版：加入监听事件" class="headerlink" title="第二版：加入监听事件"></a>第二版：加入监听事件</h2><pre><code>import javax.sound.midi.*;
+
+public class MiniMusicPlayer2 implements ControllerEventListener {
+
+    public static void main(String[] args) {
+        MiniMusicPlayer2 mini = new MiniMusicPlayer2();
+        mini.go();
+    }
+
+    public void go() {
+        try {
+            //创建并打开Sequencer
+            Sequencer sequencer = MidiSystem.getSequencer();
+            sequencer.open();
+
+            int[] eventsIWant = {127};
+            sequencer.addControllerEventListener(this, eventsIWant);//注册事件，监听者和监听的事件数
+
+            //创建Sequence并track
+            Sequence seq = new Sequence(Sequence.PPQ, 4);
+            Track track = seq.createTrack();
+
+            for (int i = 5; i &lt; 61; i++) {
+                track.add(makeEvent(144,1,i,100,i));
+
+                track.add(makeEvent(176,1,127,0,i));//176是ControllerEvent的编号，用来监听
+
+                track.add(makeEvent(128,1,i,100,i+2));
+            }
+            sequencer.setSequence(seq);
+            sequencer.setTempoInBPM(220);
+            sequencer.start();
+            } catch (Exception ex) { ex.printStackTrace(); }
+    }
+
+    public void controlChange(ShortMessage event) {
+        System.out.println(&quot;la&quot;);
+    }
+
+    public static MidiEvent makeEvent(int comd, int chan, int one, int two, int tick) {
+        MidiEvent event = null;
+        try {
+            ShortMessage a = new ShortMessage();
+            a.setMessage(comd, chan, one, two);
+            event = new MidiEvent(a, tick);
+        } catch (Exception e) { e.printStackTrace(); }
+        return event;
+        }
+}
+</code></pre><h2 id="第三版：输出图形"><a href="#第三版：输出图形" class="headerlink" title="第三版：输出图形"></a>第三版：输出图形</h2><pre><code>import javax.sound.midi.*;
+import java.io.*;
+import javax.swing.*;
+import java.awt.*;
+
+public class MiniMusicPlayer3 {
+    static JFrame f = new JFrame(&quot;My frist music video&quot;);
+    static MyDrawPanel ml;
+
+    public static void main(String[] args) {
+        MiniMusicPlayer3 mini = new MiniMusicPlayer3();
+        mini.go();
+    }
+
+    public void setUpGui() {
+        ml = new MyDrawPanel();
+        f.setContentPane(ml);
+        f.setBounds(30, 30, 300, 300);
+        f.setVisible(true);
+    }
+
+    public void go() {
+        setUpGui();
+
+        try {
+            //创建并打开Sequencer
+            Sequencer sequencer = MidiSystem.getSequencer();
+            sequencer.open();
+
+            int[] eventsIWant = {127};
+            sequencer.addControllerEventListener(ml, eventsIWant);//注册事件，监听者和监    听的事件数
+
+            //创建Sequence并track
+            Sequence seq = new Sequence(Sequence.PPQ, 4);
+            Track track = seq.createTrack();
+
+            for (int i = 5; i &lt; 61; i++) {
+
+                int r = (int)((Math.random() * 50) + 1);
+                track.add(makeEvent(144,1,r,100,i));
+
+                track.add(makeEvent(176,1,127,0,i));//176是ControllerEvent的编号，用来监听
+
+                track.add(makeEvent(128,1,r,100,i+2));
+            }
+            sequencer.setSequence(seq);
+            sequencer.setTempoInBPM(220);
+            sequencer.start();
+            } catch (Exception ex) { ex.printStackTrace();}
+    }
+
+    public static MidiEvent makeEvent(int comd, int chan, int one, int two, int tick) {
+        MidiEvent event = null;
+        try {
+            ShortMessage a = new ShortMessage();
+            a.setMessage(comd, chan, one, two);
+            event = new MidiEvent(a, tick);
+        } catch (Exception e) { e.printStackTrace(); }
+        return event;
+    }
+
+    class MyDrawPanel extends JPanel implements ControllerEventListener {
+        boolean msg = false;
+
+        public void controlChange(ShortMessage event) {
+            msg = true;
+            repaint();
+        }
+
+
+        public void paintComponent(Graphics g) {//只能由系统调用
+            if (msg) {
+                Graphics2D g2d = (Graphics2D) g;
+
+                int red = (int) (Math.random() * 255);
+                int green = (int) (Math.random() * 255);
+                int blue = (int) (Math.random() * 255);
+
+                Color color = new Color(red, green ,blue);
+
+                g2d.setColor(color);
+                int ht = (int) ((Math.random() * 120) + 10);
+                int width = (int) ((Math.random() * 120) + 10);
+
+                int x = (int) ((Math.random() * 40) + 10);
+                int y = (int) ((Math.random() * 40) + 10);
+
+                g2d.fillRect(x, y, ht, width);
+
+                msg = false;
+
+            }
+        }
+    }
+}
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/09/Java图形用户接口/" rel="next" title="Java图形用户接口">
+                <i class="fa fa-chevron-left"></i> Java图形用户接口
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/12/Java-Swing/" rel="prev" title="Java.Swing">
+                Java.Swing <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Xu Chen" />
+          <p class="site-author-name" itemprop="name">Xu Chen</p>
+           
+              <p class="site-description motion-element" itemprop="description">programming self-learner</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#创建MIDI音乐播放器"><span class="nav-number">1.</span> <span class="nav-text">创建MIDI音乐播放器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JavaSound-API"><span class="nav-number">2.</span> <span class="nav-text">JavaSound API</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MIDI"><span class="nav-number">2.1.</span> <span class="nav-text">MIDI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaSound的工作原理："><span class="nav-number">2.2.</span> <span class="nav-text">JavaSound的工作原理：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用命令列表参数"><span class="nav-number">2.3.</span> <span class="nav-text">使用命令列表参数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在播放音乐的同时输出图形"><span class="nav-number">3.</span> <span class="nav-text">在播放音乐的同时输出图形</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#需要实现的功能："><span class="nav-number">3.1.</span> <span class="nav-text">需要实现的功能：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#制作程序的三步："><span class="nav-number">3.2.</span> <span class="nav-text">制作程序的三步：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#制作一系列MIDI信息"><span class="nav-number">3.3.</span> <span class="nav-text">制作一系列MIDI信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二版：加入监听事件"><span class="nav-number">3.4.</span> <span class="nav-text">第二版：加入监听事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三版：输出图形"><span class="nav-number">3.5.</span> <span class="nav-text">第三版：输出图形</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xu Chen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
