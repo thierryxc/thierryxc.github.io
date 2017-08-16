@@ -256,6 +256,268 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/08/03/Java编写程序-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thierryxc 的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/03/Java编写程序-1/" itemprop="url">Java编写程序(1)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-03T11:47:18+08:00">
+                2017-08-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="编写一个程序的流程"><a href="#编写一个程序的流程" class="headerlink" title="编写一个程序的流程"></a>编写一个程序的流程</h1><h2 id="程序概述"><a href="#程序概述" class="headerlink" title="程序概述"></a>程序概述</h2><p>棋盘类战舰游戏，猜测对方战舰的坐标，然后轮流开炮攻击，命中数发就可以打沉战舰。<br>用网站名代替战舰：  </p>
+<ul>
+<li>游戏目标：以最少的猜测次数打掉计算机所安排的网站。</li>
+<li>初始设置：计算机在虚拟的7*7方格上安排3个网站。安排完成后，游戏要求玩家开始猜坐标。</li>
+<li>进行游戏：玩家输入坐标，计算机反馈”miss”（未命中）、”hit”（命中）或”kill”（击沉）等回应。当玩家打掉所有网站时，游戏计算分数并结束。  </li>
+</ul>
+<p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_0540.JPG" alt="游戏示意">  </p>
+<h2 id="设计流程"><a href="#设计流程" class="headerlink" title="设计流程"></a>设计流程</h2><h3 id="高层设计"><a href="#高层设计" class="headerlink" title="高层设计"></a>高层设计</h3><p>首先要了解游戏流程：  </p>
+<p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_0541.JPG" alt="游戏流程">    </p>
+<p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_0542.JPG" alt="流程图">  </p>
+<p>了解了游戏流程后，下面要设想需要哪些<strong>对象</strong>。要用面向对象的方式来思考；<strong>专注于程序中出现的事物而不是过程</strong>。  </p>
+<h3 id="简单的开始"><a href="#简单的开始" class="headerlink" title="简单的开始"></a>简单的开始</h3><p>至少需要两个类：Game类和DotCom类。<br>先从一个简单版本开始开发：只使用横列，只设置一个网站。<br>简单版也需要具有完全版的基本功能，是开发完全版的踏脚石。  </p>
+<h3 id="开发类"><a href="#开发类" class="headerlink" title="开发类"></a>开发类</h3><h4 id="方法："><a href="#方法：" class="headerlink" title="方法："></a>方法：</h4><ul>
+<li>找出类应该做的事；</li>
+<li>列出实例变量和方法；</li>
+<li>编写方法的伪码；</li>
+<li>编写方法的测试用程序；</li>
+<li>实现类；</li>
+<li>测试方法；</li>
+<li>除错或重新设计。  </li>
+</ul>
+<h4 id="编写伪码"><a href="#编写伪码" class="headerlink" title="编写伪码"></a>编写伪码</h4><p>伪码是用近似编程的语言对程序进行描述，Java伪码大致有三个部分：  </p>
+<ol>
+<li>实例变量的声明；</li>
+<li>方法的声明：</li>
+<li><strong>方法的逻辑</strong>（最重要）  </li>
+</ol>
+<h5 id="SimpleDotCom类的伪码"><a href="#SimpleDotCom类的伪码" class="headerlink" title="SimpleDotCom类的伪码"></a>SimpleDotCom类的伪码</h5><pre><code>声明 一个int数组loctionCells来存储位置信息。
+声明 一个int类型的数字变量numOfHits来记录打中的数目，初始化为0。
+
+声明 checkYourself()方法，接收一个String类型输入（玩家猜测），与网站坐标比对后返回&quot;hit&quot;,&quot;miss&quot;或&quot;kill&quot;。
+声明 setLocationCells()方法来获得网站的位置信息（接收一个i内含3个元素的int类型数组）
+
+String checkYourself(String userGuess)
+    接受玩家输入（字符串形式）
+    将字符串转换成int
+    遍历loctionCells存储的坐标
+        比较玩家的猜测和loctionCells存储的坐标
+        if 两者相同
+            numOfHits++
+            观察玩家的猜测是否是loctionCells中最后一个坐标元素
+            if numOfHits是3，返回&quot;kill&quot;，跳出循环。
+            else 返回&quot;hit&quot;
+        else
+            没猜中，返回&quot;miss&quot;
+
+void setLocationCells(int[] cellLocations)
+    接受一个int类型数组作为输入
+    将实例变量loctionCells设为输入的数组
+</code></pre><h4 id="编写测试方法用的程序代码"><a href="#编写测试方法用的程序代码" class="headerlink" title="编写测试方法用的程序代码"></a>编写测试方法用的程序代码</h4><p>目的：更容易更快的写出程序代码。  </p>
+<p>对于SimpleDotCom类来说，主要需要测试的就是checkYourself()这个方法，这就需要能创建并初始化一个SimpleDotCom类的对象，然后给它一个初始坐标（setLocationCells()），列出结果来观察是否正确。  </p>
+<h5 id="SimpleDotCom的测试码"><a href="#SimpleDotCom的测试码" class="headerlink" title="SimpleDotCom的测试码"></a>SimpleDotCom的测试码</h5><pre><code>public class SimpleDotComTestDrive {
+
+    public static void main(String[] args) {
+        SimpleDotCom dot = new SimpleDotCom();//初始化一个对象
+
+        int[] locations = {2,3,4};
+        dot.setLocationCells(locations);//调用setter
+
+        String userGuess = &quot;2&quot;;//假的猜测
+        String result = dot.checkYourself(userGuess);//调用被测方法并传入假的数据    
+    }    
+
+}  
+</code></pre><h4 id="实现类"><a href="#实现类" class="headerlink" title="实现类"></a>实现类</h4><pre><code>public class SimpleDotCom {
+    int[] locationCells;
+    int numOfHits = 0;
+
+    public void setLocationCells(int[] locs) {
+        locationCells = locs;
+    }
+
+    public String checkYourself(String stringGuess) {
+        int guess = Integer.parseInt(stringGuess);//字符串变为int
+        String result = &quot;miss&quot;;
+        for (int cell : locationCells) {
+            if (guess == cell) {
+                result = &quot;hit&quot;;
+                numOfHits++;
+                break;
+            }
+        }
+
+        if (numOfHits == locationCells.length) {
+            result = &quot;kill&quot;;
+        }
+        System.out.println(result);
+        return result;
+    }
+}
+</code></pre><h4 id="编写SimpleDotComGame类的伪码"><a href="#编写SimpleDotComGame类的伪码" class="headerlink" title="编写SimpleDotComGame类的伪码"></a>编写SimpleDotComGame类的伪码</h4><pre><code>public static void main (String[] args)
+    声明int类型变量numOfGuess来储存玩家猜测次数，初始化为0
+    初始化一个SimpleDotCom实例
+    获取0-4的一个随机数来作为网站的第一个位置坐标
+    声明一个3元素int数组来存放生成的随机位置（由上面获得的随机数递增）
+    将位置用setter赋给SimpleDotCom实例
+    声明一个boolean变量isAlive来控制游戏进程，初始化为true
+    while (isAlive == true):
+        获取用户输入
+        调用checkYourself()方法
+        numOfGuess++
+        if （result是&quot;kill&quot;）
+                isAlive设为false
+                打印numOfGuess
+</code></pre><h4 id="游戏的main-方法"><a href="#游戏的main-方法" class="headerlink" title="游戏的main()方法"></a>游戏的main()方法</h4><pre><code>public class SimpleDotComGame {
+
+    public static void main(String[] args) {
+        int numOfGuess = 0;
+
+        GameHelper helper = new GameHelper();
+
+        SimpleDotCom theDotCom = new SimpleDotCom();
+        int randomNum = (int) (Math.random() * 5);
+
+        int[] locations = {randomNum, randomNum+1, randomNum+2};
+        theDotCom.setLocationCells(locations);
+        boolean isAlive = true;
+
+        while (isAlive == true) {
+            String guess = helper.getUserInput(&quot;enter a number&quot;);
+            String result = theDotCom.checkYourself(guess);
+            numOfGuess++;
+            if (result.equals(&quot;kill&quot;)) {
+                isAlive = false;
+                System.out.println(&quot;You took &quot; + numOfGuess + &quot; guesses&quot;);
+            }
+        }
+
+    }
+
+}
+</code></pre><h4 id="GameHelper"><a href="#GameHelper" class="headerlink" title="GameHelper"></a>GameHelper</h4><pre><code>import java.io.*;
+public class GameHelper {
+    public String getUserInput(String prompt) {
+        String inputline = null;
+        System.out.print(prompt + &quot;  &quot;);
+        try {
+            BufferedReader is = new BufferedReader(new InputStreamReader(System.in));
+                inputline = is.readLine();
+            if (inputline.length() ==  0)  return null;
+        } catch (IOException e) {
+            System.out.println(&quot;IOException: &quot; + e);
+        }
+        return inputline;
+    }
+}
+</code></pre><h4 id="一个bug（下篇文章处理）"><a href="#一个bug（下篇文章处理）" class="headerlink" title="一个bug（下篇文章处理）"></a>一个bug（下篇文章处理）</h4><p><img src="http://osakbqq1v.bkt.clouddn.com/simpledc.png" alt="bug"></p>
+<h1 id="新知识点"><a href="#新知识点" class="headerlink" title="新知识点"></a>新知识点</h1><ul>
+<li>使用Interger.parseInt()来取得Ttring的整数值；</li>
+<li>str.equal(str2)来比较两个字符串； </li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/08/02/Java封装/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2400,196 +2662,6 @@ pt = (double *) malloc(30 * sizeof(double));
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/06/30/C语言中的指针/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu Chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Thierryxc 的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/30/C语言中的指针/" itemprop="url">C语言中的指针</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-30T12:12:27+08:00">
-                2017-06-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h1><h2 id="什么是指针"><a href="#什么是指针" class="headerlink" title="什么是指针"></a>什么是指针</h2><p>  指针是一个值为<strong>内存地址</strong>的变量（或数据对象），也就是说，指针变量的值是<strong>地址</strong>。<br>  假设一个指针变量名是ptr，可以编写如下语句：</p>
-<pre><code>ptr = &amp;pooh; //把pooh的地址赋给ptr
-</code></pre><p>  对于这条语句，我们说ptr <strong>“指向”</strong>pooh。ptr是变量（指针），&amp;pooh是常量（地址），所以还可以把ptr指向别处：   </p>
-<pre><code>ptr = &amp;bah; //把ptr指向bah，而不是pooh  
-</code></pre><p>  现在ptr的值是bah的地址。<br>  要创建指针变量（例如ptr），先要声明指针变量的类型。需要用到间接运算符：*。</p>
-<h3 id="间接运算符："><a href="#间接运算符：" class="headerlink" title="间接运算符：*"></a>间接运算符：*</h3><p>  假设已知ptr指向bah，即:  </p>
-<pre><code>ptr = &amp;bah;
-</code></pre><p>  使用<strong>间接运算符 *</strong> 找出储存在bah中的值，该运算符有时也称作<strong>解引用运算符</strong>。  </p>
-<pre><code>val = *ptr; //找出ptr指向的值  
-</code></pre><p>  语句ptr = &bah;和val = *ptr;放在一起相当于：  </p>
-<pre><code>val = bah;  
-</code></pre><hr>
-<ul>
-<li>小结：与指针相关的运算符<br><strong>地址运算符：&amp;</strong><br>后跟一个变量名时，&amp;给出该变量的地址。<br><strong>地址运算符：*</strong><br>后跟一个指针名或地址是，*给出储存在指针指向地址上的值。  </li>
-</ul>
-<h2 id="声明指针"><a href="#声明指针" class="headerlink" title="声明指针"></a>声明指针</h2><p>  声明指针变量时必须指定指针<strong>所指向变量</strong>的类型：</p>
-<pre><code>int * pi; //pi是指向int类型的变量的指针  
-int * pc; //pc是指向char类型的指针
-</code></pre><p>  类型说明符表明了指针所指向对象的类型，星号（*）表明声明的变量是一个指针。int * pi;声明的意思是pi是一个指针，* pi是int类型。  </p>
-<p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_0499.JPG" alt="声明并使用指针">  </p>
-<p>指针的类型：<br>  pc指向的值（*pc）是char类型，我们描述pc的类型是<strong>指向char类型的指针</strong>。pc的只是一个地址。  </p>
-<h1 id="数组中的指针"><a href="#数组中的指针" class="headerlink" title="数组中的指针"></a>数组中的指针</h1><p>  数组名是数组首元素的地址。也就是说，如果flizny是一个数组，下面的语句成立：  </p>
-<pre><code>flizny == &amp;flizny[0]; //数组名是该数组首元素的地址  
-</code></pre><p>  <strong>注意：</strong>flizny 和 &amp;flizny[0]都表示数组首元素的内存地址，它们都是<em>常量</em> ，在程序的运行过程中不会改变。但是，可以把他们赋值给指针<em>变量</em>，然后可以修改指针变量的值。 </p>
-<p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_0500.JPG" alt="数组和指针加法">  </p>
-<ul>
-<li>指针的值是它所指向对象的地址。许多计算机一般都是<strong>按字节编址</strong>。这里，一个较大对象（如short类型）的地址一般是该对象<strong>第一个字节</strong>的地址。  </li>
-<li>在指针前面使用*运算符可以得到该指针所指向对象的值。</li>
-<li><p>指针加1，指针的值递增<strong>它所指向类型</strong>的大小。  </p>
-<pre><code>dates + 2 == &amp;dates[2]  //相同的地址
-*(dates + 2) == dates[2]  //相同的值  
-</code></pre></li>
-</ul>
-<p>&#160; &#160; &#160; &#160;以上关系表明了数组和指针的关系十分密切，可以使用指针标识数组的元素和获得元素的值。从本质上看，同一个对象有两种表示法。实际上，C语言标准在描述数组表示法时确实借助了指针。也就是说，定义ar[n]的意思是*(ar + n)。可以认为*(ar + n)的意思是“到内存的ar位置，然后移动n个单元，检索储存在那里的值”。  </p>
-<h1 id="函数、数组和指针"><a href="#函数、数组和指针" class="headerlink" title="函数、数组和指针"></a>函数、数组和指针</h1><p>&#160; &#160; &#160; &#160;假设要编写一个处理数组的函数，该函数返回数组中所有元素之和，待处理的是名为marbles的int类型数组。应该如何调用函数？也许是下面这样：  </p>
-<pre><code>total = sum(marbles); //可能的函数调用  
-</code></pre><p>&#160; &#160; &#160; &#160;那么，该函数的原型是什么？数组名是该数组<strong>首元素</strong>的地址，所以实际参数marbles是一个<strong>储存int类型值</strong>的地址，应该把它赋给一个指针形式参数，即该形参是一个指向int的指针：  </p>
-<pre><code>int sum(int * ar); //对应的函数原型  
-</code></pre><p>&#160; &#160; &#160; &#160;sum（）从该参数中获得了什么信息？它获得了该数组首元素的地址，知道要在该位置上找出一个整数。  </p>
-<h2 id="使用指针形参"><a href="#使用指针形参" class="headerlink" title="使用指针形参"></a>使用指针形参</h2><p>  指针形参是变量，这意味着可以用索引表明访问数组中的拿一个元素。  </p>
-<pre><code>#include &lt;stdio.h&gt;
-#define SIZE 10
-int sump(int * start, int * end);
-int main(void)
-{
-    int marbles[SIZE] = {20,10,5,39,4,16,19,26,31,20};
-    long answer;
-
-    answer = sump(marbles, marbles + SIZE);
-    printf(&quot;The total number of marbles is %ld.\n&quot;, answer);
-
-    return 0;
-}  
-int sump(int * start, int * end)  
-{
-    int total = 0;
-
-    while (start &lt; end)
-    {
-        total += *start; // add value to total
-        start++;         // advance pointer to next element
-    }
-
-    return total;
-}  
-</code></pre><h3 id="形参、实参："><a href="#形参、实参：" class="headerlink" title="形参、实参："></a>形参、实参：</h3><p>&#160; &#160; &#160; &#160; int sump(int <em> start, int </em> end);告诉编译器sump（）使用两个参数start和end都是指向int类型的指针。这两个变量属于函数私有，是局部变量。<strong>每次调用函数，就会给这些变量赋值</strong>，也就是说当main（）函数中的nswer = sump(marbles, marbles + SIZE);执行时，同时执行了start = marbles;和 end = (marbles + SIZE);<strong>实际参数提供了start和end的值</strong>。<br>&#160; &#160; &#160; &#160;简而言之，形式参数是被调函数中的变量，实际参数是主调函数赋给被调函数的具体值，有一个赋值的过程而不是单纯的替换。  </p>
-<h3 id="指针表示法和数组表示法"><a href="#指针表示法和数组表示法" class="headerlink" title="指针表示法和数组表示法"></a>指针表示法和数组表示法</h3><p>&#160; &#160; &#160; &#160;对于C语言，ar[i]和*(ar + i)这两个表达式都是等价的。无论ar是数组名还是指针变量，这两个表达式都没问题。但是，只有当ar是<strong>指针变量</strong>时，才能使用ar++这样的表达式。  </p>
-<h1 id="指针和多维数组"><a href="#指针和多维数组" class="headerlink" title="指针和多维数组"></a>指针和多维数组</h1><p>假设有下面的声明：  </p>
-<pre><code>int zippo[4][2]; //内含int数组的数组  
-</code></pre><p>数组名zippo是该数组首元素的地址。zippo的首元素是一个内含<strong>两个</strong>int值的数组，所以zippo是这个内含两个int值的数组的地址。  </p>
-<ul>
-<li>因为zippo是数组首元素的地址，所以zippo的值和&amp;zippo[0]的值相同。而zippo[0]本身是一个内含两个整数的数组，所以zippo[0]的值和它首元素（一个整数）的地址（即&amp;zippo[0][0]的值)相同。简而言之，zippo[0]是一个占用一个int大小对象的地址，而zippo是一个占用两个int大小对象的地址。由于这个整数和内含内含两个整数的数组都开始于同一个地址，所以zippo和zippo[0]的值相同。</li>
-<li>给指针或地址加1，其值会增加对应类型大小的数值。在这方面，zippo和zippo[0]不同，因为zippo指向的对象占用了两个int大小，而zippo[0]指向的对象只占用了一个int大小。因此zippo + 1和zippo[0] + 1的值不同。</li>
-<li>解引用一个指针（在指针前使用*运算符）或在数组名后使用带下标的[]运算符，得到解引用对象代表的值。因为zippo[0]是该数组的首元素（zippo[0][0]）的地址，所以*(zippo[0])表示储存在zippo[0][0]上的值（即一个int类型的值）。与此类似，*zippo代表首元素（zippo[0]）的值，但是zippo[0]本身是一个int类型值的地址。该值地址是&amp;zippo[0][0]，所以*zippo就是&amp;zippo[0][0]，对两个表达式应用解引用运算符表明，**zippo与*&amp;zippo[0][0]等价，这相当于zippo[0][0]，即一个int类型的值。简而言之zippo是地址的地址，必须解引用两次才能获得原始值。地址的地址或指针的指针就是<strong>双重间接</strong>的例子。  </li>
-</ul>
-<p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_0503.JPG" alt="数组的数组">  </p>
-<h2 id="指向多维数组的指针"><a href="#指向多维数组的指针" class="headerlink" title="指向多维数组的指针"></a>指向多维数组的指针</h2><p>&#160; &#160; &#160; &#160;如何声明一个指针变量pz指向一个二维数组（如zippo）？把指针声明为int类型还不够。因为指向int只能与zippo[0]的类型匹配，说明该指针指向一个int类型的值。但是zippo是它首元素的地址，该元素是一个内含两个int类型值的一维数组。因此，pz必须指向一个内含<strong>两个int类型值的数组</strong>,而不是指向一个int类型值，其声明如下：  </p>
-<pre><code>int (* pz)[2];  //pz指向一个内含两个int类型值的数组  
-</code></pre><p>以上代码把pz声明为指向一个数组的指针，该数组内含两个int类型值。<br>如前所述，虽然pz是一个指针，不是数组名，但是也可以使用pz[2][1]这样的写法。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2639,7 +2711,7 @@ int sump(int * start, int * end)
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
