@@ -256,6 +256,438 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/08/16/Java网络与线程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thierryxc 的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/16/Java网络与线程/" itemprop="url">Java网络与线程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-16T18:16:03+08:00">
+                2017-08-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h1><h2 id="客户端要解决的三个问题"><a href="#客户端要解决的三个问题" class="headerlink" title="客户端要解决的三个问题"></a>客户端要解决的三个问题</h2><ol>
+<li>建立客户端与服务器之间的初始连接：用户通过socket连接来连接服务器。</li>
+<li>用户送出信息给服务器。</li>
+<li>用户从服务器接受信息。</li>
+</ol>
+<h2 id="建立Socket连接"><a href="#建立Socket连接" class="headerlink" title="建立Socket连接"></a>建立Socket连接</h2><p>Socket是个代表两台机器之间网络连接的对象（java.net.Socket）。要创建Socket连接要知道两项关于服务器的信息：IP地址和端口号。<br>Socket连接的建立代表两台机器之间存有对方的信息，包括网络地址和TCP的端口号。</p>
+<h2 id="使用BufferedReader从Socket上读取数据"><a href="#使用BufferedReader从Socket上读取数据" class="headerlink" title="使用BufferedReader从Socket上读取数据"></a>使用BufferedReader从Socket上读取数据</h2><p>用串流来通过Socket连接来沟通。</p>
+<ol>
+<li><p>建立对服务器的Socket连接</p>
+<pre><code>Socket chatSocket = new Socket(&quot;127.0.0.1&quot;, 5000);
+</code></pre></li>
+<li><p>建立连接到Socket上底层输入串流的InputStreamReader</p>
+<pre><code>InputStreamReader stream = new InputStreamReader(chatSocket.getInputStream());
+</code></pre></li>
+<li><p>建立BufferedReader来读取</p>
+<pre><code>BufferedReader reader = new BufferedReader(stream);
+String message = read.readline();
+</code></pre></li>
+</ol>
+<h2 id="用PrintWriter写数据到Socket上"><a href="#用PrintWriter写数据到Socket上" class="headerlink" title="用PrintWriter写数据到Socket上"></a>用PrintWriter写数据到Socket上</h2><ol>
+<li><p>对服务器建立Socket连接</p>
+<pre><code>Socket chatSocket = new Socket(&quot;127.0.0.1&quot;, 5000);
+</code></pre></li>
+<li><p>建立链接到Socket的PrintWriter</p>
+<pre><code>PrintWriter writer = new PrintWriter(chatSocket.getInputStream());
+</code></pre></li>
+<li><p>写入数据</p>
+<pre><code>writer.println(&quot;message to send&quot;);
+writer.print(&quot;anther message&quot;);
+</code></pre></li>
+</ol>
+<h2 id="简单的客户端程序"><a href="#简单的客户端程序" class="headerlink" title="简单的客户端程序"></a>简单的客户端程序</h2><pre><code>import java.io.*;
+import java.net.*;
+
+public class DailyAdviceClient {
+
+    public void go() {
+        try {
+            Socket s = new Socket(&quot;127.0.0.1&quot;, 4242);
+
+            InputStreamReader streamReader = new InputStreamReader(s.getInputStream());
+            BufferedReader reader = new BufferedReader(streamReader);
+
+            String advice = reader.readLine();
+            System.out.println(&quot;Today you should:&quot; + advice);
+
+            reader.close();
+        } catch (IOException ex) {
+            ex.getStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        DailyAdviceClient client = new DailyAdviceClient();
+        client.go();
+    }
+
+}
+</code></pre><h2 id="编写简单的服务器程序"><a href="#编写简单的服务器程序" class="headerlink" title="编写简单的服务器程序"></a>编写简单的服务器程序</h2><pre><code>import java.io.*;
+import java.net.*;
+
+public class DailyAdviceServer {
+    String[] adviceList = { &quot;go to school&quot;, &quot;go home&quot;, &quot;go to a moive&quot; };
+
+    public void go() {
+        try {
+            ServerSocket serverSock = new ServerSocket(4242);//ServerSocket会监听客户端对这台机器4242端口上的要求
+
+            //服务器进入循环等待服务客户端的请求
+            while (true) {
+
+                Socket sock = serverSock.accept(); //这个方法等待用户的时候停下来闲置，客户链接时返回一个Socket对象（与serverSock不同的端口）以便与客户端通信
+
+                PrintWriter writer = new PrintWriter(sock.getOutputStream());
+                String advice = adviceList[(int) (Math.random() * adviceList.length)];
+                writer.println(advice);
+                writer.close();
+            }
+        } catch (IOException ex) {
+        ex.getStackTrace();
+        }
+    }
+    public static void main(String[] args) {
+        DailyAdviceServer server = new DailyAdviceServer();
+        server.go();
+    }
+}
+</code></pre><h1 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h1><p>线程是独立的线程。它代表独立的执行空间。<br>Thread是Java中用来表示线程的类。要建立线程就要创建Thread。</p>
+<h2 id="启动新的线程"><a href="#启动新的线程" class="headerlink" title="启动新的线程"></a>启动新的线程</h2><ol>
+<li><p>建立Runnable对象（线程的任务）</p>
+<pre><code>Runnable threadJob = new MyRunnable();
+</code></pre></li>
+<li><p>建立Thread对象（执行者）并赋值Runnable（任务）  </p>
+<pre><code>Thread myThread = new Thread(threadJob);
+</code></pre><p>把Runnable对象传给Thread的构造函数。这会告诉Thread对象要把哪个方法放在执行空间去运行（Runnable的run()方法）</p>
+</li>
+<li><p>启动Thread</p>
+<pre><code>myThread.start();
+</code></pre></li>
+</ol>
+<h3 id="实现Runnable接口来建立给thread运行的任务"><a href="#实现Runnable接口来建立给thread运行的任务" class="headerlink" title="实现Runnable接口来建立给thread运行的任务"></a>实现Runnable接口来建立给thread运行的任务</h3><pre><code>public class MyRunnable implements Runnable {
+    public void run() {//必须要实现的方法，线程的任务
+        go();
+    }
+
+    public void go() {
+        doMore();
+    }
+
+    public void doMore() {
+        System.out.println(&quot;In the thread&quot;);
+    }
+
+}
+</code></pre><hr>
+<pre><code>public class ThreadTester {
+
+    public static void main(String[] args) {
+
+        MyRunnable threadJob = new MyRunnable();
+        Thread myThread = new Thread(threadJob);//将Runnable的实例传给Thread的构造函数
+
+        myThread.start();//线程开始执行
+
+        System.out.println(&quot;back in main&quot;);
+
+    }
+
+}
+</code></pre><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
+<li>以小写t描述的thread是个独立的线程</li>
+<li>Java中的每个线程都有独立的执行空间</li>
+<li>大写T的Thread是java.lang.Thread这个类。他的对象是用来表示线程</li>
+<li>Thread需要任务，任务是实现过Runnable的实例</li>
+<li>Runnable接口只有一个方法</li>
+<li>run()会是新线程所执行的第一项方法</li>
+<li>要把Runnable传给Thread的构造函数才能启动新线程</li>
+<li>线程在初始化以后还没有调用start()之前处于新建立的状态</li>
+<li>调用Thread对象的start()之后，会建立出新的执行空间，它处于可执行状态等待被挑出来执行</li>
+<li>当Java虚拟机的调度器选择某个线程之后它就处于执行中的状态，单处理器的机器只能有一个执行中的线程</li>
+<li>有时线程会因为某些原因而被堵塞</li>
+<li>调度不能保证任何的执行时间和顺序，所以你不能期待它会完全的平均分配执行。</li>
+</ul>
+<h2 id="多线程-1"><a href="#多线程-1" class="headerlink" title="多线程"></a>多线程</h2><ul>
+<li>Thread.sleep()这个静态方法可以强制线程进入等待状态到过了设定的时间为止。</li>
+<li>sleep()方法可能会抛出InterruptedException异常。</li>
+<li>可以用setName()方法帮线程命名，通常用来除错。</li>
+<li>如果两个以上的线程存取堆上相同的对象可能会出现严重的问题（数据的损毁）。</li>
+<li>要让对象在线程上有足够的安全性，就要判断出那些指令不能被分割执行。</li>
+<li>使用synchronized这个关键词修饰符可以防止两个线程同时进入同一对象的同一方法。</li>
+<li>每个对象都有单一的锁，单一的钥匙。这只会在对象带有同步化放方法时才有实际用途。</li>
+<li>线程尝试进入同步化过的方法时必须要取得<strong>对象</strong>的钥匙，如果已经被别的线程拿走了，那就得等。</li>
+<li>对象就算是有多个同步化过的方法，也还是只有<strong>一个锁</strong>。一旦某个线程进入该对象的同步化方法，其他线程就无法进入该对象的<strong>任何</strong>同步化方法。</li>
+</ul>
+<h1 id="简单的聊天软件程序"><a href="#简单的聊天软件程序" class="headerlink" title="简单的聊天软件程序"></a>简单的聊天软件程序</h1><h2 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h2><pre><code>import java.io.*;
+import java.net.*;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class SimpleChatClient {
+
+    JTextArea incoming;
+    JTextField outgoing;
+    BufferedReader reader;
+    PrintWriter writer;
+    Socket sock;
+
+    public static void main(String[] args) {
+        SimpleChatClient client = new SimpleChatClient();
+        client.go();
+    }
+
+    public void go() {
+
+        JFrame frame = new JFrame(&quot;Chat Client&quot;);
+        JPanel mainPanel = new JPanel();
+        incoming = new JTextArea(15,50);
+        incoming.setLineWrap(true);
+        incoming.setWrapStyleWord(true);
+        incoming.setEditable(false);
+
+        JScrollPane qScroller = new JScrollPane(incoming);
+        qScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        qScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        outgoing = new JTextField(20);
+        JButton sendButton = new JButton(&quot;Send&quot;);
+        sendButton.addActionListener(new SendButtonListener());
+
+        mainPanel.add(qScroller);
+        mainPanel.add(outgoing);
+        mainPanel.add(sendButton);
+
+        setUpNetworking();
+
+        Thread readerThread = new Thread(new IncomingReader());
+        readerThread.start();
+
+        frame.getContentPane().add(BorderLayout.CENTER, mainPanel);
+        frame.setSize(400, 500);
+        frame.setVisible(true);
+    }
+
+    private void setUpNetworking() {
+
+        try {
+            sock = new Socket(&quot;127.0.0.1&quot;, 4242);
+            InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
+            reader = new BufferedReader(streamReader);
+            writer = new PrintWriter(sock.getOutputStream());
+            System.out.println(&quot;networking established&quot;);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }        
+    }
+
+    public class SendButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent ev) {
+            try {
+                writer.println(outgoing.getText());
+                writer.flush();//强制将输出流缓冲区的数据送出
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            outgoing.setText(&quot;&quot;);
+            outgoing.requestFocus();
+        }
+    }
+
+    public class IncomingReader implements Runnable {
+        public void run() {//接收消息
+            String message;
+            try {
+
+                while ((message = reader.readLine()) != null) {
+                    System.out.println(&quot;Read &quot; + message);
+                    incoming.append(message + &quot;\n&quot;);
+                }
+            } catch (Exception ex) {
+                ex.getStackTrace();
+            }
+        }
+    }
+}
+</code></pre><h2 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h2><pre><code>import java.io.*;
+import java.net.*;
+import java.util.*;
+
+public class ChatServer {
+
+    ArrayList clientOutputStreams;
+
+    public class ClientHandler implements Runnable {
+        BufferedReader reader;
+        Socket sock;
+
+        public ClientHandler(Socket clientSocket) {
+            try {
+                sock = clientSocket;
+                InputStreamReader isReader = new InputStreamReader(sock.getInputStream());
+                reader = new BufferedReader(isReader);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        public void run() {
+            String message;
+            try {
+                while ((message = reader.readLine()) != null) {//发送消息
+                    System.out.println(&quot;Read &quot; + message);
+                    tellEveryone(message);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        new ChatServer().go();
+
+    }
+
+    public void go() {
+        clientOutputStreams = new ArrayList();
+        try {
+            ServerSocket serverSock = new ServerSocket(4242);
+
+            while (true) {//主线程接收消息，并将消息加入发送队列
+
+                Socket clientSock =    serverSock.accept();
+                PrintWriter writer = new PrintWriter(clientSock.getOutputStream());
+                clientOutputStreams.add(writer);
+
+                Thread t = new Thread(new ClientHandler(clientSock));
+                t.start();
+                System.out.println(&quot;Got a connection&quot;);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void tellEveryone(String message) {
+
+        Iterator it = clientOutputStreams.iterator();//迭代器
+        while (it.hasNext()) {
+            try {
+                PrintWriter writer = (PrintWriter) it.next();
+                writer.println(message);
+                writer.flush();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+}
+</code></pre>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/08/14/Java序列化和文件的输入-输出/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1846,6 +2278,248 @@ public class BeatBox {
     }
 
 }
+</code></pre><h1 id="加入存取功能的BeatBox"><a href="#加入存取功能的BeatBox" class="headerlink" title="加入存取功能的BeatBox"></a>加入存取功能的BeatBox</h1><pre><code>import java.awt.*;
+import javax.swing.*;
+import javax.sound.midi.*;
+import java.util.*;  //使用ArrayList
+import java.awt.event.*;
+import java.io.*;
+
+public class BeatBox {
+
+    JPanel mainPanel;
+    ArrayList&lt;JCheckBox&gt; checkboxList; //把CheckBox存在ArrayList中
+    Sequencer sequencer;
+    Sequence sequence;
+    Track track;
+    JFrame theFrame;
+
+    String [] instrumentNames = { &quot;Bass Drum&quot;, &quot;Closed Hi-Hat&quot;, &quot;Open Hi-Hat&quot;,
+            &quot;Acoustic Snare&quot;, &quot;Crash Cymbal&quot;, &quot;Hand Clap&quot;, &quot;High Tom&quot;, &quot;Hi Bongo&quot;,
+            &quot;Maracas&quot;, &quot;Whistle&quot;, &quot;Low Conga&quot;, &quot;Cowbell&quot;, &quot;Vibraslap&quot;, &quot;Low-mid Tom&quot;,
+            &quot;High Agogo&quot;, &quot;Open Hi Conga&quot; }; //乐器名称
+    int [] instruments = { 35,42,46,38,49,39,50,60,70,72,64,56,58,47,67,63 };
+
+    public static void main(String[] args) {
+        new BeatBox().buildGUI();
+    }
+
+    public void buildGUI() {
+        theFrame = new JFrame(&quot;Cyber BeatBox&quot;);//框架
+        theFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        BorderLayout layout = new BorderLayout();
+        JPanel background = new JPanel(layout); //背景面板，设定成BoederLayout
+        background.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); //设定面板上的空白边缘
+
+        checkboxList = new ArrayList&lt;JCheckBox&gt;();
+        Box buttonBox = Box.createVerticalBox();//等号后面的等价替换 new Box(BoxLayout.Y_AXIS);
+
+        JButton start = new JButton(&quot;start&quot;);
+        start.addActionListener(new MyStartListener());
+        buttonBox.add(start);
+
+        JButton stop = new JButton(&quot;stop&quot;);
+        stop.addActionListener(new MyStopListener());
+        buttonBox.add(stop);
+
+        JButton upTempo = new JButton(&quot;Tempo Up&quot;);
+        upTempo.addActionListener(new MyUpTempoListener());
+        buttonBox.add(upTempo);
+
+        JButton downTempo = new JButton(&quot;Tempo Down&quot;);
+        downTempo.addActionListener(new MyDownTempoListener());
+        buttonBox.add(downTempo);
+
+        JButton saveTrack = new JButton(&quot;Save Track&quot;);
+        saveTrack.addActionListener(new MySaveTrackListener());
+        buttonBox.add(saveTrack);
+
+        JButton restore= new JButton(&quot;Restore&quot;);
+        restore.addActionListener(new MyRestoreListener());
+        buttonBox.add(restore);
+
+        Box nameBox = new Box(BoxLayout.Y_AXIS);
+        for (int i = 0; i &lt; 16; i++) {
+            nameBox.add(new Label(instrumentNames[i]));
+        }
+
+        background.add(BorderLayout.EAST, buttonBox);
+        background.add(BorderLayout.WEST, nameBox);
+
+
+        theFrame.getContentPane().add(background);
+
+        GridLayout grid = new GridLayout(16, 16);//表格类布局
+        grid.setVgap(10);//表格上下间距
+        grid.setHgap(2);//表格左右间距
+        mainPanel = new JPanel(grid);
+        background.add(mainPanel);
+
+        for (int i = 0; i &lt; 256; i++) { //创建checkbox组，设定为未勾选并加入到ArrayList和mainPanel
+            JCheckBox c = new JCheckBox();
+            c.setSelected(false);
+            checkboxList.add(c);
+            mainPanel.add(c);
+        }
+
+        setUpMidi();
+
+        theFrame.setBounds(50,50,400,400);
+        theFrame.pack();//Frame.pack()是JAVA语言的一个函数，这个函数的作用就是根据窗口里面的布局及组件的preferedSize来确定frame的最佳大小。
+        theFrame.setVisible(true);
+    }
+
+    public void setUpMidi() {
+        try {
+            sequencer = MidiSystem.getSequencer();
+            sequencer.open();
+            sequence = new Sequence(Sequence.PPQ,4);
+            track = sequence.createTrack();
+            sequencer.setTempoInBPM(120);
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public void buildTrackAndStart() {
+        int[] trackList = null;
+        //去掉旧的做一个新的
+        sequence.deleteTrack(track);
+        track = sequence.createTrack();
+
+        for (int i = 0; i &lt; 16; i++) {
+            trackList = new int[16];
+
+            int key = instruments[i];
+
+            for (int j = 0; j &lt; 16; j++) {
+                JCheckBox jc = (JCheckBox) checkboxList.get(j + (16 * i));
+                if (jc.isSelected()) {
+                    trackList[j] = key;
+                } else {
+                    trackList[j] = 0;
+                }
+            }//关闭内循环
+
+            makeTracks(trackList);
+            track.add(makeEvent(176,1,127,0,16));
+        }//关闭外部循环
+
+        track.add(makeEvent(192,9,1,0,15));//确保第16拍有事件，否则不会重复播放
+        try {
+            sequencer.setSequence(sequence);
+            sequencer.setLoopCount(Sequencer.LOOP_CONTINUOUSLY);//重复无限此次
+            sequencer.start();
+            sequencer.setTempoInBPM(120);
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public void makeTracks(int[] list) {
+
+        for (int i = 0; i &lt; 16; i++) {
+            int key = list[i];
+
+            if (key != 0) {
+                track.add(makeEvent(144,9,key,100,i));
+                track.add(makeEvent(128,9,key,100,i+1));
+            }
+        }
+    }
+
+    public MidiEvent makeEvent(int comd, int chan, int one, int two, int tick) {
+        MidiEvent event = null;
+        try {
+            ShortMessage a = new ShortMessage();
+            a.setMessage(comd, chan, one, two);
+            event = new MidiEvent(a, tick);
+        } catch (Exception e) { e.printStackTrace(); }
+        return event;
+    }
+
+    public class MyStartListener implements ActionListener {
+        public void actionPerformed(ActionEvent a) {
+            buildTrackAndStart();
+        }
+    }
+
+    public class MyStopListener implements ActionListener {
+        public void actionPerformed(ActionEvent a) {
+            sequencer.stop();
+        }
+    }
+
+    public class MyUpTempoListener implements ActionListener {
+        public void actionPerformed(ActionEvent a) {
+            float tempoFactor = sequencer.getTempoFactor();
+            sequencer.setTempoFactor((float) (tempoFactor * 1.03));
+        }
+    }
+
+    public class MyDownTempoListener implements ActionListener {
+        public void actionPerformed(ActionEvent a) {
+            float tempoFactor = sequencer.getTempoFactor();
+            sequencer.setTempoFactor((float) (tempoFactor * .97));
+        }
+    }
+
+    public class MySaveTrackListener implements ActionListener {
+        public void actionPerformed(ActionEvent a) {
+            JFileChooser fileSave = new JFileChooser();
+            fileSave.showSaveDialog(theFrame);
+            saveFile(fileSave.getSelectedFile());
+        }
+    }
+
+    private void saveFile(File file) {
+        boolean[] checkboxState = new boolean[256];
+
+        for (int i = 0; i &lt; 256; i++) {
+            JCheckBox check = (JCheckBox) checkboxList.get(i);
+            if (check.isSelected()) {
+                checkboxState[i] = true;
+            }
+        }
+
+        try {
+            FileOutputStream fileStream = new FileOutputStream(file);
+            ObjectOutputStream os = new ObjectOutputStream(fileStream);
+            os.writeObject(checkboxState);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public class MyRestoreListener implements ActionListener {
+        public void actionPerformed (ActionEvent a) {
+            JFileChooser fileOpen = new JFileChooser();
+            fileOpen.showOpenDialog(fileOpen);
+            loadFile(fileOpen.getSelectedFile());
+        }
+    }
+
+    private void loadFile(File file) {
+        boolean[] checkboxState = null;
+        try {
+            FileInputStream fileIn = new FileInputStream(file);
+            ObjectInputStream is = new ObjectInputStream(fileIn);
+            checkboxState = (boolean[]) is.readObject();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        for (int i = 0; i &lt; 256; i++) {
+            JCheckBox check = (JCheckBox) checkboxList.get(i);
+            if (checkboxState[i]) {
+                check.setSelected(true);
+            } else {
+                check.setSelected(false);
+            }
+        }
+
+        sequencer.stop();
+        buildTrackAndStart();
+    }
+
+
+}
 </code></pre>
           
         
@@ -3194,384 +3868,6 @@ Dog d = myDogArrayList.get(0) //无法通过编译！！！不管add进去的值
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/08/03/Java编写程序-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu Chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Thierryxc 的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/03/Java编写程序-2/" itemprop="url">Java编写程序(2)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-03T18:35:44+08:00">
-                2017-08-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="问题回顾"><a href="#问题回顾" class="headerlink" title="问题回顾"></a>问题回顾</h1><p><img src="http://osakbqq1v.bkt.clouddn.com/simpledc.png" alt="bug">  </p>
-<p>在简单版本的程序中，玩家只要猜中任意一格，计数器就+1，而没有考虑是否这一格是否被猜中过。  </p>
-<h1 id="使用ArrayList"><a href="#使用ArrayList" class="headerlink" title="使用ArrayList"></a>使用ArrayList</h1><p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_0543.JPG" alt="arraylist">  </p>
-<h1 id="游戏的完全版"><a href="#游戏的完全版" class="headerlink" title="游戏的完全版"></a>游戏的完全版</h1><h2 id="需要改变的类"><a href="#需要改变的类" class="headerlink" title="需要改变的类"></a>需要改变的类</h2><ul>
-<li>DotCom类要增加名称变量来区别不同的网站；</li>
-<li>游戏的类（DotComBust）：要创建三个DotCom并指定他们的名称、将DotCom放在方阵上（GameHelper实现）、每次猜测检查3个DotCom、击沉3个DotCom后才结束游戏、脱离main()；</li>
-<li>辅助性类；</li>
-</ul>
-<h2 id="DotCom类"><a href="#DotCom类" class="headerlink" title="DotCom类"></a>DotCom类</h2><pre><code>import java.util.*;
-public class DotCom {
-    private ArrayList&lt;String&gt; locationCells; //保存位置的ArrayList
-    private String name;
-
-    public void setLocationCells(ArrayList&lt;String&gt; loc) { //更新位置的方法
-        locationCells = loc;
-    }
-
-    public void setName(String n) {
-        name = n;
-    }
-
-    public String checkYourself(String userInput) {
-        String result = &quot;miss&quot;;
-        int index = locationCells.indexOf(userInput);//把玩家输入坐标的下标赋给index，没找到返回-1
-        if (index &gt;= 0) {
-            locationCells.remove(index);
-
-
-            if (locationCells.isEmpty()) {
-                result = &quot;kill&quot;;
-                System.out.println(&quot;Oh! You sunk &quot; + name);
-            } else {
-                result = &quot;hit&quot;;
-             }    
-        }    
-        return result;
-    }
-}
-</code></pre><h2 id="DotComBust类的伪码"><a href="#DotComBust类的伪码" class="headerlink" title="DotComBust类的伪码"></a>DotComBust类的伪码</h2><pre><code>声明GameHelper实例helper；
-声明一个ArrayList实例dotComList来放置三个网站；
-声明一个int类型的变量NumOfGuess来记录玩家猜测次数，初始化为0；
-</code></pre><hr>
-<pre><code>声明setUpGame()方法：创建并初始化三个DotCom实例，并分别取名，放置到方阵上，给玩家一个简短的介绍；
-声明startPlaying()方法：重复询问并获取玩家猜测，调用checkUserGuess()方法，直到所有DotCom被移除；
-声明checkUserGuess()方法：遍历所有DotCom实例，并让他们调用自身checkYourself()方法；
-声明finishGame()方法：基于猜测次数输出玩家成绩；
-</code></pre><hr>
-<pre><code>void setUpGame()
-    创建三个DotCom实例；
-    分别命名；
-    把它们加入dotComList；
-    遍历dotComList：
-        调用placeDotCom()方法（helper实例中），初始化三个网站位置；
-        用DotCom的setLocationCells()设定位置；
-
-void start playing()
-    while (dotComList中还有元素)：
-        调用helper中的getUserInput()方法获取玩家猜测；
-        调用checkUserGuess()方法验证猜测；
-
-void checkUserGuess()
-    numOfGuess++;
-    声明并设置局部变量result为&quot;miss&quot;；
-    遍历dotComList：
-        调用checkYourself()方法来验证玩家猜测；
-        在需要的情况下改变result为&quot;hit&quot;或&quot;kill&quot;；
-        if (result == &quot;kill&quot;)
-                从dotComList移除该实例；
-    显示result值；
-
-void finishGame()
-    显示gameover
-    if 猜测数少：
-        祝贺的信息
-    else：
-        继续努力的信息
-</code></pre><h2 id="编写测试方法的代码"><a href="#编写测试方法的代码" class="headerlink" title="编写测试方法的代码"></a>编写测试方法的代码</h2><p>最重要的方法是checkUserGuess()：初始化一个网站，假定网站位置和用户猜测来测试方法。<br>其次是初始化的setUpGame()：可以打印出设置的信息来查看（在DotCom类中增加方法）。<br>剩余两个方法实现比较简单，个人认为不需要专门的测试。  </p>
-<hr>
-<p>下面是自己写的测试代码：  </p>
-<pre><code>import java.util.*;
-public class MethodTestDrive {
-
-    public static void main(String[] args) {
-        System.out.println(&quot;Testing setUpGame()...&quot;);
-            DotComBust game1 = new DotComBust();
-        game1.setUpGames();
-        for (DotCom x : game1.dotComsList) {
-            System.out.println(x.getName() + &quot; postion: &quot; + x.getLocationCells());
-        }
-        System.out.println(&quot;Testing chekUserGuess()...&quot;);
-        DotComBust game2 = new DotComBust();
-        DotCom d1 = new DotCom();
-        d1.setName(&quot;163.com&quot;);
-        ArrayList&lt;String&gt; pos = new ArrayList&lt;String&gt;();
-        pos.add(&quot;C5&quot;);
-        pos.add(&quot;C6&quot;);
-        pos.add(&quot;C7&quot;);
-        d1.setLocationCells(pos);
-        game2.dotComsList.add(d1);
-        System.out.println(&quot;Result should be \&quot;miss\&quot; \&quot;hit\&quot; \&quot;hit\&quot; \&quot;kill\&quot; &quot;);
-        game2.checkUserGuess(&quot;C4&quot;);
-        game2.checkUserGuess(&quot;C5&quot;);
-        game2.checkUserGuess(&quot;C6&quot;);
-        game2.checkUserGuess(&quot;C7&quot;);
-        System.out.println(&quot;Number of guesses: &quot; + game2.numOfGuesses);
-
-    }
-
-}
-</code></pre><h2 id="类的实现"><a href="#类的实现" class="headerlink" title="类的实现"></a>类的实现</h2><pre><code>import java.util.*;
-
-public class DotComBust {
-    private GameHelper helper = new GameHelper();
-    private ArrayList&lt;DotCom&gt; dotComsList = new ArrayList&lt;DotCom&gt;();
-    private int numOfGuesses = 0;
-
-    private void setUpGames() {
-        DotCom one = new DotCom();
-        one.setName(&quot;Pets.com&quot;);
-        DotCom two = new DotCom();
-        two.setName(&quot;qq.com&quot;);
-        DotCom three = new DotCom();
-        three.setName(&quot;163.com&quot;);
-        dotComsList.add(one);
-        dotComsList.add(two);
-        dotComsList.add(three);
-
-        System.out.println(&quot;共有三个网站，尝试用最少的次数打掉他们！&quot;);
-
-        for (DotCom dotComToSet : dotComsList) {
-            ArrayList&lt;String&gt; newLocation = helper.placeDotCom(3);
-
-            dotComToSet.setLocationCells(newLocation);
-        }
-    }
-
-    private void startPlaying() {
-        while (!dotComsList.isEmpty()) {
-            String userGuess = helper.getUserInput(&quot;Enter a guess&quot;);
-            checkUserGuess(userGuess);
-        }
-
-        finishGame();
-    }
-
-    private void checkUserGuess(String userGuess) {
-        numOfGuesses++;
-        String result = &quot;miss&quot;;
-        for (DotCom dotComToTest : dotComsList) {
-            result = dotComToTest.checkYourself(userGuess);
-            if (result.equals(&quot;hit&quot;)) {
-                break;
-            }
-            if (result.equals(&quot;kill&quot;)) {
-                dotComsList.remove(dotComToTest);
-                break;
-            }
-
-        }
-        System.out.println(result);
-    }    
-
-    private void finishGame() {
-        System.out.println(&quot;你打掉了所有网站！&quot;);
-        if (numOfGuesses &lt;= 18) {
-            System.out.println(&quot;你只用了&quot; + numOfGuesses + &quot;次！&quot; );
-        } else {
-            System.out.println(&quot;你用了&quot; + numOfGuesses + &quot;次！次数太多了&quot; );
-        }
-
-    }
-
-    public static void main(String[] args) {
-        DotComBust game = new DotComBust();
-        game.setUpGames();
-        game.startPlaying();
-    }
-}
-</code></pre><ul>
-<li>程序中除了main都是<strong>private</strong>，很好地保护了数据。</li>
-</ul>
-<h2 id="GameHelper"><a href="#GameHelper" class="headerlink" title="GameHelper"></a>GameHelper</h2><pre><code>import java.io.*;
-import java.util.*;
-
-public class GameHelper {
-
-  private static final String alphabet = &quot;abcdefg&quot;;
-  private int gridLength = 7;
-  private int gridSize = 49;
-  private int [] grid = new int[gridSize];
-  private int comCount = 0;
-
-
-  public String getUserInput(String prompt) {
-     String inputLine = null;
-     System.out.print(prompt + &quot;  &quot;);
-     try {
-       BufferedReader is = new BufferedReader(
-     new InputStreamReader(System.in));
-       inputLine = is.readLine();
-       if (inputLine.length() == 0 )  return null; 
-     } catch (IOException e) {
-       System.out.println(&quot;IOException: &quot; + e);
-     }
-     return inputLine.toLowerCase();
-  }
-
-
-
-  public ArrayList&lt;String&gt; placeDotCom(int comSize) {                 // line 19
-    ArrayList&lt;String&gt; alphaCells = new ArrayList&lt;String&gt;();
-    String [] alphacoords = new String [comSize];      // holds &apos;f6&apos; type coords
-    String temp = null;                                // temporary String for concat
-    int [] coords = new int[comSize];                  // current candidate coords
-    int attempts = 0;                                  // current attempts counter
-    boolean success = false;                           // flag = found a good location ?
-    int location = 0;                                  // current starting location
-
-    comCount++;                                        // nth dot com to place
-    int incr = 1;                                      // set horizontal increment
-    if ((comCount % 2) == 1) {                         // if odd dot com  (place     vertically)
-          incr = gridLength;                               // set vertical increment
-    }
-
-    while ( !success &amp; attempts++ &lt; 200 ) {             // main search loop  (32)
-        location = (int) (Math.random() * gridSize);      // get random starting point
-        //System.out.print(&quot; try &quot; + location);
-        int x = 0;                                        // nth position in dotcom to place
-        success = true;                                 // assume success
-        while (success &amp;&amp; x &lt; comSize) {                // look for adjacent unused spots
-          if (grid[location] == 0) {                    // if not already used
-             coords[x++] = location;                    // save location
-             location += incr;                          // try &apos;next&apos; adjacent
-             if (location &gt;= gridSize){                 // out of bounds - &apos;bottom&apos;
-               success = false;                         // failure
-             }
-             if (x&gt;0 &amp; (location % gridLength == 0)) {  // out of bounds - right edge
-               success = false;                         // failure
-             }
-          } else {                                      // found already used location
-              // System.out.print(&quot; used &quot; + location);  
-              success = false;                          // failure
-          }
-        }
-    }                                                   // end while
-
-    int x = 0;                                          // turn good location into     alpha coords
-    int row = 0;
-    int column = 0;
-    // System.out.println(&quot;\n&quot;);
-    while (x &lt; comSize) {
-      grid[coords[x]] = 1;                              // mark master grid pts. as     &apos;used&apos;
-      row = (int) (coords[x] / gridLength);             // get row value
-      column = coords[x] % gridLength;                  // get numeric column value
-      temp = String.valueOf(alphabet.charAt(column));   // convert to alpha
-
-      alphaCells.add(temp.concat(Integer.toString(row)));
-      x++;
-
-      // System.out.print(&quot;  coord &quot;+x+&quot; = &quot; + alphaCells.get(x-1));
-
-    }
-    // System.out.println(&quot;\n&quot;);
-
-    return alphaCells;
-  }
-}
-</code></pre>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -3621,7 +3917,7 @@ public class GameHelper {
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-count">23</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

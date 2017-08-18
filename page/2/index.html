@@ -256,6 +256,384 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/08/03/Java编写程序-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thierryxc 的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/03/Java编写程序-2/" itemprop="url">Java编写程序(2)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-03T18:35:44+08:00">
+                2017-08-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="问题回顾"><a href="#问题回顾" class="headerlink" title="问题回顾"></a>问题回顾</h1><p><img src="http://osakbqq1v.bkt.clouddn.com/simpledc.png" alt="bug">  </p>
+<p>在简单版本的程序中，玩家只要猜中任意一格，计数器就+1，而没有考虑是否这一格是否被猜中过。  </p>
+<h1 id="使用ArrayList"><a href="#使用ArrayList" class="headerlink" title="使用ArrayList"></a>使用ArrayList</h1><p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_0543.JPG" alt="arraylist">  </p>
+<h1 id="游戏的完全版"><a href="#游戏的完全版" class="headerlink" title="游戏的完全版"></a>游戏的完全版</h1><h2 id="需要改变的类"><a href="#需要改变的类" class="headerlink" title="需要改变的类"></a>需要改变的类</h2><ul>
+<li>DotCom类要增加名称变量来区别不同的网站；</li>
+<li>游戏的类（DotComBust）：要创建三个DotCom并指定他们的名称、将DotCom放在方阵上（GameHelper实现）、每次猜测检查3个DotCom、击沉3个DotCom后才结束游戏、脱离main()；</li>
+<li>辅助性类；</li>
+</ul>
+<h2 id="DotCom类"><a href="#DotCom类" class="headerlink" title="DotCom类"></a>DotCom类</h2><pre><code>import java.util.*;
+public class DotCom {
+    private ArrayList&lt;String&gt; locationCells; //保存位置的ArrayList
+    private String name;
+
+    public void setLocationCells(ArrayList&lt;String&gt; loc) { //更新位置的方法
+        locationCells = loc;
+    }
+
+    public void setName(String n) {
+        name = n;
+    }
+
+    public String checkYourself(String userInput) {
+        String result = &quot;miss&quot;;
+        int index = locationCells.indexOf(userInput);//把玩家输入坐标的下标赋给index，没找到返回-1
+        if (index &gt;= 0) {
+            locationCells.remove(index);
+
+
+            if (locationCells.isEmpty()) {
+                result = &quot;kill&quot;;
+                System.out.println(&quot;Oh! You sunk &quot; + name);
+            } else {
+                result = &quot;hit&quot;;
+             }    
+        }    
+        return result;
+    }
+}
+</code></pre><h2 id="DotComBust类的伪码"><a href="#DotComBust类的伪码" class="headerlink" title="DotComBust类的伪码"></a>DotComBust类的伪码</h2><pre><code>声明GameHelper实例helper；
+声明一个ArrayList实例dotComList来放置三个网站；
+声明一个int类型的变量NumOfGuess来记录玩家猜测次数，初始化为0；
+</code></pre><hr>
+<pre><code>声明setUpGame()方法：创建并初始化三个DotCom实例，并分别取名，放置到方阵上，给玩家一个简短的介绍；
+声明startPlaying()方法：重复询问并获取玩家猜测，调用checkUserGuess()方法，直到所有DotCom被移除；
+声明checkUserGuess()方法：遍历所有DotCom实例，并让他们调用自身checkYourself()方法；
+声明finishGame()方法：基于猜测次数输出玩家成绩；
+</code></pre><hr>
+<pre><code>void setUpGame()
+    创建三个DotCom实例；
+    分别命名；
+    把它们加入dotComList；
+    遍历dotComList：
+        调用placeDotCom()方法（helper实例中），初始化三个网站位置；
+        用DotCom的setLocationCells()设定位置；
+
+void start playing()
+    while (dotComList中还有元素)：
+        调用helper中的getUserInput()方法获取玩家猜测；
+        调用checkUserGuess()方法验证猜测；
+
+void checkUserGuess()
+    numOfGuess++;
+    声明并设置局部变量result为&quot;miss&quot;；
+    遍历dotComList：
+        调用checkYourself()方法来验证玩家猜测；
+        在需要的情况下改变result为&quot;hit&quot;或&quot;kill&quot;；
+        if (result == &quot;kill&quot;)
+                从dotComList移除该实例；
+    显示result值；
+
+void finishGame()
+    显示gameover
+    if 猜测数少：
+        祝贺的信息
+    else：
+        继续努力的信息
+</code></pre><h2 id="编写测试方法的代码"><a href="#编写测试方法的代码" class="headerlink" title="编写测试方法的代码"></a>编写测试方法的代码</h2><p>最重要的方法是checkUserGuess()：初始化一个网站，假定网站位置和用户猜测来测试方法。<br>其次是初始化的setUpGame()：可以打印出设置的信息来查看（在DotCom类中增加方法）。<br>剩余两个方法实现比较简单，个人认为不需要专门的测试。  </p>
+<hr>
+<p>下面是自己写的测试代码：  </p>
+<pre><code>import java.util.*;
+public class MethodTestDrive {
+
+    public static void main(String[] args) {
+        System.out.println(&quot;Testing setUpGame()...&quot;);
+            DotComBust game1 = new DotComBust();
+        game1.setUpGames();
+        for (DotCom x : game1.dotComsList) {
+            System.out.println(x.getName() + &quot; postion: &quot; + x.getLocationCells());
+        }
+        System.out.println(&quot;Testing chekUserGuess()...&quot;);
+        DotComBust game2 = new DotComBust();
+        DotCom d1 = new DotCom();
+        d1.setName(&quot;163.com&quot;);
+        ArrayList&lt;String&gt; pos = new ArrayList&lt;String&gt;();
+        pos.add(&quot;C5&quot;);
+        pos.add(&quot;C6&quot;);
+        pos.add(&quot;C7&quot;);
+        d1.setLocationCells(pos);
+        game2.dotComsList.add(d1);
+        System.out.println(&quot;Result should be \&quot;miss\&quot; \&quot;hit\&quot; \&quot;hit\&quot; \&quot;kill\&quot; &quot;);
+        game2.checkUserGuess(&quot;C4&quot;);
+        game2.checkUserGuess(&quot;C5&quot;);
+        game2.checkUserGuess(&quot;C6&quot;);
+        game2.checkUserGuess(&quot;C7&quot;);
+        System.out.println(&quot;Number of guesses: &quot; + game2.numOfGuesses);
+
+    }
+
+}
+</code></pre><h2 id="类的实现"><a href="#类的实现" class="headerlink" title="类的实现"></a>类的实现</h2><pre><code>import java.util.*;
+
+public class DotComBust {
+    private GameHelper helper = new GameHelper();
+    private ArrayList&lt;DotCom&gt; dotComsList = new ArrayList&lt;DotCom&gt;();
+    private int numOfGuesses = 0;
+
+    private void setUpGames() {
+        DotCom one = new DotCom();
+        one.setName(&quot;Pets.com&quot;);
+        DotCom two = new DotCom();
+        two.setName(&quot;qq.com&quot;);
+        DotCom three = new DotCom();
+        three.setName(&quot;163.com&quot;);
+        dotComsList.add(one);
+        dotComsList.add(two);
+        dotComsList.add(three);
+
+        System.out.println(&quot;共有三个网站，尝试用最少的次数打掉他们！&quot;);
+
+        for (DotCom dotComToSet : dotComsList) {
+            ArrayList&lt;String&gt; newLocation = helper.placeDotCom(3);
+
+            dotComToSet.setLocationCells(newLocation);
+        }
+    }
+
+    private void startPlaying() {
+        while (!dotComsList.isEmpty()) {
+            String userGuess = helper.getUserInput(&quot;Enter a guess&quot;);
+            checkUserGuess(userGuess);
+        }
+
+        finishGame();
+    }
+
+    private void checkUserGuess(String userGuess) {
+        numOfGuesses++;
+        String result = &quot;miss&quot;;
+        for (DotCom dotComToTest : dotComsList) {
+            result = dotComToTest.checkYourself(userGuess);
+            if (result.equals(&quot;hit&quot;)) {
+                break;
+            }
+            if (result.equals(&quot;kill&quot;)) {
+                dotComsList.remove(dotComToTest);
+                break;
+            }
+
+        }
+        System.out.println(result);
+    }    
+
+    private void finishGame() {
+        System.out.println(&quot;你打掉了所有网站！&quot;);
+        if (numOfGuesses &lt;= 18) {
+            System.out.println(&quot;你只用了&quot; + numOfGuesses + &quot;次！&quot; );
+        } else {
+            System.out.println(&quot;你用了&quot; + numOfGuesses + &quot;次！次数太多了&quot; );
+        }
+
+    }
+
+    public static void main(String[] args) {
+        DotComBust game = new DotComBust();
+        game.setUpGames();
+        game.startPlaying();
+    }
+}
+</code></pre><ul>
+<li>程序中除了main都是<strong>private</strong>，很好地保护了数据。</li>
+</ul>
+<h2 id="GameHelper"><a href="#GameHelper" class="headerlink" title="GameHelper"></a>GameHelper</h2><pre><code>import java.io.*;
+import java.util.*;
+
+public class GameHelper {
+
+  private static final String alphabet = &quot;abcdefg&quot;;
+  private int gridLength = 7;
+  private int gridSize = 49;
+  private int [] grid = new int[gridSize];
+  private int comCount = 0;
+
+
+  public String getUserInput(String prompt) {
+     String inputLine = null;
+     System.out.print(prompt + &quot;  &quot;);
+     try {
+       BufferedReader is = new BufferedReader(
+     new InputStreamReader(System.in));
+       inputLine = is.readLine();
+       if (inputLine.length() == 0 )  return null; 
+     } catch (IOException e) {
+       System.out.println(&quot;IOException: &quot; + e);
+     }
+     return inputLine.toLowerCase();
+  }
+
+
+
+  public ArrayList&lt;String&gt; placeDotCom(int comSize) {                 // line 19
+    ArrayList&lt;String&gt; alphaCells = new ArrayList&lt;String&gt;();
+    String [] alphacoords = new String [comSize];      // holds &apos;f6&apos; type coords
+    String temp = null;                                // temporary String for concat
+    int [] coords = new int[comSize];                  // current candidate coords
+    int attempts = 0;                                  // current attempts counter
+    boolean success = false;                           // flag = found a good location ?
+    int location = 0;                                  // current starting location
+
+    comCount++;                                        // nth dot com to place
+    int incr = 1;                                      // set horizontal increment
+    if ((comCount % 2) == 1) {                         // if odd dot com  (place     vertically)
+          incr = gridLength;                               // set vertical increment
+    }
+
+    while ( !success &amp; attempts++ &lt; 200 ) {             // main search loop  (32)
+        location = (int) (Math.random() * gridSize);      // get random starting point
+        //System.out.print(&quot; try &quot; + location);
+        int x = 0;                                        // nth position in dotcom to place
+        success = true;                                 // assume success
+        while (success &amp;&amp; x &lt; comSize) {                // look for adjacent unused spots
+          if (grid[location] == 0) {                    // if not already used
+             coords[x++] = location;                    // save location
+             location += incr;                          // try &apos;next&apos; adjacent
+             if (location &gt;= gridSize){                 // out of bounds - &apos;bottom&apos;
+               success = false;                         // failure
+             }
+             if (x&gt;0 &amp; (location % gridLength == 0)) {  // out of bounds - right edge
+               success = false;                         // failure
+             }
+          } else {                                      // found already used location
+              // System.out.print(&quot; used &quot; + location);  
+              success = false;                          // failure
+          }
+        }
+    }                                                   // end while
+
+    int x = 0;                                          // turn good location into     alpha coords
+    int row = 0;
+    int column = 0;
+    // System.out.println(&quot;\n&quot;);
+    while (x &lt; comSize) {
+      grid[coords[x]] = 1;                              // mark master grid pts. as     &apos;used&apos;
+      row = (int) (coords[x] / gridLength);             // get row value
+      column = coords[x] % gridLength;                  // get numeric column value
+      temp = String.valueOf(alphabet.charAt(column));   // convert to alpha
+
+      alphaCells.add(temp.concat(Integer.toString(row)));
+      x++;
+
+      // System.out.print(&quot;  coord &quot;+x+&quot; = &quot; + alphaCells.get(x-1));
+
+    }
+    // System.out.println(&quot;\n&quot;);
+
+    return alphaCells;
+  }
+}
+</code></pre>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/08/03/Java编写程序-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2544,124 +2922,6 @@ char * pt1 = &quot;Something is point at me.&quot;;
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/06/30/存储类别/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu Chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Thierryxc 的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/30/存储类别/" itemprop="url">存储类别</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-30T14:21:20+08:00">
-                2017-06-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_0504.JPG" alt="五种存储类型"></p>
-<h1 id="分配内存：malloc-和free"><a href="#分配内存：malloc-和free" class="headerlink" title="分配内存：malloc( )和free( )"></a>分配内存：malloc( )和free( )</h1><h2 id="malloc-函数"><a href="#malloc-函数" class="headerlink" title="malloc( )函数"></a>malloc( )函数</h2><p>&#160; &#160; &#160; &#160;该函数接受一个参数：所需内存的字节数。malloc( )函数会找到合适的空闲内存块，这样的内存是<strong>匿名的</strong>。也就是说，malloc( )函数分配内存但是不会为其赋名。malloc( )函数返回动态内存块的首字节地址。因此，可以把该地址赋给一个<strong>指针变量</strong>，并使用指针访问这块内存。malloc( )函数可用于返回指向数组的指针、指向结构的指针等，应该使用<strong>强制类型转换</strong>来提高代码可读性。如果malloc( )分配内存失败，返回空指针。  </p>
-<p>例如，用malloc( )函数创捷数组：  </p>
-<pre><code>double *pt;  
-pt = (double *) malloc(30 * sizeof(double));  
-</code></pre><p>以上代码为30个double请求内存空间，并设置pt指向该位置。  </p>
-<h2 id="free-函数"><a href="#free-函数" class="headerlink" title="free( )函数"></a>free( )函数</h2><p>&#160; &#160; &#160; &#160;free( )函数用来释放malloc( )函数分配的内存，free( )函数只释放其<strong>参数指向的内存块</strong>。 </p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2711,7 +2971,7 @@ pt = (double *) malloc(30 * sizeof(double));
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-count">23</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

@@ -1,0 +1,1004 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="网络客户端要解决的三个问题 建立客户端与服务器之间的初始连接：用户通过socket连接来连接服务器。 用户送出信息给服务器。 用户从服务器接受信息。  建立Socket连接Socket是个代表两台机器之间网络连接的对象（java.net.Socket）。要创建Socket连接要知道两项关于服务器的信息：IP地址和端口号。Socket连接的建立代表两台机器之间存有对方的信息，包括网络地址和TCP的端">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java网络与线程">
+<meta property="og:url" content="http://thierryxc.github.io/2017/08/16/Java网络与线程/index.html">
+<meta property="og:site_name" content="Thierryxc 的博客">
+<meta property="og:description" content="网络客户端要解决的三个问题 建立客户端与服务器之间的初始连接：用户通过socket连接来连接服务器。 用户送出信息给服务器。 用户从服务器接受信息。  建立Socket连接Socket是个代表两台机器之间网络连接的对象（java.net.Socket）。要创建Socket连接要知道两项关于服务器的信息：IP地址和端口号。Socket连接的建立代表两台机器之间存有对方的信息，包括网络地址和TCP的端">
+<meta property="og:updated_time" content="2017-08-18T07:12:59.410Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java网络与线程">
+<meta name="twitter:description" content="网络客户端要解决的三个问题 建立客户端与服务器之间的初始连接：用户通过socket连接来连接服务器。 用户送出信息给服务器。 用户从服务器接受信息。  建立Socket连接Socket是个代表两台机器之间网络连接的对象（java.net.Socket）。要创建Socket连接要知道两项关于服务器的信息：IP地址和端口号。Socket连接的建立代表两台机器之间存有对方的信息，包括网络地址和TCP的端">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://thierryxc.github.io/2017/08/16/Java网络与线程/"/>
+
+
+
+
+
+  <title>Java网络与线程 | Thierryxc 的博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Thierryxc 的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">每天进步一点点</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/08/16/Java网络与线程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thierryxc 的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java网络与线程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-16T18:16:03+08:00">
+                2017-08-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h1><h2 id="客户端要解决的三个问题"><a href="#客户端要解决的三个问题" class="headerlink" title="客户端要解决的三个问题"></a>客户端要解决的三个问题</h2><ol>
+<li>建立客户端与服务器之间的初始连接：用户通过socket连接来连接服务器。</li>
+<li>用户送出信息给服务器。</li>
+<li>用户从服务器接受信息。</li>
+</ol>
+<h2 id="建立Socket连接"><a href="#建立Socket连接" class="headerlink" title="建立Socket连接"></a>建立Socket连接</h2><p>Socket是个代表两台机器之间网络连接的对象（java.net.Socket）。要创建Socket连接要知道两项关于服务器的信息：IP地址和端口号。<br>Socket连接的建立代表两台机器之间存有对方的信息，包括网络地址和TCP的端口号。</p>
+<h2 id="使用BufferedReader从Socket上读取数据"><a href="#使用BufferedReader从Socket上读取数据" class="headerlink" title="使用BufferedReader从Socket上读取数据"></a>使用BufferedReader从Socket上读取数据</h2><p>用串流来通过Socket连接来沟通。</p>
+<ol>
+<li><p>建立对服务器的Socket连接</p>
+<pre><code>Socket chatSocket = new Socket(&quot;127.0.0.1&quot;, 5000);
+</code></pre></li>
+<li><p>建立连接到Socket上底层输入串流的InputStreamReader</p>
+<pre><code>InputStreamReader stream = new InputStreamReader(chatSocket.getInputStream());
+</code></pre></li>
+<li><p>建立BufferedReader来读取</p>
+<pre><code>BufferedReader reader = new BufferedReader(stream);
+String message = read.readline();
+</code></pre></li>
+</ol>
+<h2 id="用PrintWriter写数据到Socket上"><a href="#用PrintWriter写数据到Socket上" class="headerlink" title="用PrintWriter写数据到Socket上"></a>用PrintWriter写数据到Socket上</h2><ol>
+<li><p>对服务器建立Socket连接</p>
+<pre><code>Socket chatSocket = new Socket(&quot;127.0.0.1&quot;, 5000);
+</code></pre></li>
+<li><p>建立链接到Socket的PrintWriter</p>
+<pre><code>PrintWriter writer = new PrintWriter(chatSocket.getInputStream());
+</code></pre></li>
+<li><p>写入数据</p>
+<pre><code>writer.println(&quot;message to send&quot;);
+writer.print(&quot;anther message&quot;);
+</code></pre></li>
+</ol>
+<h2 id="简单的客户端程序"><a href="#简单的客户端程序" class="headerlink" title="简单的客户端程序"></a>简单的客户端程序</h2><pre><code>import java.io.*;
+import java.net.*;
+
+public class DailyAdviceClient {
+
+    public void go() {
+        try {
+            Socket s = new Socket(&quot;127.0.0.1&quot;, 4242);
+
+            InputStreamReader streamReader = new InputStreamReader(s.getInputStream());
+            BufferedReader reader = new BufferedReader(streamReader);
+
+            String advice = reader.readLine();
+            System.out.println(&quot;Today you should:&quot; + advice);
+
+            reader.close();
+        } catch (IOException ex) {
+            ex.getStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        DailyAdviceClient client = new DailyAdviceClient();
+        client.go();
+    }
+
+}
+</code></pre><h2 id="编写简单的服务器程序"><a href="#编写简单的服务器程序" class="headerlink" title="编写简单的服务器程序"></a>编写简单的服务器程序</h2><pre><code>import java.io.*;
+import java.net.*;
+
+public class DailyAdviceServer {
+    String[] adviceList = { &quot;go to school&quot;, &quot;go home&quot;, &quot;go to a moive&quot; };
+
+    public void go() {
+        try {
+            ServerSocket serverSock = new ServerSocket(4242);//ServerSocket会监听客户端对这台机器4242端口上的要求
+
+            //服务器进入循环等待服务客户端的请求
+            while (true) {
+
+                Socket sock = serverSock.accept(); //这个方法等待用户的时候停下来闲置，客户链接时返回一个Socket对象（与serverSock不同的端口）以便与客户端通信
+
+                PrintWriter writer = new PrintWriter(sock.getOutputStream());
+                String advice = adviceList[(int) (Math.random() * adviceList.length)];
+                writer.println(advice);
+                writer.close();
+            }
+        } catch (IOException ex) {
+        ex.getStackTrace();
+        }
+    }
+    public static void main(String[] args) {
+        DailyAdviceServer server = new DailyAdviceServer();
+        server.go();
+    }
+}
+</code></pre><h1 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h1><p>线程是独立的线程。它代表独立的执行空间。<br>Thread是Java中用来表示线程的类。要建立线程就要创建Thread。</p>
+<h2 id="启动新的线程"><a href="#启动新的线程" class="headerlink" title="启动新的线程"></a>启动新的线程</h2><ol>
+<li><p>建立Runnable对象（线程的任务）</p>
+<pre><code>Runnable threadJob = new MyRunnable();
+</code></pre></li>
+<li><p>建立Thread对象（执行者）并赋值Runnable（任务）  </p>
+<pre><code>Thread myThread = new Thread(threadJob);
+</code></pre><p>把Runnable对象传给Thread的构造函数。这会告诉Thread对象要把哪个方法放在执行空间去运行（Runnable的run()方法）</p>
+</li>
+<li><p>启动Thread</p>
+<pre><code>myThread.start();
+</code></pre></li>
+</ol>
+<h3 id="实现Runnable接口来建立给thread运行的任务"><a href="#实现Runnable接口来建立给thread运行的任务" class="headerlink" title="实现Runnable接口来建立给thread运行的任务"></a>实现Runnable接口来建立给thread运行的任务</h3><pre><code>public class MyRunnable implements Runnable {
+    public void run() {//必须要实现的方法，线程的任务
+        go();
+    }
+
+    public void go() {
+        doMore();
+    }
+
+    public void doMore() {
+        System.out.println(&quot;In the thread&quot;);
+    }
+
+}
+</code></pre><hr>
+<pre><code>public class ThreadTester {
+
+    public static void main(String[] args) {
+
+        MyRunnable threadJob = new MyRunnable();
+        Thread myThread = new Thread(threadJob);//将Runnable的实例传给Thread的构造函数
+
+        myThread.start();//线程开始执行
+
+        System.out.println(&quot;back in main&quot;);
+
+    }
+
+}
+</code></pre><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
+<li>以小写t描述的thread是个独立的线程</li>
+<li>Java中的每个线程都有独立的执行空间</li>
+<li>大写T的Thread是java.lang.Thread这个类。他的对象是用来表示线程</li>
+<li>Thread需要任务，任务是实现过Runnable的实例</li>
+<li>Runnable接口只有一个方法</li>
+<li>run()会是新线程所执行的第一项方法</li>
+<li>要把Runnable传给Thread的构造函数才能启动新线程</li>
+<li>线程在初始化以后还没有调用start()之前处于新建立的状态</li>
+<li>调用Thread对象的start()之后，会建立出新的执行空间，它处于可执行状态等待被挑出来执行</li>
+<li>当Java虚拟机的调度器选择某个线程之后它就处于执行中的状态，单处理器的机器只能有一个执行中的线程</li>
+<li>有时线程会因为某些原因而被堵塞</li>
+<li>调度不能保证任何的执行时间和顺序，所以你不能期待它会完全的平均分配执行。</li>
+</ul>
+<h2 id="多线程-1"><a href="#多线程-1" class="headerlink" title="多线程"></a>多线程</h2><ul>
+<li>Thread.sleep()这个静态方法可以强制线程进入等待状态到过了设定的时间为止。</li>
+<li>sleep()方法可能会抛出InterruptedException异常。</li>
+<li>可以用setName()方法帮线程命名，通常用来除错。</li>
+<li>如果两个以上的线程存取堆上相同的对象可能会出现严重的问题（数据的损毁）。</li>
+<li>要让对象在线程上有足够的安全性，就要判断出那些指令不能被分割执行。</li>
+<li>使用synchronized这个关键词修饰符可以防止两个线程同时进入同一对象的同一方法。</li>
+<li>每个对象都有单一的锁，单一的钥匙。这只会在对象带有同步化放方法时才有实际用途。</li>
+<li>线程尝试进入同步化过的方法时必须要取得<strong>对象</strong>的钥匙，如果已经被别的线程拿走了，那就得等。</li>
+<li>对象就算是有多个同步化过的方法，也还是只有<strong>一个锁</strong>。一旦某个线程进入该对象的同步化方法，其他线程就无法进入该对象的<strong>任何</strong>同步化方法。</li>
+</ul>
+<h1 id="简单的聊天软件程序"><a href="#简单的聊天软件程序" class="headerlink" title="简单的聊天软件程序"></a>简单的聊天软件程序</h1><h2 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h2><pre><code>import java.io.*;
+import java.net.*;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class SimpleChatClient {
+
+    JTextArea incoming;
+    JTextField outgoing;
+    BufferedReader reader;
+    PrintWriter writer;
+    Socket sock;
+
+    public static void main(String[] args) {
+        SimpleChatClient client = new SimpleChatClient();
+        client.go();
+    }
+
+    public void go() {
+
+        JFrame frame = new JFrame(&quot;Chat Client&quot;);
+        JPanel mainPanel = new JPanel();
+        incoming = new JTextArea(15,50);
+        incoming.setLineWrap(true);
+        incoming.setWrapStyleWord(true);
+        incoming.setEditable(false);
+
+        JScrollPane qScroller = new JScrollPane(incoming);
+        qScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        qScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        outgoing = new JTextField(20);
+        JButton sendButton = new JButton(&quot;Send&quot;);
+        sendButton.addActionListener(new SendButtonListener());
+
+        mainPanel.add(qScroller);
+        mainPanel.add(outgoing);
+        mainPanel.add(sendButton);
+
+        setUpNetworking();
+
+        Thread readerThread = new Thread(new IncomingReader());
+        readerThread.start();
+
+        frame.getContentPane().add(BorderLayout.CENTER, mainPanel);
+        frame.setSize(400, 500);
+        frame.setVisible(true);
+    }
+
+    private void setUpNetworking() {
+
+        try {
+            sock = new Socket(&quot;127.0.0.1&quot;, 4242);
+            InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
+            reader = new BufferedReader(streamReader);
+            writer = new PrintWriter(sock.getOutputStream());
+            System.out.println(&quot;networking established&quot;);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }        
+    }
+
+    public class SendButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent ev) {
+            try {
+                writer.println(outgoing.getText());
+                writer.flush();//强制将输出流缓冲区的数据送出
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            outgoing.setText(&quot;&quot;);
+            outgoing.requestFocus();
+        }
+    }
+
+    public class IncomingReader implements Runnable {
+        public void run() {//接收消息
+            String message;
+            try {
+
+                while ((message = reader.readLine()) != null) {
+                    System.out.println(&quot;Read &quot; + message);
+                    incoming.append(message + &quot;\n&quot;);
+                }
+            } catch (Exception ex) {
+                ex.getStackTrace();
+            }
+        }
+    }
+}
+</code></pre><h2 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h2><pre><code>import java.io.*;
+import java.net.*;
+import java.util.*;
+
+public class ChatServer {
+
+    ArrayList clientOutputStreams;
+
+    public class ClientHandler implements Runnable {
+        BufferedReader reader;
+        Socket sock;
+
+        public ClientHandler(Socket clientSocket) {
+            try {
+                sock = clientSocket;
+                InputStreamReader isReader = new InputStreamReader(sock.getInputStream());
+                reader = new BufferedReader(isReader);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        public void run() {
+            String message;
+            try {
+                while ((message = reader.readLine()) != null) {//发送消息
+                    System.out.println(&quot;Read &quot; + message);
+                    tellEveryone(message);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        new ChatServer().go();
+
+    }
+
+    public void go() {
+        clientOutputStreams = new ArrayList();
+        try {
+            ServerSocket serverSock = new ServerSocket(4242);
+
+            while (true) {//主线程接收消息，并将消息加入发送队列
+
+                Socket clientSock =    serverSock.accept();
+                PrintWriter writer = new PrintWriter(clientSock.getOutputStream());
+                clientOutputStreams.add(writer);
+
+                Thread t = new Thread(new ClientHandler(clientSock));
+                t.start();
+                System.out.println(&quot;Got a connection&quot;);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void tellEveryone(String message) {
+
+        Iterator it = clientOutputStreams.iterator();//迭代器
+        while (it.hasNext()) {
+            try {
+                PrintWriter writer = (PrintWriter) it.next();
+                writer.println(message);
+                writer.flush();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+}
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/14/Java序列化和文件的输入-输出/" rel="next" title="Java序列化和文件的输入/输出">
+                <i class="fa fa-chevron-left"></i> Java序列化和文件的输入/输出
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Xu Chen" />
+          <p class="site-author-name" itemprop="name">Xu Chen</p>
+           
+              <p class="site-description motion-element" itemprop="description">programming self-learner</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#网络"><span class="nav-number">1.</span> <span class="nav-text">网络</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#客户端要解决的三个问题"><span class="nav-number">1.1.</span> <span class="nav-text">客户端要解决的三个问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建立Socket连接"><span class="nav-number">1.2.</span> <span class="nav-text">建立Socket连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用BufferedReader从Socket上读取数据"><span class="nav-number">1.3.</span> <span class="nav-text">使用BufferedReader从Socket上读取数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用PrintWriter写数据到Socket上"><span class="nav-number">1.4.</span> <span class="nav-text">用PrintWriter写数据到Socket上</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单的客户端程序"><span class="nav-number">1.5.</span> <span class="nav-text">简单的客户端程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写简单的服务器程序"><span class="nav-number">1.6.</span> <span class="nav-text">编写简单的服务器程序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多线程"><span class="nav-number">2.</span> <span class="nav-text">多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#启动新的线程"><span class="nav-number">2.1.</span> <span class="nav-text">启动新的线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实现Runnable接口来建立给thread运行的任务"><span class="nav-number">2.1.1.</span> <span class="nav-text">实现Runnable接口来建立给thread运行的任务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">2.2.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多线程-1"><span class="nav-number">2.3.</span> <span class="nav-text">多线程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#简单的聊天软件程序"><span class="nav-number">3.</span> <span class="nav-text">简单的聊天软件程序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#客户端"><span class="nav-number">3.1.</span> <span class="nav-text">客户端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务器"><span class="nav-number">3.2.</span> <span class="nav-text">服务器</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xu Chen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
