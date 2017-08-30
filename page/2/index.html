@@ -256,6 +256,220 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/08/07/Java构造函数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thierryxc 的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/07/Java构造函数/" itemprop="url">Java构造函数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-07T13:53:18+08:00">
+                2017-08-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="栈与堆"><a href="#栈与堆" class="headerlink" title="栈与堆"></a>栈与堆</h1><ul>
+<li>栈与堆是两种Java使用的内存空间;</li>
+<li>实例变量是声明在类中方法之外的地方;</li>
+<li>局部变量声明在方法或方法的参数上;</li>
+<li>所有局部变量都存在于栈上相对应的堆栈块中;</li>
+<li>对象引用变量与primitive主数据类型变量都放在栈上;</li>
+<li>不管是实例变量或局部变量，对象本身都会在堆上;</li>
+</ul>
+<h1 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h1><ul>
+<li>构造函数带有你在初始化对象时会执行的程序代码。也就是新建一个对象时就会被执行。</li>
+<li>就算没有自己写构造函数，编译器也会帮你写一个（无参数，无内容的）。  </li>
+</ul>
+<hr>
+<pre><code>public class Duck {
+    int size;
+
+    public Duck() { //没有返回类型
+        size = 27; //使用默认值
+    }
+
+    public Duck(int duckSize) {
+        size = duckSize;//使用参数设定
+    }
+
+    public static void main(String[] args) {
+        Duck d1 = new Duck();
+        Duck d2 = new Duck(24);
+
+        System.out.println(&quot;The size of d1 is &quot; + d1.size);
+        System.out.println(&quot;The size of d2 is &quot; + d2.size);
+
+    }
+}
+</code></pre><p>输出：  </p>
+<p><img src="http://osakbqq1v.bkt.clouddn.com/duck.png" alt="duck"></p>
+<p>这个构造函数是重载的。  </p>
+<p>重载构造函数的意思是代表你有一个以上的构造函数且参数都不相同。（编译器只关注参数的<strong>类型和顺序</strong>，参数的名字不重要）  </p>
+<h2 id="要点"><a href="#要点" class="headerlink" title="要点"></a>要点</h2><ul>
+<li>实例变量保存在所属的对象中，位于堆上。</li>
+<li>如果实例变量是个对对象的引用，则引用与对象都在堆上。</li>
+<li>构造函数是在新建对象时执行的程序代码。</li>
+<li>构造函数必须与类同名且没有返回类型。</li>
+<li>可以用构造函数来初始化被创建对象的状态。</li>
+<li>如果不写构造函数，编译器会自己创建一个，默认的构造函数没有参数。</li>
+<li>实例变量有默认值，原始的是0/0.0/false，引用的默认值是null。</li>
+</ul>
+<h2 id="父类和继承与构造函数的关系"><a href="#父类和继承与构造函数的关系" class="headerlink" title="父类和继承与构造函数的关系"></a>父类和继承与构造函数的关系</h2><p>在创建新对象时，<strong>所有</strong>继承下来的构造函数都会执行。构造函数在执行的时候，第一件事是去执行他的父类的构造函数，一直连锁反映到Object类为止。  </p>
+<h3 id="无参数的父类构造函数调用"><a href="#无参数的父类构造函数调用" class="headerlink" title="无参数的父类构造函数调用"></a>无参数的父类构造函数调用</h3><hr>
+<pre><code>public class Animal {
+    public Animal() {
+        System.out.println(&quot;Making an animal.&quot;);
+    }
+}
+</code></pre><hr>
+<pre><code>public class Hippo extends Animal {
+    public Hippo() {
+        System.out.println(&quot;Making an Hippo.&quot;);
+    }
+}
+</code></pre><hr>
+<pre><code>public class TestHippo {
+    public static void main(String[] args) {
+        Hippo h = new Hippo();
+    }
+}
+</code></pre><hr>
+<p><img src="http://osakbqq1v.bkt.clouddn.com/super.png" alt="super"> </p>
+<p>上面的例子是调用无参数的父类构造函数，可以交给编译器自行完成。  </p>
+<h3 id="有参数的父类构造函数调用"><a href="#有参数的父类构造函数调用" class="headerlink" title="有参数的父类构造函数调用"></a>有参数的父类构造函数调用</h3><hr>
+<pre><code>public  abstract class Animal {
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+    public Animal(String theName) {
+        name = theName;
+    }
+}
+</code></pre><hr>
+<pre><code>public class Hippo extends Animal {
+    public Hippo(String name) {//这个构造函数要求名称
+        super(name);//传给Animal的构造函数
+
+    }
+}
+</code></pre><hr>
+<pre><code>public class TestHippo {
+
+    public static void main(String[] args) {
+        Hippo h = new Hippo(&quot;Buffy&quot;);
+        System.out.println(h.getName());
+    }
+
+}
+</code></pre><hr>
+<p>输出：  </p>
+<pre><code>Buffy
+</code></pre><h3 id="this-函数"><a href="#this-函数" class="headerlink" title="this()函数"></a>this()函数</h3><ul>
+<li>使用this()来从某个构造函数中调用同一个类的另外一个构造函数。</li>
+<li>this()只能用在构造函数中，且必须是第一行语句。</li>
+<li>super()与this()不能同时用。每个构造函数可以选择调用super()或this(),但不能同时调用。</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/08/04/Java继承、接口与多态/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2528,402 +2742,6 @@ int main(void)
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/07/21/抽象数据类型-ADT/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu Chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Thierryxc 的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/21/抽象数据类型-ADT/" itemprop="url">抽象数据类型(ADT)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-21T12:14:51+08:00">
-                2017-07-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="抽象数据类型-ADT"><a href="#抽象数据类型-ADT" class="headerlink" title="抽象数据类型(ADT)"></a>抽象数据类型(ADT)</h1><h2 id="理论基础"><a href="#理论基础" class="headerlink" title="理论基础"></a>理论基础</h2><h3 id="定义新的类型"><a href="#定义新的类型" class="headerlink" title="定义新的类型"></a>定义新的类型</h3><p>什么是类型？<strong>类型</strong>特指两类信息：属性和操作。<br>假设要定义一个新的数据类型：  </p>
-<ul>
-<li>首先，必须提供存储数据的方法，例如设计一个结构。</li>
-<li>其次，必须提供操控数据的方法。  </li>
-</ul>
-<p>计算机科学领域已开发了一种定义新类型的好方法，用3个步骤完成抽象到具体的过程。  </p>
-<ol>
-<li>提供类型属性和相关操作的抽象描述。这些描述<strong>既不能依赖特定的实现，也不能依赖特定的编程语言</strong>。这种正式的抽象描述被称为<strong>抽象数据类型(ADT)</strong>。</li>
-<li>开发一个实现ADT的编程接口。也就是说，指明如何储存数据和执行所需操作的函数。例如在C中，可以提供结构定义和操控该结构的函数原型。这些作用于用户定义类型的函数相当于作用于C基本类型的内置运算符。需要使用该新类型的程序员可以使用这个接口进行编程。  </li>
-<li>编写代码实现接口。这一步至关重要，但是使用该新类型的程序员<strong>无需</strong>了解具体的实现细节。  </li>
-</ol>
-<h2 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h2><h3 id="建立抽象"><a href="#建立抽象" class="headerlink" title="建立抽象"></a>建立抽象</h3><p>以简单电影项目为例，所需的是一个<strong>链表</strong>数据类型，每一项包含电影名和评级。所需的操作是把新项添加到链表的末尾和显示链表中的内容。  </p>
-<p>链表的属性：  </p>
-<ul>
-<li>能储存一系列的项，并按照一定方式排列；</li>
-<li>链表类型应该提供一些有用的操作。</li>
-</ul>
-<p>链表一些有用的操作：  </p>
-<ul>
-<li>初始化一个空链表；</li>
-<li>在链表末尾添加一个新项；</li>
-<li>确定链表是否为空；</li>
-<li>确定链表是否已满；</li>
-<li>确定链表的项数；</li>
-<li>访问链表的每一项执行某些操作，如显示该项。</li>
-</ul>
-<p>对于该电影项目而言，暂时不需要其他操作。但是一般的链表还应包含以下操作：  </p>
-<ul>
-<li>在链表的任意位置插入一个项；</li>
-<li>移除链表中的一个项；</li>
-<li>在链表中检索一个项（不改变链表）；</li>
-<li>用另一个项替换链表中的一个项。  </li>
-</ul>
-<p>最后该类型总结如下：<br><img src="http://osakbqq1v.bkt.clouddn.com/IMG_0519.JPG" alt="简单链表">  </p>
-<h3 id="建立接口"><a href="#建立接口" class="headerlink" title="建立接口"></a>建立接口</h3><p><strong>list.h</strong>接口头文件：</p>
-<pre><code>/* list.h -- header file for a simple list type */
-#ifndef LIST_H_
-#define LIST_H_
-#include &lt;stdbool.h&gt;     
-
-/* 特定程序的声明 */
-
-#define TSIZE      45   //储存电影名的数组大小
-struct film
-{
-    char title[TSIZE];
-    int rating;
-};
-
-/* 一般类型定义 */
-
-typedef struct film Item;
-
-typedef struct node
-{
-    Item item;
-    struct node * next;
-} Node;
-
-typedef Node * List;  //List是指向Node类型的指针
-
-/* 函数原型 */
-
-void InitializeList(List * plist); //plist是指向List类型的指针
-
-
-bool ListIsEmpty(const List *plist);
-
-
-bool ListIsFull(const List *plist);
-
-
-unsigned int ListItemCount(const List *plist);
-
-
-bool AddItem(Item item, List * plist);
-
-
-void Traverse (const List *plist, void (* pfun)(Item item) );//pfun是指向无返回值、参数为Item类型的函数的指针
-
-
-void EmptyTheList(List * plist);
-
-#endif  
-</code></pre><h3 id="使用接口"><a href="#使用接口" class="headerlink" title="使用接口"></a>使用接口</h3><p>使用这个接口编写程序，但是不必知道具体细节。<br>伪代码方案：</p>
-<pre><code>创建一个List类型的变量。
-创建一个Item类型的变量。
-初始化链表为空。
-当链表未满且有输入时：
-    把输入读取到Item类型的变量中。
-    在链表末尾添加项。
-访问链表中的每个项并显示他们。  
-</code></pre><p><strong>films.c</strong>使用ADT风格的链表  </p>
-<pre><code>#include&lt;stdio.h&gt;
-#include&lt;stdlib.h&gt;  //提供exit()的原型
-#include&quot;list.h&quot;    //定义Item、List
-
-void showmovies(Item item);
-char * s_gets(char *st, int n);
-int main(void)
-{
-    List movies;
-    int count;
-    Item temp;
-
-    /* 初始化 */
-
-    InitializeList(&amp;movies);
-    if (ListIsFull(&amp;movies))
-    {
-        fprintf(stderr, &quot;No memory available!\n&quot;);
-        exit(1);
-    }
-
-    /* 获取用户输入并储存 */
-
-    puts(&quot;Enter first moive title&quot;);
-    while (s_gets(temp.title, TSIZE) != NULL &amp;&amp; temp.title[0] != &apos;\0&apos;)
-    {
-        puts(&quot;Enter your rating &lt;1-10&gt;:&quot;);
-        scanf(&quot;%d&quot;, &amp;temp.rating);
-        while (getchar() != &apos;\n&apos;)
-            continue;
-        if (AddItem(temp,&amp;movies) == false)
-        {
-            fprintf(stderr,&quot;Problem allocating memory.\n&quot;);
-            break;
-        }
-        if (ListIsFull(&amp;movies))
-        {
-            fprintf(stderr, &quot;The list is now full.\n&quot;);
-            break;
-        }
-        puts(&quot;Enter the next title:&quot;);    
-    }
-
-    /* 显示 */
-
-    if (ListIsEmpty(&amp;movies))
-        printf(&quot;No data entered.\n&quot;);
-    else
-    {
-        printf(&quot;Here is the moive list:\n&quot;);
-        Traverse(&amp;movies, showmovies);
-    }
-
-
-
-    printf(&quot;You entered %d moives.\n&quot;, ListItemCount(&amp;movies));
-
-    /* 清理 */
-
-    EmptyTheList(&amp;movies);
-    puts(&quot;88&quot;);
-
-    return 0;
-}
-
-void showmovies(Item item)
-{
-    printf(&quot;Moive: %s Rating: %d\n&quot;,item.title, item.rating);
-}
-
-char * s_gets(char *st, int n)
-{
-    char *ret_val;
-    char *find;
-
-    ret_val = fgets(st, n, stdin);
-    if (ret_val)
-    {
-        find = strchr(st,&apos;\n&apos;);
-        if (find)
-        *find = &apos;\0&apos;;
-        else
-            while (getchar() != &apos;\n&apos;)
-                continue;
-
-    }
-    return ret_val;
-}      
-</code></pre><h3 id="实现接口"><a href="#实现接口" class="headerlink" title="实现接口"></a>实现接口</h3><p><strong>list.c</strong>实现文件  </p>
-<pre><code>//支持链表操作的函数
-#include&lt;stdio.h&gt;
-#include&lt;stdlib.h&gt;
-#include&quot;list.h&quot;
-
-//局部函数原型
-static void CopyToNode(Item item, Node * pnode);//内部链接，只在文件内生效
-
-//接口函数
-//把链表设置为空
-void InitializeList(List * plist)//plist是指向List的指针，*plist是指向Node的指针
-{
-    *plist = NULL; 
- }
-
-bool ListIsEmpty(const List * plist)
-{
-    if (*plist == NULL)
-        return true;
-    else
-        return false;
- }
-
-bool ListIsFull(const List * plist)
-{
-    Node * pt;
-    bool full;
-
-    pt = (Node *)malloc(sizeof(Node));
-    if (pt == NULL)
-        full = true;
-    else
-        full = false;
-    free(pt);
-
-    return full;
- }
-
-unsigned int ListItemCount(const List * plist)
-{
-    unsigned int count = 0;
-    Node * pnode = *plist;
-
-    while (pnode != NULL)
-    {
-        ++count;
-        pnode = pnode-&gt;next;
-    }
-
-    return count;
- }
-
-bool AddItem(Item item, List * plist)
-{
-    Node * pnew;
-    Node * scan = *plist;
-
-    pnew = (Node *)malloc(sizeof(Node));
-    if(pnew == NULL)
-        return false;
-
-    CopyToNode(item, pnew);
-    pnew-&gt;next = NULL;
-    if (scan == NULL)
-        *plist = pnew;
-    else
-    {
-        while(scan-&gt;next != NULL)
-            scan = scan-&gt;next;
-        scan-&gt;next = pnew;
-    }
-
-    return true;
- }
-
-//访问每个节点并执行pfun指向的函数
-void Traverse(const List * plist, void (*pfun)(Item item))
-{
-    Node * pnode = *plist;
-
-    while (pnode != NULL)
-    {
-        (*pfun)(pnode-&gt;item);
-        pnode = pnode-&gt;next;
-    }
- }
-
-void EmptyTheList(List * plist)
-{
-    Node * psave;
-
-    while (*plist != NULL)
-    {
-        psave = (*plist)-&gt;next;
-        free(*plist);
-        *plist = psave;
-    }
- }
-
-static void CopyToNode(Item item, Node * pnode)
-{
-    pnode-&gt;item = item;
- } 
-</code></pre>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2973,7 +2791,7 @@ static void CopyToNode(Item item, Node * pnode)
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2986,7 +2804,7 @@ static void CopyToNode(Item item, Node * pnode)
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
