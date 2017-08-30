@@ -93,17 +93,20 @@
 
 
 
-<meta name="description" content="在app下的build.gradle中添加依赖库（RecyclerView）apply plugin: &amp;apos;com.android.application&amp;apos;  android {     compileSdkVersion 24     buildToolsVersion &amp;quot;26.0.1&amp;quot;     defaultConfig {         applica">
+<meta name="description" content="文件目录 在app下的build.gradle中添加依赖库（RecyclerView）apply plugin: &amp;apos;com.android.application&amp;apos;  android {     compileSdkVersion 24     buildToolsVersion &amp;quot;26.0.1&amp;quot;     defaultConfig {         ap">
 <meta name="keywords" content="Android">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android编写聊天界面">
 <meta property="og:url" content="http://thierryxc.github.io/2017/08/30/Android编写聊天界面/index.html">
 <meta property="og:site_name" content="Thierryxc 的博客">
-<meta property="og:description" content="在app下的build.gradle中添加依赖库（RecyclerView）apply plugin: &amp;apos;com.android.application&amp;apos;  android {     compileSdkVersion 24     buildToolsVersion &amp;quot;26.0.1&amp;quot;     defaultConfig {         applica">
-<meta property="og:updated_time" content="2017-08-30T05:44:39.175Z">
+<meta property="og:description" content="文件目录 在app下的build.gradle中添加依赖库（RecyclerView）apply plugin: &amp;apos;com.android.application&amp;apos;  android {     compileSdkVersion 24     buildToolsVersion &amp;quot;26.0.1&amp;quot;     defaultConfig {         ap">
+<meta property="og:image" content="http://osakbqq1v.bkt.clouddn.com/uimulu.png">
+<meta property="og:image" content="http://osakbqq1v.bkt.clouddn.com/ui.png">
+<meta property="og:updated_time" content="2017-08-30T06:30:48.423Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android编写聊天界面">
-<meta name="twitter:description" content="在app下的build.gradle中添加依赖库（RecyclerView）apply plugin: &amp;apos;com.android.application&amp;apos;  android {     compileSdkVersion 24     buildToolsVersion &amp;quot;26.0.1&amp;quot;     defaultConfig {         applica">
+<meta name="twitter:description" content="文件目录 在app下的build.gradle中添加依赖库（RecyclerView）apply plugin: &amp;apos;com.android.application&amp;apos;  android {     compileSdkVersion 24     buildToolsVersion &amp;quot;26.0.1&amp;quot;     defaultConfig {         ap">
+<meta name="twitter:image" content="http://osakbqq1v.bkt.clouddn.com/uimulu.png">
 
 
 
@@ -320,7 +323,8 @@
       
 
       
-        <h1 id="在app下的build-gradle中添加依赖库（RecyclerView）"><a href="#在app下的build-gradle中添加依赖库（RecyclerView）" class="headerlink" title="在app下的build.gradle中添加依赖库（RecyclerView）"></a>在app下的build.gradle中添加依赖库（RecyclerView）</h1><pre><code>apply plugin: &apos;com.android.application&apos;
+        <h1 id="文件目录"><a href="#文件目录" class="headerlink" title="文件目录"></a>文件目录</h1><p><img src="http://osakbqq1v.bkt.clouddn.com/uimulu.png" alt="ui目录"></p>
+<h1 id="在app下的build-gradle中添加依赖库（RecyclerView）"><a href="#在app下的build-gradle中添加依赖库（RecyclerView）" class="headerlink" title="在app下的build.gradle中添加依赖库（RecyclerView）"></a>在app下的build.gradle中添加依赖库（RecyclerView）</h1><pre><code>apply plugin: &apos;com.android.application&apos;
 
 android {
     compileSdkVersion 24
@@ -581,6 +585,8 @@ public class MainActivity extends AppCompatActivity {
 <li>onCreate()方法中先获得了RecyclerView的实例，然后创建了LinearLayoutManager对象，并把它设置到RecyclerView的实例中去。LayoutManager用于<strong>指定RecyclerView的布局方式</strong>，这里使用是线性布局的意思，可以实现ListView相同的效果。</li>
 <li>设置了send按钮的响应事件，如果内容不为空则创建出一个新的Msg对象，并添加到msgList中去，之后调用了适配器的方法notifyItemInserted()来通知列表有新数据插入，这样新增的消息才能在RecyclerView中显示。接着调用RecyclerView的scrollToPosition()方法，将显示的数据定位到最后一行，最后清空输入栏。</li>
 </ul>
+<hr>
+<p><img src="http://osakbqq1v.bkt.clouddn.com/ui.png" alt="ui效果图"></p>
 
       
     </div>
@@ -632,6 +638,10 @@ public class MainActivity extends AppCompatActivity {
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/30/Android简易新闻客户端/" rel="prev" title="Android简易新闻客户端">
+                Android简易新闻客户端 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -703,7 +713,7 @@ public class MainActivity extends AppCompatActivity {
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">26</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -751,7 +761,7 @@ public class MainActivity extends AppCompatActivity {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#在app下的build-gradle中添加依赖库（RecyclerView）"><span class="nav-number">1.</span> <span class="nav-text">在app下的build.gradle中添加依赖库（RecyclerView）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编写主界面（activity-main-xml"><span class="nav-number">2.</span> <span class="nav-text">编写主界面（activity_main.xml)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#定义消息的实体类Msg"><span class="nav-number">3.</span> <span class="nav-text">定义消息的实体类Msg</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编写RecyclerView的子布局（msg-item-xml）"><span class="nav-number">4.</span> <span class="nav-text">编写RecyclerView的子布局（msg_item.xml）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建RecyclerView适配器类"><span class="nav-number">5.</span> <span class="nav-text">创建RecyclerView适配器类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用RecyclerView（修改MainActivity）"><span class="nav-number">6.</span> <span class="nav-text">使用RecyclerView（修改MainActivity）</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#文件目录"><span class="nav-number">1.</span> <span class="nav-text">文件目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在app下的build-gradle中添加依赖库（RecyclerView）"><span class="nav-number">2.</span> <span class="nav-text">在app下的build.gradle中添加依赖库（RecyclerView）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编写主界面（activity-main-xml"><span class="nav-number">3.</span> <span class="nav-text">编写主界面（activity_main.xml)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#定义消息的实体类Msg"><span class="nav-number">4.</span> <span class="nav-text">定义消息的实体类Msg</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编写RecyclerView的子布局（msg-item-xml）"><span class="nav-number">5.</span> <span class="nav-text">编写RecyclerView的子布局（msg_item.xml）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建RecyclerView适配器类"><span class="nav-number">6.</span> <span class="nav-text">创建RecyclerView适配器类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用RecyclerView（修改MainActivity）"><span class="nav-number">7.</span> <span class="nav-text">使用RecyclerView（修改MainActivity）</span></a></li></ol></div>
             
 
           </div>

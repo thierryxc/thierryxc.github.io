@@ -256,6 +256,308 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/07/22/队列ADT/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thierryxc 的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/22/队列ADT/" itemprop="url">队列ADT</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-22T10:23:21+08:00">
+                2017-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="C语言中使用抽象数据类型方法编程的三个步骤"><a href="#C语言中使用抽象数据类型方法编程的三个步骤" class="headerlink" title="C语言中使用抽象数据类型方法编程的三个步骤"></a>C语言中使用抽象数据类型方法编程的三个步骤</h2><ol>
+<li>以抽象、通用的方式描述一个类型，包括该类型的操作。</li>
+<li>设计一个函数接口表示这个新类型。</li>
+<li>编写具体代码实现这个接口。  </li>
+</ol>
+<h2 id="定义队列抽象数据类型"><a href="#定义队列抽象数据类型" class="headerlink" title="定义队列抽象数据类型"></a>定义队列抽象数据类型</h2><p>队列（queue）是具有两个特殊属性的链表：  </p>
+<ul>
+<li>新项只能添加到链表末尾；</li>
+<li>只能从链表开头移除项；  </li>
+</ul>
+<p>队列是一种<strong>先进先出</strong>（FIFO）的数据形式。  </p>
+<p>抽象定义：<br><img src="http://osakbqq1v.bkt.clouddn.com/IMG_0521.JPG" alt="队列抽象定义">  </p>
+<h2 id="定义接口（queue-h接口头文件）"><a href="#定义接口（queue-h接口头文件）" class="headerlink" title="定义接口（queue.h接口头文件）"></a>定义接口（queue.h接口头文件）</h2><pre><code>//Queue的接口
+#ifndef _QUEUE_H_
+#define _QUEUE_H_
+#include&lt;stdbool.h&gt;
+
+typedef int Item;
+
+#define MAXQUEUE 10
+
+typedef struct node{
+    Item item;
+    struct node * next;
+} Node;
+
+typedef struct queue{
+    Node * front;   //指向队列首项的指针 
+    Node * rear;   //指向队列尾项的指针 
+    int items;    //队列中的项数 
+} Queue;
+
+//初始化队列
+void InitializeQueue(Queue * pq);
+
+//检查队列是否已满
+bool QueueIsFull(const Queue * pq);
+
+//检查队列是否为空
+bool QueueIsEmpty(const Queue * pq);
+
+//确定队列中的项数
+int QueueItemCount(const Queue * pq);
+
+//在队列末尾添加项
+bool EnQueue(Item item, Queue * pq);
+
+//在队列开头删除项
+bool DeQueue(Item *pitem, Queue * pq);
+
+//清空队列
+void EmptyTheQueue(Queue * pq);
+
+#endif   
+</code></pre><h2 id="实现接口函数（queue-c）"><a href="#实现接口函数（queue-c）" class="headerlink" title="实现接口函数（queue.c）"></a>实现接口函数（queue.c）</h2><pre><code>//Queue类型的实现
+#include&lt;stdio.h&gt;
+#include&lt;stdlib.h&gt;
+#include&quot;queue.h&quot;
+
+//局部函数
+static void CopyToNode(Item item, Node * pn);
+static void CopyToItem(Node * pn, Item * pi);
+
+void InitializeQueue(Queue * pq)
+{
+    pq-&gt;front = pq-&gt;rear = NULL;
+    pq-&gt;items = 0;
+}
+
+bool QueueIsFull(const Queue * pq)
+{
+    return pq-&gt;items == MAXQUEUE; 
+}
+
+bool QueueIsEmpty(const Queue * pq)
+{
+    return pq-&gt;items == 0;    
+}
+
+int QueueItemCount(const Queue * pq)
+{
+    return pq-&gt;items;
+}
+
+bool EnQueue(Item item, Queue * pq)
+{
+    Node * pnew;
+
+    if (QueueIsFull(pq))
+        return false;
+    pnew = (Node *)malloc(sizeof(Node));
+    if (pnew == NULL)
+    {
+        fprintf(stderr, &quot;Unable to allocate memory!\n&quot;);
+        exit(1);
+    }
+    CopyToNode(item,pnew);
+    pnew-&gt;next = NULL;
+    if (QueueIsEmpty(pq))
+        pq-&gt;front = pnew;      //项位于首端 
+    else
+        pq-&gt;rear-&gt;next = pnew; //项位于末端 
+    pq-&gt;rear = pnew;
+    pq-&gt;items++; //项数+1 
+
+    return true;
+}
+
+bool DeQueue(Item * pitem, Queue * pq)
+{
+    Node * pt;
+
+    if(QueueIsEmpty(pq))
+        return false;
+    CopyToItem(pq-&gt;front, pitem);
+    pt = pq-&gt;front;
+    pq-&gt;front = pq-&gt;front-&gt;next;
+    free(pt);
+    pq-&gt;items--;
+    if(pq-&gt;items == 0)
+        pq-&gt;rear == NULL;
+
+    return true;
+
+} 
+
+void EmptyTheQueue(Queue * pq)
+{
+    Item dummy;
+    while(!QueueIsEmpty(pq))
+        DeQueue(&amp;dummy, pq);
+}
+
+static void CopyToNode(Item item, Node * pn)
+{
+    pn-&gt;item = item;
+ }
+
+static void CopyToItem(Node * pn, Item * pi)
+{
+    *pi = pn-&gt;item;
+ } 
+</code></pre><h2 id="测试队列（驱动程序-use-q-c）"><a href="#测试队列（驱动程序-use-q-c）" class="headerlink" title="测试队列（驱动程序 use_q.c）"></a>测试队列（驱动程序 use_q.c）</h2><pre><code>//驱动程序测试Queue接口
+
+#include&lt;stdio.h&gt;
+#include&quot;queue.h&quot;
+
+int main(void)
+{
+    Queue line;
+    Item temp;
+    char ch;
+
+    InitializeQueue(&amp;line);
+    puts(&quot;Testing the Queue interface. Type a to add a value,&quot;);
+    puts(&quot;type d to delete a value, and type q to quit.&quot;);
+    while ((ch = getchar()) != &apos;q&apos;)
+    {
+        if (ch != &apos;a&apos; &amp;&amp; ch != &apos;d&apos;)
+            continue;//忽略其他输出
+        if (ch == &apos;a&apos;)
+        {
+            printf(&quot;Integer to add: &quot;);
+            scanf(&quot;%d&quot;, &amp;temp);
+            if (!QueueIsFull(&amp;line))
+            {
+                printf(&quot;Putting %d into queue.\n&quot;, temp);
+                EnQueue(temp,&amp;line);
+            }
+            else
+                puts(&quot;Queue is full!&quot;); 
+         }
+        else
+        {
+            if(QueueIsEmpty(&amp;line))
+                puts(&quot;Nothing to delete.&quot;);
+            else
+            {
+                DeQueue(&amp;temp, &amp;line);
+                printf(&quot;Delete %d from queue.\n&quot;, temp);
+            }    
+        }
+        printf(&quot;%d items in queue.\n&quot;, QueueItemCount(&amp;line));
+        puts(&quot;Type a to add. d to delete, q to quit:&quot;);
+    }
+
+    EmptyTheQueue(&amp;line);
+    puts(&quot;88&quot;);
+
+    return 0;
+}     
+</code></pre>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/07/21/抽象数据类型-ADT/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1288,7 +1590,7 @@ int sump(int * start, int * end)
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">26</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
