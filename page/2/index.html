@@ -256,6 +256,173 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/08/08/Java日期和时间/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thierryxc 的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/08/Java日期和时间/" itemprop="url">Java日期和时间</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-08T14:33:01+08:00">
+                2017-08-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="日期和时间"><a href="#日期和时间" class="headerlink" title="日期和时间"></a>日期和时间</h1><h2 id="取得当前的日期用Date"><a href="#取得当前的日期用Date" class="headerlink" title="取得当前的日期用Date"></a>取得当前的日期用Date</h2><pre><code>import java.util.Date;
+    public class DateTest {
+
+        public static void main(String[] args) {
+            //完整的日期与时间：%tc
+            String s = String.format(&quot;%tc&quot;, new Date());
+            System.out.println(s);
+
+            //只有时间：%tr
+            s = String.format(&quot;%tr&quot;, new Date());
+            System.out.println(s);
+
+            //周、月、日：%tA %tB %td
+            Date today = new Date();
+            s = String.format(&quot;%tA %tB %td&quot;, today, today, today);
+            System.out.println(s);
+
+            //不用重复给参数
+            s = String.format(&quot;%tA %&lt;tB %&lt;td&quot;, today);
+            System.out.println(s);
+        }
+
+}
+</code></pre><p>输出：  </p>
+<p><img src="http://osakbqq1v.bkt.clouddn.com/date.png" alt="Date"></p>
+<h2 id="操作日期用Calendar"><a href="#操作日期用Calendar" class="headerlink" title="操作日期用Calendar"></a>操作日期用Calendar</h2><h3 id="取得继承过Calendar的对象"><a href="#取得继承过Calendar的对象" class="headerlink" title="取得继承过Calendar的对象"></a>取得继承过Calendar的对象</h3><p>Calendar的实例无法取得，但是可以取得它的具体子类的实例：  </p>
+<pre><code>Calendar cal = Calendar.getInstance();
+</code></pre><h3 id="运用Calendar对象"><a href="#运用Calendar对象" class="headerlink" title="运用Calendar对象"></a>运用Calendar对象</h3><h4 id="几个关键概念："><a href="#几个关键概念：" class="headerlink" title="几个关键概念："></a>几个关键概念：</h4><ul>
+<li>字段会保存状态：Calendar对象使用许多字段来表示某些事物的最终状态，也就是日期和时间。</li>
+<li>日期和时间可以运算：Calendar的方法能够让你对不同的字段做加法或减法的运算，比如说对month字段加一个月。</li>
+<li>日期与时间可以用millisecond来表示：Calendar可以让你将日期转换成微秒的表示法，或将微秒转换成日期。（相对于1970.1.1的微秒数），因此可以执行精确的相对计算。</li>
+</ul>
+<h4 id="运用Calendar对象："><a href="#运用Calendar对象：" class="headerlink" title="运用Calendar对象："></a>运用Calendar对象：</h4><pre><code>import java.util.Calendar;
+public class CalendarTest {
+
+    public static void main(String[] args) {
+        Calendar c = Calendar.getInstance();
+        c.set(2017,8,8,16,27);
+        long day1 = c.getTimeInMillis();
+        day1 += 1000 * 60 * 60;
+        c.setTimeInMillis(day1);
+        System.out.println(&quot;New hour &quot; + c.get(c.HOUR_OF_DAY));
+        c.add(c.DATE, 35);
+        System.out.println(&quot;add 35 days &quot; + c.getTime());
+        c.roll(c.DATE, 35);
+        System.out.println(&quot;roll 35 days &quot; + c.getTime());    
+        c.set(c.DATE, 1);
+        System.out.println(&quot;set to 1 &quot; + c.getTime());
+
+    }
+
+}
+</code></pre><hr>
+<p>输出：  </p>
+<p><img src="http://osakbqq1v.bkt.clouddn.com/calendar.png" alt="Calendar"></p>
+<h4 id="常用的Calendar方法、字段"><a href="#常用的Calendar方法、字段" class="headerlink" title="常用的Calendar方法、字段"></a>常用的Calendar方法、字段</h4><p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_20170808_175022.jpg" alt=""></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/08/08/Java静态/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2001,619 +2168,6 @@ public class GoodDog {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://thierryxc.github.io/2017/07/26/二叉树ADT/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu Chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Thierryxc 的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/26/二叉树ADT/" itemprop="url">二叉树ADT</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-26T19:06:05+08:00">
-                2017-07-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h1><p>&#160; &#160; &#160; &#160;二叉查找树是一种结合了二分查找策略的链接结构。二叉树的每个节点都包含一个项和两个指向其他节点（称为子节点：左节点/右节点）的指针。其顺序按照按照如下规定：左节点的项在父节点的项的<strong>前面</strong>；右节点的项在父节点的项的<strong>后面</strong>。</p>
-<p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_0524.JPG" alt="二叉树">  </p>
-<h2 id="二叉树ADT"><a href="#二叉树ADT" class="headerlink" title="二叉树ADT"></a>二叉树ADT</h2><p><img src="http://osakbqq1v.bkt.clouddn.com/IMG_0526.JPG" alt="树定义">  </p>
-<h2 id="二叉查找树接口-tree-h"><a href="#二叉查找树接口-tree-h" class="headerlink" title="二叉查找树接口(tree.h)"></a>二叉查找树接口(tree.h)</h2><p>接口中的函数是使用二叉树ADT的程序员可以操作的：  </p>
-<pre><code>#ifndef _TREE_H_
-#define _TREE_H_
-#include&lt;stdbool.h&gt;
-
-#define SLEN 20
-typedef struct item
-{
-    char petname[SLEN];
-    char petkind[SLEN];
-} Item;
-
-#define MAXITEMS 10
-
-typedef struct trnode
-{
-    Item item;
-    struct trnode * left;  //指向左分支的指针 
-    struct trnode * right; //指向右分支的指针 
-} Trnode;
-
-typedef struct tree
-{
-    Trnode * root;  //指向根结点的指针 
-    int size;  //树的项数 
-} Tree;
-
-//函数原型
-
-//初始化树
-
-void InitializeTree(Tree * ptree);
-
-//确定树是否为空
-
-bool TreeIsEmpty(const Tree * ptree);
-
-//确定树是否为满
-
-bool TreeIsFull(const Tree * ptree);
-
-//确定树的项数
-
-int TreeItemCount(const Tree * ptree);
-
-//在树中添加一个项
-
-bool AddItem(const Item * pi, Tree * ptree);
-
-//在树中查找一个项
-
-bool InTree(const Item * pi, Tree * ptree);
-
-//在树中删除一个项
-
-bool DeleteItem(const Item * pi, Tree * ptree);
-
-//把函数应用于树中每一项
-
-void Traverse(const Tree * ptree, void (*pfun) (Item item));
-
-//删除树中所有内容
-
-void DeteleAll(Tree * ptree);
-
-#endif
-</code></pre><h2 id="二叉树的实现-tree-c"><a href="#二叉树的实现-tree-c" class="headerlink" title="二叉树的实现(tree.c)"></a>二叉树的实现(tree.c)</h2><pre><code>//树的支持函数
-#include&lt;stdio.h&gt;
-#include&lt;string.h&gt;
-#include&lt;stdlib.h&gt;
-#include&quot;tree.h&quot;
-
-//局部数据类型
-typedef struct pair {
-    Trnode * parent;
-    Trnode * child;
-} Pair;
-
-//局部函数原型，这些函数是底层进行的操作
-static Trnode * MakeNode(const Item *pi);
-static bool ToLeft(const Item *i1, const Item *i2);
-static bool ToRight(const Item *i1, const Item *i2);
-static void AddNode(Trnode * new_node, Trnode * root);
-static void InOrder(const Trnode * root, void (*pfun) (Item item));
-static Pair SeekItem(const Item * pi, const Tree * ptree);
-static void DeleteNode(Trnode **ptr);
-static void DeleteAllNodes(Trnode * root);
-
-//函数定义
-void InitializeTree(Tree * ptree)
-{
-    ptree-&gt;root = NULL;
-    ptree-&gt;size = 0;
-}
-
-bool TreeIsEmpty(const Tree * ptree)
-{
-    if (ptree-&gt;root == NULL)
-        return true;
-    else
-        return false;
-}
-
-bool TreeIsFull(const Tree * ptree)
-{
-    if (ptree-&gt;size == MAXITEMS)
-        return true;
-    else
-        return false;
-}
-
-int TreeItemCount(const Tree * ptree)
-{
-    return ptree-&gt;size;
-}
-
-bool AddItem(const Item * pi, Tree * ptree)
-{
-    Trnode * new_node;
-
-    if (TreeIsFull(ptree))
-    {
-        fprintf(stderr,&quot;Tree is full.\n&quot;);
-        return false;
-    }
-    if (SeekItem(pi, ptree).child != NULL)
-    {
-        fprintf(stderr,&quot;Attempted to add duplicate item.\n&quot;);
-        return false;
-    }
-    new_node = MakeNode(pi);
-    if (new_node == NULL)
-    {
-        fprintf(stderr,&quot;Couldn&apos;t create node.\n&quot;);
-        return false;
-    }
-
-    //成功创建！
-    ptree-&gt;size++;
-
-    if (ptree-&gt;root == NULL)   //树为空 
-        ptree-&gt;root = new_node;
-    else                         //树不为空 
-        AddNode(new_node, ptree-&gt;root);
-
-    return true; 
-}
-
-bool InTree(const Item * pi, Tree * ptree)
-{
-    return (SeekItem(pi, ptree).child == NULL) ? false : true;    
-} 
-
-bool DeleteItem(const Item * pi, Tree * ptree)
-{
-    Pair look;
-
-    look = SeekItem(pi, ptree);
-    if (look.child == NULL)
-        return false;
-    else if (look.parent-&gt;left == look.child)
-        DeleteNode(&amp;look.parent-&gt;left);
-    else
-        DeleteNode(&amp;look.parent-&gt;right);
-
-    ptree-&gt;size--;
-
-    return true;
-}
-
-void Traverse(const Tree * ptree, void (*pfun) (Item item))
-{
-    if (ptree != NULL)
-        InOrder(ptree-&gt;root, pfun);
-}
-
-void DeleteAll(Tree * ptree)
-{
-    if (ptree != NULL)
-        DeleteAllNodes(ptree-&gt;root);
-    ptree-&gt;root = NULL;
-    ptree-&gt;size = 0;
-}
-
-//局部函数
-static void InOrder(const Trnode * root, void (*pfun) (Item item))
-{
-    if(root != NULL)
-    {
-        InOrder(root-&gt;left, pfun);
-        (*pfun)(root-&gt;item);
-        InOrder(root-&gt;right, pfun);     
-    }
-}
-
-static void DeleteAllNodes(Trnode * root)//使用递归从左至右删除
-{
-    Trnode * pright;
-
-    if (root != NULL)
-    {
-        pright = root-&gt;right;
-        DeleteAllNodes(root-&gt;left);
-        free(root);
-        DeleteAllNodes(pright);
-    }
-
-}
-
-static void AddNode(Trnode * new_node, Trnode * root)//使用递归找符合条件的叶节点
-{
-    if (ToLeft(&amp;new_node-&gt;item,&amp;root-&gt;item))
-    {
-        if (root-&gt;left == NULL)
-            root-&gt;left = new_node;
-        else
-            AddNode(new_node, root-&gt;left);
-    }
-    else if (ToRight(&amp;new_node-&gt;item,&amp;root-&gt;item))
-    {
-         if (root-&gt;right == NULL)
-             root-&gt;right = new_node;
-         else
-             AddNode(new_node, root-&gt;right);
-    }
-    else
-    {
-        fprintf(stderr,&quot;Location error in AddNode()\n&quot;);
-        exit(1);
-    }
-}
-
-static bool ToLeft(const Item *i1, const Item *i2)
-{
-    int comp1;
-
-    if ((comp1 = strcmp(i1-&gt;petname, i2-&gt;petname)) &lt; 0)
-        return true;
-    else if (comp1 == 0 &amp;&amp; strcmp(i1-&gt;petkind, i2-&gt;petkind) &lt; 0)
-        return true;
-    else
-        return false;    
-} 
-
-static bool ToRight(const Item *i1, const Item *i2)
-{
-    int comp1;
-
-    if ((comp1 = strcmp(i1-&gt;petname, i2-&gt;petname)) &gt; 0)
-        return true;
-    else if (comp1 == 0 &amp;&amp; strcmp(i1-&gt;petkind, i2-&gt;petkind) &gt; 0)
-        return true;
-    else
-        return false;    
-}
-
-static Trnode * MakeNode(const Item *pi)
-{
-    Trnode * new_node;
-
-    new_node = (Trnode *) malloc(sizeof(Trnode));
-    if (new_node != NULL)
-    {
-        new_node-&gt;item = *pi;
-        new_node-&gt;left = NULL;
-        new_node-&gt;right = NULL;
-    }
-
-    return new_node;
-}
-
-static Pair SeekItem(const Item * pi, const Tree * ptree)
-{
-    Pair look;
-    look.parent = NULL;
-    look.child = ptree-&gt;root;
-
-    if (look.child == NULL)
-        return look;
-
-    while (look.child != NULL)
-    {
-        if (ToLeft(pi,&amp;(look.child-&gt;item)))
-        {
-            look.parent = look.child;
-            look.child = look.child-&gt;left;
-        }
-        else if (ToRight(pi,&amp;(look.child-&gt;item)))
-        {
-            look.parent = look.child;
-            look.child = look.child-&gt;right;
-        }
-        else
-            break;  //如果前两项都不满足，则必定是相等的情况 
-    }
-
-    return look;
-}
-
-static void DeleteNode(Trnode **ptr)
-{
-    Trnode * temp;
-
-    if ((*ptr)-&gt;left == NULL)
-    {
-        temp = *ptr;
-        *ptr = (*ptr)-&gt;right;
-        free(temp);
-    }
-    else if ((*ptr)-&gt;right == NULL)
-    {
-        temp = *ptr;
-        *ptr = (*ptr)-&gt;left;
-        free(temp);
-    }
-    else//被删除的节点有两个子节点 
-    {
-        //找到重新连接右子树的位置
-        for (temp = (*ptr)-&gt;left; temp-&gt;right != NULL; temp = temp-&gt;right)
-            continue;
-        temp-&gt;right = (*ptr)-&gt;right;
-        temp = *ptr;
-        *ptr = (*ptr)-&gt;left;
-        free(temp); 
-    }
-}
-</code></pre><h2 id="主程序-petclub-c"><a href="#主程序-petclub-c" class="headerlink" title="主程序(petclub.c)"></a>主程序(petclub.c)</h2><pre><code>//使用二叉树查找数 
-#include&lt;stdio.h&gt;
-#include&lt;string.h&gt;
-#include&lt;ctype.h&gt;
-#include&quot;tree.h&quot;
-
-char menu(void);
-void addpet(Tree * pt);
-void droppet(Tree * pt);
-void showpets(const Tree * pt);
-void findpet(const Tree * pt);
-void printitem(Item item);
-void uppercase(char * str);
-char * s_gets(char *st, int n);
-
-int main(void)
-{
-    Tree pets;
-    char choice;
-
-
-    InitializeTree(&amp;pets);
-    while ((choice = menu()) != &apos;q&apos;)
-    {
-        switch (choice)
-        {
-            case &apos;a&apos;: addpet(&amp;pets);
-                break;
-            case &apos;l&apos;: showpets(&amp;pets);
-                break;
-            case &apos;f&apos;: findpet(&amp;pets);
-                break;
-            case &apos;n&apos;: printf(&quot;%d pets in club.\n&quot;, TreeItemCount(&amp;pets));
-                break;
-            case &apos;d&apos;: droppet(&amp;pets);
-                break;
-            default: puts(&quot;Switching error&quot;);
-        }
-    }
-    DeleteAll(&amp;pets);
-    puts(&quot;Bye.&quot;);
-
-    return 0;
-}
-
-char menu(void)
-{
-    int ch;
-
-    puts(&quot;Nerfville Pet Club Membership Program&quot;);
-    puts(&quot;Enter the letter corresponding to your choice:&quot;);
-    puts(&quot;a) add a pet          l) show list of pets&quot;);
-    puts(&quot;n) number of pets     f) find pets&quot;);
-    puts(&quot;d) delete a pet       q) quit&quot;);
-    while ((ch = getchar()) != EOF)
-    {
-        while (getchar() != &apos;\n&apos;)  /* discard rest of line */
-            continue;
-        ch = tolower(ch);
-        if (strchr(&quot;alrfndq&quot;,ch) == NULL)
-            puts(&quot;Please enter an a, l, f, n, d, or q:&quot;);
-        else
-            break;
-    }
-    if (ch == EOF)       /* make EOF cause program to quit */
-        ch = &apos;q&apos;;
-
-    return ch;
-}
-
-void addpet(Tree * pt)
-{
-    Item temp;
-
-    if (TreeIsFull(pt))
-        puts(&quot;No room in the club!&quot;);
-    else
-    {
-        puts(&quot;Please enter name of pet:&quot;);
-        s_gets(temp.petname,SLEN);
-        puts(&quot;Please enter pet kind:&quot;);
-        s_gets(temp.petkind,SLEN);
-        uppercase(temp.petname);
-        uppercase(temp.petkind);
-        AddItem(&amp;temp, pt);
-    }
-}
-
-void showpets(const Tree * pt)
-{
-    if (TreeIsEmpty(pt))
-    puts(&quot;No entries!&quot;);
-    else
-        Traverse(pt, printitem);
-}
-
-void printitem(Item item)
-{
-    printf(&quot;Pet: %-19s  Kind: %-19s\n&quot;, item.petname,
-           item.petkind);
-}
-
-void findpet(const Tree * pt)
-{
-    Item temp;
-
-    if (TreeIsEmpty(pt))
-    {
-        puts(&quot;No entries!&quot;);
-        return;     /* quit function if tree is empty */
-    }
-
-    puts(&quot;Please enter name of pet you wish to find:&quot;);
-    s_gets(temp.petname, SLEN);
-    puts(&quot;Please enter pet kind:&quot;);
-    s_gets(temp.petkind, SLEN);
-    uppercase(temp.petname);
-    uppercase(temp.petkind);
-    printf(&quot;%s the %s &quot;, temp.petname, temp.petkind);
-    if (InTree(&amp;temp, pt))
-        printf(&quot;is a member.\n&quot;);
-    else
-        printf(&quot;is not a member.\n&quot;);
-}
-
-void droppet(Tree * pt)
-{
-    Item temp;
-
-    if (TreeIsEmpty(pt))
-    {
-        puts(&quot;No entries!&quot;);
-        return;     /* quit function if tree is empty */
-    }
-
-    puts(&quot;Please enter name of pet you wish to delete:&quot;);
-    s_gets(temp.petname, SLEN);
-    puts(&quot;Please enter pet kind:&quot;);
-    s_gets(temp.petkind, SLEN);
-    uppercase(temp.petname);
-    uppercase(temp.petkind);
-    printf(&quot;%s the %s &quot;, temp.petname, temp.petkind);
-    if (DeleteItem(&amp;temp, pt))
-        printf(&quot;is dropped from the club.\n&quot;);
-    else
-        printf(&quot;is not a member.\n&quot;);
-}
-
-void uppercase(char * str)
-{
-    while (*str)
-    {
-        *str = toupper(*str);
-        str++;
-    }
-}
-char * s_gets(char * st, int n)
-{
-    char * ret_val;
-    char * find;
-
-    ret_val = fgets(st, n, stdin);
-    if (ret_val)
-    {
-        find = strchr(st, &apos;\n&apos;);   // look for newline
-        if (find)                  // if the address is not NULL,
-            *find = &apos;\0&apos;;          // place a null character there
-        else
-            while (getchar() != &apos;\n&apos;)
-                continue;          // dispose of rest of line
-    }
-    return ret_val;
-}
-</code></pre>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2663,7 +2217,7 @@ char * s_gets(char * st, int n)
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-count">27</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
